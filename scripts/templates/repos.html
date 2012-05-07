@@ -1,0 +1,9 @@
+<ul data-ng-hide="!repos.repositories.length">
+	<li data-ng-repeat="repo in repos.repositories">
+		<div>
+			<b data-ng-bind="repo.owner"></b>
+			<a data-ng-href="{{repo.url}}" data-ng-bind="repo.name" target="_blank"></a>
+		</div>
+		<div data-ng-bind="repo.description"></div>
+	</li>
+</ul>

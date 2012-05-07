@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]> <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:ng="http://angularjs.org"> <!--<![endif]-->
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>Angular Demo</title>
+		<meta name="description" content="" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="stylesheet" href="styles/bootstrap.css" />
+		<style>
+			.ng-cloak {
+				display: none;
+			}
+		</style>
+		<script src="scripts/libs/modernizr.js"></script>
+		<script data-main="scripts/main.js" src="scripts/libs/require.js"></script>
+	</head>
+	<body class="ng-cloak">
+		<div class="container">
+			<div class="hero-unit">
+				<h1>Playing with <a href="http://angularjs.org" target="_blank">AngularJS</a></h1>
+				<p>and also <a href="http://requirejs.org/" target="_blank">RequireJS</a></p>
+				<p>Dynamically loading templates.  Only getting JSON from the server.</p>
+			</div>
+			<ng:tabs>
+				<ng:tab caption="Twitter">
+					<section data-ng-controller="twitterController">
+						<div class="alert alert-info" data-ng-show="!searchTerm.length">
+							<h4 class="alert-heading">Heads up!</h4>
+							<span>Enter Twitter search criteria.</span>
+						</div>
+
+						<form class="well form-search" data-ng-submit="search(searchTerm)">
+							<input type="text" class="input-medium search-query" data-ng-model="searchTerm" autofocus />
+							<button type="submit" class="btn">Search</button>
+						</form>
+
+						<ng:include src="'./scripts/templates/tweets.html'"></ng:include>
+						
+						<!-- <a data-ng-click="changeTemplate()">Change it up</a>
+						<div data-ng-bind-html-unsafe="template.html()"></div> -->
+
+					</section>
+				</ng:tab>
+				<ng:tab caption="Search History">
+					<section data-ng-controller="twitterSearchHistoryController">
+						<form class="well form-search">
+							<input type="text" class="input-medium search-query" placeholder="Type filter..." data-ng-model="query" />
+							<label data-ng-bind-template="Displaying:  {{(searchHistory | filter:query).length}}"></label>
+						</form>
+
+						<ol>
+							<li data-ng-repeat="item in searchHistory.reverse() | filter:query" data-ng-bind="item"></li>
+						</ol>
+					</section>
+				</ng:tab>
+				<ng:tab caption="GitHub">
+					<section data-ng-controller="gitHubController">
+						<form class="well form-search" data-ng-submit="search(searchTerm)">
+							<input type="text" class="input-medium search-query" data-ng-model="searchTerm" />
+							<button type="submit" class="btn">Search</button>
+						</form>
+
+						<ng:include src="'./scripts/templates/repos.html'"></ng:include>
+					</section>
+				</ng:tab>
+			</ng:tabs>
+		</div>
+	</body>
+</html>

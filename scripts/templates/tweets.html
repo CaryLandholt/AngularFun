@@ -1,0 +1,14 @@
+<ul data-ng-hide="!tweets.results.length">
+	<li class="row" data-ng-repeat="tweet in tweets.results">
+		<div class="span1 thumbnail" data-ng-click="changeSearchTerm((tweet.from_user | twitterfy))">
+			<img data-ng-src="{{tweet.profile_image_url}}" />
+		</div>
+		<div class="span10">
+			<div>
+				<b data-ng-bind="tweet.from_user_name"></b>
+				<a data-ng-href="https://twitter.com/{{tweet.from_user}}" data-ng-bind="tweet.from_user | twitterfy" target="_blank"></a>
+			</div>
+			<div data-ng-bind="tweet.text"></div>
+		</div>
+	</li>
+</ul>
