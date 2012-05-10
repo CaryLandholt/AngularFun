@@ -17,7 +17,7 @@ require({
       deps: ['use!angular']
     }
   }
-}, ['use!angular', 'app', 'controllers/firstController', 'controllers/gitHubController', 'controllers/secondController', 'controllers/twitterController', 'controllers/twitterSearchHistoryController', 'directives/link', 'directives/tabs', 'directives/tab', 'filters/twitterfy'], function(angular, app) {
+}, ['use!angular', 'app', 'controllers/gitHubController', 'controllers/searchHistoryController', 'controllers/twitterController', 'directives/link', 'directives/tabs', 'directives/tab', 'filters/twitterfy', 'helpers/array.reverse'], function(angular, app) {
   'use strict';
   return angular.bootstrap(window.document, ['app']);
 });

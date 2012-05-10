@@ -4,17 +4,15 @@
 
 define(['use!angular', 'controllers/controllers', 'services/gitHubService'], function(angular, controllers) {
   'use strict';
-
-  var controller;
-  controller = function($scope, gitHubService) {
-    $scope.searchTerm = '';
-    $scope.repos = gitHubService.repos;
-    return $scope.search = function(searchTerm) {
-      return $scope.repos = gitHubService.get({
-        user: searchTerm
-      });
-    };
-  };
-  controllers.controller('gitHubController', ['$scope', 'gitHubService', controller]);
-  return controller;
+  return controllers.controller('gitHubController', [
+    '$scope', 'gitHubService', function($scope, gitHubService) {
+      $scope.searchTerm = '';
+      $scope.repos = gitHubService.repos;
+      return $scope.search = function(searchTerm) {
+        return $scope.repos = gitHubService.get({
+          user: searchTerm
+        });
+      };
+    }
+  ]);
 });

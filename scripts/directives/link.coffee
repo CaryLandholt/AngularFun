@@ -3,14 +3,11 @@
 define ['directives/directives', 'text!templates/link.html'], (directives, template) ->
 	'use strict'
 
-	directive = ->
+	directives.directive 'ngLink', [->
 		replace: true
 		restrict: 'E'
 		scope:
 			url: 'bind'
 		template: template
 		transclude: true
-
-	directives.directive 'ngLink', [directive]
-
-	directive
+	]

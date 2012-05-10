@@ -2,46 +2,36 @@
 /*global define
 */
 
-define(['services/services'], function(services) {
+define(['services/services', 'services/messageService'], function(services) {
   'use strict';
 
-  var searchHistory, service, tweets;
-  Array.prototype.clone = function() {
-    return Array.apply(null, this);
-  };
-  Array.prototype.sortIt = Array.prototype.sort;
-  Array.prototype.reverseIt = Array.prototype.reverse;
-  Array.prototype.sort = function() {
-    var tmp;
-    tmp = this.clone();
-    return tmp.sortIt.apply(tmp, arguments);
-  };
-  Array.prototype.reverse = function() {
-    var tmp;
-    tmp = this.clone();
-    return tmp.reverseIt.apply(tmp, arguments);
-  };
+  var tweets;
   tweets = {};
-  searchHistory = [];
-  service = function($resource) {
-    return {
-      tweets: tweets,
-      searchHistory: searchHistory,
-      get: function(criteria) {
-        searchHistory.push(criteria.q);
-        tweets = $resource('http://search.twitter.com/:action', {
-          action: 'search.json',
-          q: 'twitter',
-          callback: 'JSON_CALLBACK'
-        }, {
-          query: {
-            method: 'JSONP'
-          }
-        });
-        return tweets.query(criteria);
-      }
-    };
-  };
-  services.factory('twitterService', ['$resource', service]);
-  return service;
+  return services.factory('twitterService', [
+    '$resource', 'messageService', function($resource, messageService) {
+      return {
+        tweets: tweets,
+        get: function(criteria) {
+          messageService.publish('search', {
+            source: 'Twitter',
+            criteria: criteria.q
+          });
+          tweets = $resource('http://search.twitter.com/:action', {
+            action: 'search.json',
+            q: 'twitter',
+            callback: 'JSON_CALLBACK'
+          }, {
+            query: {
+              method: 'JSONP'
+            }
+          });
+          return tweets.query(criteria, function(Resource, getResponseHeaders) {
+            return console.log('success', Resource, getResponseHeaders());
+          }, function(obj) {
+            return console.log('error', obj.config, obj.headers(), obj.status);
+          });
+        }
+      };
+    }
+  ]);
 });

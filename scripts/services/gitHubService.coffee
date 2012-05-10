@@ -1,17 +1,15 @@
 ###global define###
 
-define ['services/services'], (services) ->
+define ['services/services', 'services/messageService'], (services) ->
 	'use strict'
 
 	repos = {}
-	searchHistory = []
 
-	service = ($resource) ->
+	services.factory 'gitHubService', ['$resource', 'messageService', ($resource, messageService) ->
 		repos: repos
-		searchHistory: searchHistory
 
 		get: (criteria) ->
-			searchHistory.push criteria.user
+			messageService.publish 'search', {source: 'GitHub', criteria: criteria.user}
 
 			repos = $resource 'https://github.com/api/v2/json/repos/show/:user',
 				{
@@ -27,7 +25,4 @@ define ['services/services'], (services) ->
 				console.log 'success', Resource, getResponseHeaders()
 			, (obj) ->
 				console.log 'error', obj.config, obj.headers(), obj.status
-
-	services.factory 'gitHubService', ['$resource', service]
-
-	service
+	]

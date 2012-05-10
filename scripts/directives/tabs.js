@@ -4,33 +4,31 @@
 
 define(['use!angular', 'directives/directives', 'text!templates/tabs.html'], function(angular, directives, template) {
   'use strict';
-
-  var directive;
-  directive = function() {
-    return {
-      restrict: 'E',
-      transclude: true,
-      scope: {},
-      controller: function($scope, $element) {
-        var tabs;
-        tabs = $scope.tabs = [];
-        $scope.select = function(tab) {
-          angular.forEach(tabs, function(tab) {
-            return tab.selected = false;
-          });
-          return tab.selected = true;
-        };
-        return this.addTab = function(tab) {
-          if (tabs.length === 0) {
-            $scope.select(tab);
-          }
-          return tabs.push(tab);
-        };
-      },
-      template: template,
-      replace: true
-    };
-  };
-  directives.directive('ngTabs', [directive]);
-  return directive;
+  return directives.directive('ngTabs', [
+    function() {
+      return {
+        restrict: 'E',
+        transclude: true,
+        scope: {},
+        controller: function($scope, $element) {
+          var tabs;
+          tabs = $scope.tabs = [];
+          $scope.select = function(tab) {
+            angular.forEach(tabs, function(tab) {
+              return tab.selected = false;
+            });
+            return tab.selected = true;
+          };
+          return this.addTab = function(tab) {
+            if (tabs.length === 0) {
+              $scope.select(tab);
+            }
+            return tabs.push(tab);
+          };
+        },
+        template: template,
+        replace: true
+      };
+    }
+  ]);
 });

@@ -3,7 +3,7 @@
 define ['use!angular', 'directives/directives', 'text!templates/tabs.html'], (angular, directives, template) ->
 	'use strict'
 
-	directive = ->
+	directives.directive 'ngTabs', [->
 		restrict: 'E'
 		transclude: true
 		scope: {}
@@ -23,7 +23,4 @@ define ['use!angular', 'directives/directives', 'text!templates/tabs.html'], (an
 
 		template: template
 		replace: true
-
-	directives.directive 'ngTabs', [directive]
-
-	directive
+	]

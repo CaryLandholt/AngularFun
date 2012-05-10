@@ -4,15 +4,11 @@
 
 define(['filters/filters'], function(filters) {
   'use strict';
-
-  var filter;
-  filter = function(username) {
-    return "@" + username;
-  };
-  filters.filter('twitterfy', [
+  return filters.filter('twitterfy', [
     function() {
-      return filter;
+      return function(username) {
+        return "@" + username;
+      };
     }
   ]);
-  return filter;
 });

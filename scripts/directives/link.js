@@ -4,19 +4,17 @@
 
 define(['directives/directives', 'text!templates/link.html'], function(directives, template) {
   'use strict';
-
-  var directive;
-  directive = function() {
-    return {
-      replace: true,
-      restrict: 'E',
-      scope: {
-        url: 'bind'
-      },
-      template: template,
-      transclude: true
-    };
-  };
-  directives.directive('ngLink', [directive]);
-  return directive;
+  return directives.directive('ngLink', [
+    function() {
+      return {
+        replace: true,
+        restrict: 'E',
+        scope: {
+          url: 'bind'
+        },
+        template: template,
+        transclude: true
+      };
+    }
+  ]);
 });

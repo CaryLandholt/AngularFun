@@ -2,34 +2,35 @@
 /*global define
 */
 
-define(['services/services'], function(services) {
+define(['services/services', 'services/messageService'], function(services) {
   'use strict';
 
-  var repos, searchHistory, service;
+  var repos;
   repos = {};
-  searchHistory = [];
-  service = function($resource) {
-    return {
-      repos: repos,
-      searchHistory: searchHistory,
-      get: function(criteria) {
-        searchHistory.push(criteria.user);
-        repos = $resource('https://github.com/api/v2/json/repos/show/:user', {
-          user: 'CaryLandholt',
-          callback: 'JSON_CALLBACK'
-        }, {
-          query: {
-            method: 'JSONP'
-          }
-        });
-        return repos.query(criteria, function(Resource, getResponseHeaders) {
-          return console.log('success', Resource, getResponseHeaders());
-        }, function(obj) {
-          return console.log('error', obj.config, obj.headers(), obj.status);
-        });
-      }
-    };
-  };
-  services.factory('gitHubService', ['$resource', service]);
-  return service;
+  return services.factory('gitHubService', [
+    '$resource', 'messageService', function($resource, messageService) {
+      return {
+        repos: repos,
+        get: function(criteria) {
+          messageService.publish('search', {
+            source: 'GitHub',
+            criteria: criteria.user
+          });
+          repos = $resource('https://github.com/api/v2/json/repos/show/:user', {
+            user: 'CaryLandholt',
+            callback: 'JSON_CALLBACK'
+          }, {
+            query: {
+              method: 'JSONP'
+            }
+          });
+          return repos.query(criteria, function(Resource, getResponseHeaders) {
+            return console.log('success', Resource, getResponseHeaders());
+          }, function(obj) {
+            return console.log('error', obj.config, obj.headers(), obj.status);
+          });
+        }
+      };
+    }
+  ]);
 });

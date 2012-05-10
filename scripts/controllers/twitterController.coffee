@@ -11,7 +11,7 @@ define ['use!angular', 'controllers/controllers', 'text!templates/tweets.html', 
 
 		element
 
-	controller = ($scope, $compile, twitterService) ->
+	controllers.controller 'twitterController', ['$scope', '$compile', 'twitterService', ($scope, $compile, twitterService) ->
 		$scope.searchTerm = ''
 		$scope.tweets = twitterService.tweets
 		$scope.template = getTemplate $scope, $compile, template
@@ -24,7 +24,4 @@ define ['use!angular', 'controllers/controllers', 'text!templates/tweets.html', 
 
 		$scope.changeTemplate = ->
 			$scope.template = getTemplate $scope, $compile, '<div data-ng-bind="searchTerm"></div>'
-
-	controllers.controller 'twitterController', ['$scope', '$compile', 'twitterService', controller]
-
-	controller
+	]

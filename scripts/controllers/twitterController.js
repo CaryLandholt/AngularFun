@@ -5,7 +5,7 @@
 define(['use!angular', 'controllers/controllers', 'text!templates/tweets.html', 'services/twitterService'], function(angular, controllers, template) {
   'use strict';
 
-  var controller, getTemplate;
+  var getTemplate;
   getTemplate = function($scope, $compile, template) {
     var element, wrappedTemplate;
     wrappedTemplate = '<div>' + template + '</div>';
@@ -14,22 +14,22 @@ define(['use!angular', 'controllers/controllers', 'text!templates/tweets.html', 
     $scope.$eval(element);
     return element;
   };
-  controller = function($scope, $compile, twitterService) {
-    $scope.searchTerm = '';
-    $scope.tweets = twitterService.tweets;
-    $scope.template = getTemplate($scope, $compile, template);
-    $scope.changeSearchTerm = function(searchTerm) {
-      return $scope.searchTerm = searchTerm;
-    };
-    $scope.search = function(searchTerm) {
-      return $scope.tweets = twitterService.get({
-        q: searchTerm
-      });
-    };
-    return $scope.changeTemplate = function() {
-      return $scope.template = getTemplate($scope, $compile, '<div data-ng-bind="searchTerm"></div>');
-    };
-  };
-  controllers.controller('twitterController', ['$scope', '$compile', 'twitterService', controller]);
-  return controller;
+  return controllers.controller('twitterController', [
+    '$scope', '$compile', 'twitterService', function($scope, $compile, twitterService) {
+      $scope.searchTerm = '';
+      $scope.tweets = twitterService.tweets;
+      $scope.template = getTemplate($scope, $compile, template);
+      $scope.changeSearchTerm = function(searchTerm) {
+        return $scope.searchTerm = searchTerm;
+      };
+      $scope.search = function(searchTerm) {
+        return $scope.tweets = twitterService.get({
+          q: searchTerm
+        });
+      };
+      return $scope.changeTemplate = function() {
+        return $scope.template = getTemplate($scope, $compile, '<div data-ng-bind="searchTerm"></div>');
+      };
+    }
+  ]);
 });

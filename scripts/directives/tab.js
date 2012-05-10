@@ -4,23 +4,21 @@
 
 define(['directives/directives', 'text!templates/tab.html', 'directives/tabs'], function(directives, template) {
   'use strict';
-
-  var directive;
-  directive = function() {
-    return {
-      require: '^ngTabs',
-      restrict: 'E',
-      transclude: true,
-      scope: {
-        caption: 'bind'
-      },
-      link: function(scope, element, attrs, controller) {
-        return controller.addTab(scope);
-      },
-      template: template,
-      replace: true
-    };
-  };
-  directives.directive('ngTab', [directive]);
-  return directive;
+  return directives.directive('ngTab', [
+    function() {
+      return {
+        require: '^ngTabs',
+        restrict: 'E',
+        transclude: true,
+        scope: {
+          caption: 'bind'
+        },
+        link: function(scope, element, attrs, controller) {
+          return controller.addTab(scope);
+        },
+        template: template,
+        replace: true
+      };
+    }
+  ]);
 });

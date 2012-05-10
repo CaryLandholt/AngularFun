@@ -11,24 +11,18 @@ require
 			attach: 'angular'
 		angularResource:
 			deps: ['use!angular']
-,
 	[
-		'use!angular',
-		'app',
-		'controllers/firstController',
-		'controllers/gitHubController',
-		'controllers/secondController',
-		'controllers/twitterController',
-		'controllers/twitterSearchHistoryController',
-		'directives/link',
-		'directives/tabs',
-		'directives/tab',
+		'use!angular'
+		'app'
+		'controllers/gitHubController'
+		'controllers/searchHistoryController'
+		'controllers/twitterController'
+		'directives/link'
+		'directives/tabs'
+		'directives/tab'
 		'filters/twitterfy'
-	],
-	(angular, app) ->
+		'helpers/array.reverse'
+	], (angular, app) ->
 		'use strict'
-
-		#angular.element(document).ready ->
-		#	angular.bootstrap document, ['app']
 
 		angular.bootstrap window.document, ['app']

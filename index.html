@@ -26,28 +26,43 @@
 				<p>and also <a href="http://requirejs.org/" target="_blank">RequireJS</a></p>
 				<p>Dynamically loading templates.  Only getting JSON from the server.</p>
 			</div>
-			<ng:tabs>
-				<ng:tab caption="Twitter">
-					<section data-ng-controller="twitterController">
-						<div class="alert alert-info" data-ng-show="!searchTerm.length">
-							<h4 class="alert-heading">Heads up!</h4>
-							<span>Enter Twitter search criteria.</span>
-						</div>
+			<div class="row">
+				<div class="span8">
+					<ng:tabs>
+						<ng:tab caption="Twitter">
+							<section data-ng-controller="twitterController">
+								<div class="alert alert-info" data-ng-show="!searchTerm.length">
+									<h4 class="alert-heading">Heads up!</h4>
+									<span>Enter Twitter search criteria.</span>
+								</div>
 
-						<form class="well form-search" data-ng-submit="search(searchTerm)">
-							<input type="text" class="input-medium search-query" data-ng-model="searchTerm" autofocus />
-							<button type="submit" class="btn">Search</button>
-						</form>
+								<form class="well form-search" data-ng-submit="search(searchTerm)">
+									<input type="text" class="input-medium search-query" data-ng-model="searchTerm" autofocus />
+									<button type="submit" class="btn">Search</button>
+								</form>
 
-						<ng:include src="'./scripts/templates/tweets.html'"></ng:include>
-						
-						<!-- <a data-ng-click="changeTemplate()">Change it up</a>
-						<div data-ng-bind-html-unsafe="template.html()"></div> -->
+								<ng:include src="'./scripts/templates/tweets.html'"></ng:include>
+								
+								<!-- <a data-ng-click="changeTemplate()">Change it up</a>
+								<div data-ng-bind-html-unsafe="template.html()"></div> -->
 
-					</section>
-				</ng:tab>
-				<ng:tab caption="Search History">
-					<section data-ng-controller="twitterSearchHistoryController">
+							</section>
+						</ng:tab>
+						<ng:tab caption="GitHub">
+							<section data-ng-controller="gitHubController">
+								<form class="well form-search" data-ng-submit="search(searchTerm)">
+									<input type="text" class="input-medium search-query" data-ng-model="searchTerm" />
+									<button type="submit" class="btn">Search</button>
+								</form>
+
+								<ng:include src="'./scripts/templates/repos.html'"></ng:include>
+							</section>
+						</ng:tab>
+					</ng:tabs>
+				</div>
+				<div class="span4">
+					<h2>Search History</h2>
+					<section data-ng-controller="searchHistoryController">
 						<form class="well form-search">
 							<input type="text" class="input-medium search-query" placeholder="Type filter..." data-ng-model="query" />
 							<label data-ng-bind-template="Displaying:  {{(searchHistory | filter:query).length}}"></label>
@@ -57,18 +72,8 @@
 							<li data-ng-repeat="item in searchHistory.reverse() | filter:query" data-ng-bind="item"></li>
 						</ol>
 					</section>
-				</ng:tab>
-				<ng:tab caption="GitHub">
-					<section data-ng-controller="gitHubController">
-						<form class="well form-search" data-ng-submit="search(searchTerm)">
-							<input type="text" class="input-medium search-query" data-ng-model="searchTerm" />
-							<button type="submit" class="btn">Search</button>
-						</form>
-
-						<ng:include src="'./scripts/templates/repos.html'"></ng:include>
-					</section>
-				</ng:tab>
-			</ng:tabs>
+				</div>
+			</div>
 		</div>
 	</body>
 </html>

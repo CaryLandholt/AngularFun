@@ -1,28 +1,15 @@
 ###global define###
 
-define ['services/services'], (services) ->
+define ['services/services', 'services/messageService'], (services) ->
 	'use strict'
 
-	Array::clone = ->
-		Array.apply null, this
-	Array::sortIt = Array::sort
-	Array::reverseIt = Array::reverse
-	Array::sort = ->
-		tmp = @clone()
-		tmp.sortIt.apply tmp, arguments
-	Array::reverse = ->
-		tmp = @clone()
-		tmp.reverseIt.apply tmp, arguments
-
 	tweets = {}
-	searchHistory = []
 
-	service = ($resource) ->
+	services.factory 'twitterService', ['$resource', 'messageService', ($resource, messageService) ->
 		tweets: tweets
-		searchHistory: searchHistory
 
 		get: (criteria) ->
-			searchHistory.push criteria.q
+			messageService.publish 'search', {source: 'Twitter', criteria: criteria.q}
 
 			tweets = $resource 'http://search.twitter.com/:action',
 				{
@@ -35,8 +22,8 @@ define ['services/services'], (services) ->
 						method: 'JSONP'
 				}
 
-			tweets.query criteria
-
-	services.factory 'twitterService', ['$resource', service]
-
-	service
+			tweets.query criteria, (Resource, getResponseHeaders) ->
+				console.log 'success', Resource, getResponseHeaders()
+			, (obj) ->
+				console.log 'error', obj.config, obj.headers(), obj.status
+	]
