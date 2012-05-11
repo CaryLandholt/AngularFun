@@ -2,34 +2,25 @@
 /*global define
 */
 
-define(['use!angular', 'controllers/controllers', 'text!templates/tweets.html', 'services/twitterService'], function(angular, controllers, template) {
+define(['use!angular', 'controllers/controllers', 'services/twitterService'], function(angular, controllers) {
   'use strict';
-
-  var getTemplate;
-  getTemplate = function($scope, $compile, template) {
-    var element, wrappedTemplate;
-    wrappedTemplate = '<div>' + template + '</div>';
-    element = angular.element(wrappedTemplate);
-    $compile(element)($scope);
-    $scope.$eval(element);
-    return element;
-  };
   return controllers.controller('twitterController', [
-    '$scope', '$compile', 'twitterService', function($scope, $compile, twitterService) {
+    '$scope', '$location', 'twitterService', function($scope, $location, twitterService) {
       $scope.searchTerm = '';
       $scope.tweets = twitterService.tweets;
-      $scope.template = getTemplate($scope, $compile, template);
-      $scope.changeSearchTerm = function(searchTerm) {
-        return $scope.searchTerm = searchTerm;
-      };
       $scope.search = function(searchTerm) {
-        return $scope.tweets = twitterService.get({
-          q: searchTerm
-        });
+        return $location.path("/twitter/" + searchTerm);
       };
-      return $scope.changeTemplate = function() {
-        return $scope.template = getTemplate($scope, $compile, '<div data-ng-bind="searchTerm"></div>');
-      };
+      return $scope.$on('$afterRouteChange', function(event, currentRoute, priorRoute) {
+        var searchTerm;
+        searchTerm = currentRoute.params.searchTerm;
+        if (searchTerm) {
+          $scope.searchTerm = searchTerm;
+          return $scope.tweets = twitterService.get({
+            q: $scope.searchTerm
+          });
+        }
+      });
     }
   ]);
 });

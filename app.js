@@ -21,7 +21,7 @@
     app.get('/', function(req, res) {
       return res.render("" + dir + "/index.html");
     });
-    return app.listen(3000, function() {
+    return app.listen(3005, function() {
       return console.log("Express server listening on port " + (app.address().port) + " in " + app.settings.env + " mode");
     });
   });

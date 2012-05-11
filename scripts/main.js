@@ -19,5 +19,15 @@ require({
   }
 }, ['use!angular', 'app', 'controllers/gitHubController', 'controllers/searchHistoryController', 'controllers/twitterController', 'directives/link', 'directives/tabs', 'directives/tab', 'filters/twitterfy', 'helpers/array.reverse'], function(angular, app) {
   'use strict';
+  app.config([
+    '$routeProvider', function($routeProvider) {
+      return $routeProvider.when('/twitter/:searchTerm', {
+        controller: 'twitterController',
+        reloadOnSearch: true
+      }).otherwise({
+        redirectTo: '/twitter/@CaryLandholt'
+      });
+    }
+  ]);
   return angular.bootstrap(window.document, ['app']);
 });

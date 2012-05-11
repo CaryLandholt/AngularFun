@@ -18,6 +18,6 @@
 		app.get '/', (req, res) ->
 			res.render "#{dir}/index.html"
 
-		app.listen 3000, ->
+		app.listen 3005, ->
 			console.log "Express server listening on port #{app.address().port} in #{app.settings.env} mode"
 )(require("express"), __dirname)

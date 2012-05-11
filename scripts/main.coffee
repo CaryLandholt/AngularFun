@@ -25,4 +25,12 @@ require
 	], (angular, app) ->
 		'use strict'
 
+		app.config ['$routeProvider', ($routeProvider) ->
+			$routeProvider
+			.when '/twitter/:searchTerm'
+				controller: 'twitterController'
+				reloadOnSearch: true
+			.otherwise redirectTo: '/twitter/@CaryLandholt'
+		]
+
 		angular.bootstrap window.document, ['app']

@@ -1,6 +1,6 @@
 <ul data-ng-hide="!tweets.results.length">
 	<li class="row" data-ng-repeat="tweet in tweets.results">
-		<div class="span1 thumbnail" data-ng-click="changeSearchTerm((tweet.from_user | twitterfy))">
+		<div class="span1 thumbnail">
 			<img data-ng-src="{{tweet.profile_image_url}}" />
 		</div>
 		<div class="span10">
