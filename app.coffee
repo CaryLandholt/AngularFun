@@ -3,6 +3,16 @@
 ((express, dir) ->
 	app = express.createServer()
 
+	open = (command = 'open') ->
+		url = "http://localhost:#{app.address().port}"
+		ostype = require('os').type()
+		command = 'explorer' if ostype is 'Windows_NT'
+		spawn = require('child_process').spawn
+
+		console.log "launching #{url}" 
+
+		spawn command, [url]
+
 	app.configure ->
 		app.set 'view options',
 			layout: false
@@ -20,4 +30,5 @@
 
 		app.listen 3005, ->
 			console.log "Express server listening on port #{app.address().port} in #{app.settings.env} mode"
-)(require("express"), __dirname)
+			open()
+)(require('express'), __dirname)

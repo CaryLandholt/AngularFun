@@ -3,8 +3,22 @@
 */
 
 (function(express, dir) {
-  var app;
+  var app, open;
   app = express.createServer();
+  open = function(command) {
+    var ostype, spawn, url;
+    if (command == null) {
+      command = 'open';
+    }
+    url = "http://localhost:" + (app.address().port);
+    ostype = require('os').type();
+    if (ostype === 'Windows_NT') {
+      command = 'explorer';
+    }
+    spawn = require('child_process').spawn;
+    console.log("launching " + url);
+    return spawn(command, [url]);
+  };
   return app.configure(function() {
     app.set('view options', {
       layout: false
@@ -22,7 +36,8 @@
       return res.render("" + dir + "/index.html");
     });
     return app.listen(3005, function() {
-      return console.log("Express server listening on port " + (app.address().port) + " in " + app.settings.env + " mode");
+      console.log("Express server listening on port " + (app.address().port) + " in " + app.settings.env + " mode");
+      return open();
     });
   });
-})(require("express"), __dirname);
+})(require('express'), __dirname);
