@@ -1,6 +1,6 @@
-###global require, __dirname###
+###global require, __dirname, process###
 
-((express, dir) ->
+((express, dir, port = 3005) ->
 	app = express.createServer()
 
 	open = (command = 'open') ->
@@ -28,7 +28,7 @@
 		app.get '/', (req, res) ->
 			res.render "#{dir}/index.html"
 
-		app.listen 3005, ->
+		app.listen port, ->
 			console.log "Express server listening on port #{app.address().port} in #{app.settings.env} mode"
 			open()
-)(require('express'), __dirname)
+)(require('express'), __dirname, process.argv.splice(2)[0])
