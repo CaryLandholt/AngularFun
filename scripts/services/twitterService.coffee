@@ -14,7 +14,7 @@ define ['services/services', 'services/messageService'], (services) ->
 			tweets = $resource 'http://search.twitter.com/:action',
 				{
 					action: 'search.json'
-					q: 'twitter'
+					q: '@CaryLandholt'
 					callback: 'JSON_CALLBACK'
 				}
 				{

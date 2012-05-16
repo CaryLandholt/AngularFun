@@ -1,6 +1,6 @@
 ###global define###
 
-define ['directives/directives', 'text!templates/link.html'], (directives, template) ->
+define ['directives/directives', 'text!partials/link.html'], (directives, template) ->
 	'use strict'
 
 	directives.directive 'ngLink', [->

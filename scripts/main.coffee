@@ -4,6 +4,7 @@ require
 	paths:
 		angular: 'libs/angular'
 		angularResource: 'libs/angular-resource'
+		modernizr: 'libs/modernizr'
 		text: 'libs/text'
 		use: 'libs/use'
 	use:
@@ -11,7 +12,10 @@ require
 			attach: 'angular'
 		angularResource:
 			deps: ['use!angular']
+		modernizr:
+			attach: 'Modernizr'
 	[
+		'use!modernizr'
 		'use!angular'
 		'app'
 		'controllers/gitHubController'
@@ -21,8 +25,7 @@ require
 		'directives/tabs'
 		'directives/tab'
 		'filters/twitterfy'
-		'helpers/array.reverse'
-	], (angular, app) ->
+	], (modernizr, angular, app) ->
 		'use strict'
 
 		app.config ['$routeProvider', ($routeProvider) ->

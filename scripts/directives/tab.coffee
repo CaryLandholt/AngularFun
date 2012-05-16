@@ -1,6 +1,6 @@
 ###global define###
 
-define ['directives/directives', 'text!templates/tab.html', 'directives/tabs'], (directives, template) ->
+define ['directives/directives', 'text!partials/tab.html', 'directives/tabs'], (directives, template) ->
 	'use strict'
 
 	directives.directive 'ngTab', [->

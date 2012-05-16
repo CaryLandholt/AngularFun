@@ -9,5 +9,5 @@ define ['use!angular', 'controllers/controllers', 'services/messageService'], (a
 		$scope.searchHistory = searchHistory
 
 		messageService.subscribe 'search', (name, parameters) ->
-			$scope.searchHistory.push "#{parameters.source}/#{parameters.criteria}"
+			$scope.searchHistory.push parameters
 	]

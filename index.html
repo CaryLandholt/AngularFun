@@ -11,15 +11,10 @@
 		<meta name="description" content="" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="stylesheet" href="styles/bootstrap.css" />
-		<style>
-			.ng-cloak {
-				display: none;
-			}
-		</style>
-		<script src="scripts/libs/modernizr.js"></script>
-		<script data-main="scripts/main.js" src="scripts/libs/require.js"></script>
+		<!--<script data-main="scripts/main.js" src="scripts/libs/require.js"></script>-->
+		<script src="./scripts/scripts.js"></script>
 	</head>
-	<body class="ng-cloak">
+	<body data-ng-cloak>
 		<ng:view></ng:view>
 		<div class="container">
 			<div class="hero-unit">
@@ -42,21 +37,22 @@
 									<button type="submit" class="btn">Search</button>
 								</form>
 
-								<ng:include src="'./scripts/templates/tweets.html'"></ng:include>
-								
-								<!-- <a data-ng-click="changeTemplate()">Change it up</a>
-								<div data-ng-bind-html-unsafe="template.html()"></div> -->
-
+								<ng:include src="'./scripts/partials/tweets.html'"></ng:include>
 							</section>
 						</ng:tab>
 						<ng:tab caption="GitHub">
 							<section data-ng-controller="gitHubController">
+								<div class="alert alert-info" data-ng-show="!searchTerm.length">
+									<h4 class="alert-heading">Heads up!</h4>
+									<span>Enter GitHub search criteria.</span>
+								</div>
+
 								<form class="well form-search" data-ng-submit="search(searchTerm)">
 									<input type="text" class="input-medium search-query" data-ng-model="searchTerm" />
 									<button type="submit" class="btn">Search</button>
 								</form>
 
-								<ng:include src="'./scripts/templates/repos.html'"></ng:include>
+								<ng:include src="'./scripts/partials/repos.html'"></ng:include>
 							</section>
 						</ng:tab>
 					</ng:tabs>
@@ -70,7 +66,7 @@
 						</form>
 
 						<ol>
-							<li data-ng-repeat="item in searchHistory.reverse() | filter:query" data-ng-bind="item"></li>
+							<li data-ng-repeat="item in searchHistory | filter:query | orderBy:'timeStamp':true" data-ng-bind-template="{{item.source}}/{{item.criteria}}"></li>
 						</ol>
 					</section>
 				</div>

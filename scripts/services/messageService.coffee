@@ -5,6 +5,8 @@ define ['services/services'], (services) ->
 
 	services.factory 'messageService', ['$rootScope', ($rootScope) ->
 		publish: (name, parameters) ->
+			parameters.timeStamp = new Date()
+
 			$rootScope.$emit(name, parameters)
 		subscribe: (name, listener) ->
 			$rootScope.$on(name, listener)
