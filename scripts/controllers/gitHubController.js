@@ -5,14 +5,25 @@
 define(['use!angular', 'controllers/controllers', 'services/gitHubService'], function(angular, controllers) {
   'use strict';
   return controllers.controller('gitHubController', [
-    '$scope', 'gitHubService', function($scope, gitHubService) {
+    '$scope', '$location', 'gitHubService', function($scope, $location, gitHubService) {
       $scope.searchTerm = '';
-      $scope.repos = gitHubService.repos;
-      return $scope.search = function(searchTerm) {
-        return $scope.repos = gitHubService.get({
-          user: searchTerm
-        });
+      $scope.repos = {};
+      $scope.search = function(searchTerm) {
+        return $location.path("/github/" + searchTerm);
       };
+      return $scope.$on('$afterRouteChange', function(event, currentRoute, priorRoute) {
+        var searchTerm;
+        if (!currentRoute || !currentRoute.$route || !currentRoute.$route.controller || currentRoute.$route.controller !== 'gitHubController') {
+          return;
+        }
+        searchTerm = currentRoute.params.searchTerm;
+        if (searchTerm) {
+          $scope.searchTerm = searchTerm;
+          return $scope.repos = gitHubService.get({
+            user: searchTerm
+          });
+        }
+      });
     }
   ]);
 });

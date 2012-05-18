@@ -33,6 +33,9 @@ require
 			.when '/twitter/:searchTerm'
 				controller: 'twitterController'
 				reloadOnSearch: true
+			.when '/github/:searchTerm'
+				controller: 'gitHubController'
+				reloadOnSearch: true
 			.otherwise redirectTo: '/twitter/@CaryLandholt'
 		]
 

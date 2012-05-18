@@ -5,12 +5,14 @@ define ['use!angular', 'controllers/controllers', 'services/twitterService'], (a
 
 	controllers.controller 'twitterController', ['$scope', '$location', 'twitterService', ($scope, $location, twitterService) ->
 		$scope.searchTerm = ''
-		$scope.tweets = twitterService.tweets
+		$scope.tweets = {}
 
 		$scope.search = (searchTerm) ->
 			$location.path "/twitter/#{searchTerm}"
 
 		$scope.$on '$afterRouteChange', (event, currentRoute, priorRoute) ->
+			return if not currentRoute or not currentRoute.$route or not currentRoute.$route.controller or currentRoute.$route.controller isnt 'twitterController'
+
 			searchTerm = currentRoute.params.searchTerm
 
 			if searchTerm
