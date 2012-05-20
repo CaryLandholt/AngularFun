@@ -1,6 +1,6 @@
 ###global define###
 
-define ['use!angular'], (angular) ->
+define ['angular'], (angular) ->
 	'use strict'
 
 	angular.module 'directives', []

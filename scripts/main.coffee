@@ -1,22 +1,21 @@
 ###global require, window###
 
+### https://github.com/jrburke/requirejs/wiki/Requirejs-2.0-draft ###
 require
 	paths:
 		angular: 'libs/angular'
 		angularResource: 'libs/angular-resource'
 		modernizr: 'libs/modernizr'
 		text: 'libs/text'
-		use: 'libs/use'
-	use:
+	shim:
 		angular:
-			attach: 'angular'
-		angularResource:
-			deps: ['use!angular']
+			exports: 'angular'
+		angularResource: ['angular']
 		modernizr:
-			attach: 'Modernizr'
+			exports: 'Modernizr'
 	[
-		'use!modernizr'
-		'use!angular'
+		'modernizr'
+		'angular'
 		'app'
 		'controllers/gitHubController'
 		'controllers/searchHistoryController'

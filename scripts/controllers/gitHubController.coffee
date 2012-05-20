@@ -1,6 +1,6 @@
 ###global define###
 
-define ['use!angular', 'controllers/controllers', 'services/gitHubService'], (angular, controllers) ->
+define ['angular', 'controllers/controllers', 'services/gitHubService'], (angular, controllers) ->
 	'use strict'
 
 	controllers.controller 'gitHubController', ['$scope', '$location', 'gitHubService', ($scope, $location, gitHubService) ->

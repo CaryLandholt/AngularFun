@@ -1,6 +1,6 @@
 ###global define###
 
-define ['use!angular', 'use!angularResource'], (angular) ->
+define ['angular', 'angularResource'], (angular) ->
 	'use strict'
 
 	angular.module 'services', ['ngResource']

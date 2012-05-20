@@ -2,26 +2,26 @@
 /*global require, window
 */
 
+/* https://github.com/jrburke/requirejs/wiki/Requirejs-2.0-draft
+*/
+
 require({
   paths: {
     angular: 'libs/angular',
     angularResource: 'libs/angular-resource',
     modernizr: 'libs/modernizr',
-    text: 'libs/text',
-    use: 'libs/use'
+    text: 'libs/text'
   },
-  use: {
+  shim: {
     angular: {
-      attach: 'angular'
+      exports: 'angular'
     },
-    angularResource: {
-      deps: ['use!angular']
-    },
+    angularResource: ['angular'],
     modernizr: {
-      attach: 'Modernizr'
+      exports: 'Modernizr'
     }
   }
-}, ['use!modernizr', 'use!angular', 'app', 'controllers/gitHubController', 'controllers/searchHistoryController', 'controllers/twitterController', 'directives/link', 'directives/tabs', 'directives/tab', 'filters/twitterfy'], function(modernizr, angular, app) {
+}, ['modernizr', 'angular', 'app', 'controllers/gitHubController', 'controllers/searchHistoryController', 'controllers/twitterController', 'directives/link', 'directives/tabs', 'directives/tab', 'filters/twitterfy'], function(modernizr, angular, app) {
   'use strict';
   app.config([
     '$routeProvider', function($routeProvider) {

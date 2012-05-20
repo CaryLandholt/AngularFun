@@ -1,6 +1,6 @@
 ###global define###
 
-define ['use!angular', 'controllers/controllers', 'services/twitterService'], (angular, controllers) ->
+define ['angular', 'controllers/controllers', 'services/twitterService'], (angular, controllers) ->
 	'use strict'
 
 	controllers.controller 'twitterController', ['$scope', '$location', 'twitterService', ($scope, $location, twitterService) ->

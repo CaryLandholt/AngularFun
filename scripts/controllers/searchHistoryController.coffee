@@ -1,6 +1,6 @@
 ###global define###
 
-define ['use!angular', 'controllers/controllers', 'services/messageService'], (angular, controllers) ->
+define ['angular', 'controllers/controllers', 'services/messageService'], (angular, controllers) ->
 	'use strict'
 
 	searchHistory = []

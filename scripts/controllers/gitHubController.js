@@ -2,7 +2,7 @@
 /*global define
 */
 
-define(['use!angular', 'controllers/controllers', 'services/gitHubService'], function(angular, controllers) {
+define(['angular', 'controllers/controllers', 'services/gitHubService'], function(angular, controllers) {
   'use strict';
   return controllers.controller('gitHubController', [
     '$scope', '$location', 'gitHubService', function($scope, $location, gitHubService) {

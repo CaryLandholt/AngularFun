@@ -2,7 +2,7 @@
 /*global define
 */
 
-define(['use!angular', 'controllers/controllers', 'services/messageService'], function(angular, controllers) {
+define(['angular', 'controllers/controllers', 'services/messageService'], function(angular, controllers) {
   'use strict';
 
   var searchHistory;

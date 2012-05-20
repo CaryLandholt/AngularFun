@@ -2,7 +2,7 @@
 /*global define
 */
 
-define(['use!angular', 'controllers/controllers', 'services/twitterService'], function(angular, controllers) {
+define(['angular', 'controllers/controllers', 'services/twitterService'], function(angular, controllers) {
   'use strict';
   return controllers.controller('twitterController', [
     '$scope', '$location', 'twitterService', function($scope, $location, twitterService) {

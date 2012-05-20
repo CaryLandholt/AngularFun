@@ -1,7 +1,7 @@
 ###global define###
 
 define [
-	'use!angular'
+	'angular'
 	'controllers/controllers'
 	'directives/directives'
 	'filters/filters'

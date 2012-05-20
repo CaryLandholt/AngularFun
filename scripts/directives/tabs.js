@@ -2,7 +2,7 @@
 /*global define
 */
 
-define(['use!angular', 'directives/directives', 'text!partials/tabs.html'], function(angular, directives, template) {
+define(['angular', 'directives/directives', 'text!partials/tabs.html'], function(angular, directives, template) {
   'use strict';
   return directives.directive('ngTabs', [
     function() {
