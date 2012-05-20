@@ -1,6 +1,9 @@
 ###global require, window###
 
-### https://github.com/jrburke/requirejs/wiki/Requirejs-2.0-draft ###
+###
+https://github.com/jrburke/requirejs/tree/dev2.0
+https://github.com/jrburke/requirejs/wiki/Requirejs-2.0-draft
+###
 require
 	paths:
 		angular: 'libs/angular'
