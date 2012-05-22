@@ -3,10 +3,19 @@
 */
 
 (function(express, dir, port) {
-  var app, open;
+  var app, open, people;
   if (port == null) {
     port = 3005;
   }
+  people = [
+    {
+      "name": "Cary"
+    }, {
+      "name": "Saasha"
+    }, {
+      "name": "Planet"
+    }
+  ];
   app = express.createServer();
   open = function(command) {
     var ostype, spawn, url;
@@ -26,6 +35,7 @@
     app.set('view options', {
       layout: false
     });
+    app.use(express.bodyParser());
     app.use(express["static"](dir));
     app.use(app.router);
     app.register('.html', {
@@ -37,6 +47,15 @@
     });
     app.get('/', function(req, res) {
       return res.render("" + dir + "/index.html");
+    });
+    app.get('/members', function(req, res) {
+      return res.json(people);
+    });
+    app.post('/members', function(req, res) {
+      var person;
+      person = req.body;
+      people.push(person);
+      return res.send('Conflictola', 409);
     });
     return app.listen(port, function() {
       console.log("Express server listening on port " + (app.address().port) + " in " + app.settings.env + " mode");

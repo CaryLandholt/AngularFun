@@ -21,6 +21,7 @@ require
 		'angular'
 		'app'
 		'controllers/gitHubController'
+		'controllers/peopleController'
 		'controllers/searchHistoryController'
 		'controllers/twitterController'
 		'directives/link'

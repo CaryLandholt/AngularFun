@@ -23,7 +23,7 @@ require({
       exports: 'Modernizr'
     }
   }
-}, ['modernizr', 'angular', 'app', 'controllers/gitHubController', 'controllers/searchHistoryController', 'controllers/twitterController', 'directives/link', 'directives/tabs', 'directives/tab', 'filters/twitterfy'], function(modernizr, angular, app) {
+}, ['modernizr', 'angular', 'app', 'controllers/gitHubController', 'controllers/peopleController', 'controllers/searchHistoryController', 'controllers/twitterController', 'directives/link', 'directives/tabs', 'directives/tab', 'filters/twitterfy'], function(modernizr, angular, app) {
   'use strict';
   app.config([
     '$routeProvider', function($routeProvider) {
