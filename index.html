@@ -25,11 +25,6 @@
 			<div class="row">
 				<div class="span8">
 					<ng:tabs>
-						<ng:tab caption="People">
-							<section data-ng-controller="peopleController">
-								<ng:include src="'./scripts/partials/people.html'"></ng:include>
-							</section>
-						</ng:tab>
 						<ng:tab caption="Twitter">
 							<section data-ng-controller="twitterController">
 								<div class="alert alert-info" data-ng-show="!searchTerm.length">
@@ -60,6 +55,13 @@
 								<ng:include src="'./scripts/partials/repos.html'"></ng:include>
 							</section>
 						</ng:tab>
+						<!--
+						<ng:tab caption="People">
+							<section data-ng-controller="peopleController">
+								<ng:include src="'./scripts/partials/people.html'"></ng:include>
+							</section>
+						</ng:tab>
+						-->
 					</ng:tabs>
 				</div>
 				<div class="span4">
