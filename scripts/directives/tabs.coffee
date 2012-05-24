@@ -8,7 +8,7 @@ define ['angular', 'directives/directives', 'text!partials/tabs.html'], (angular
 		transclude: true
 		scope: {}
 		
-		controller: ($scope, $element) ->
+		controller: ['$scope', '$element', ($scope, $element) ->
 			tabs = $scope.tabs = []
 
 			$scope.select = (tab) ->
@@ -20,6 +20,7 @@ define ['angular', 'directives/directives', 'text!partials/tabs.html'], (angular
 			this.addTab = (tab) ->
 				$scope.select tab if tabs.length is 0
 				tabs.push tab
+		]
 
 		template: template
 		replace: true

@@ -10,22 +10,24 @@ define(['angular', 'directives/directives', 'text!partials/tabs.html'], function
         restrict: 'E',
         transclude: true,
         scope: {},
-        controller: function($scope, $element) {
-          var tabs;
-          tabs = $scope.tabs = [];
-          $scope.select = function(tab) {
-            angular.forEach(tabs, function(tab) {
-              return tab.selected = false;
-            });
-            return tab.selected = true;
-          };
-          return this.addTab = function(tab) {
-            if (tabs.length === 0) {
-              $scope.select(tab);
-            }
-            return tabs.push(tab);
-          };
-        },
+        controller: [
+          '$scope', '$element', function($scope, $element) {
+            var tabs;
+            tabs = $scope.tabs = [];
+            $scope.select = function(tab) {
+              angular.forEach(tabs, function(tab) {
+                return tab.selected = false;
+              });
+              return tab.selected = true;
+            };
+            return this.addTab = function(tab) {
+              if (tabs.length === 0) {
+                $scope.select(tab);
+              }
+              return tabs.push(tab);
+            };
+          }
+        ],
         template: template,
         replace: true
       };

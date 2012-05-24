@@ -16,6 +16,7 @@ require({
   },
   shim: {
     angular: {
+      deps: ['modernizr'],
       exports: 'angular'
     },
     angularResource: ['angular'],
@@ -23,7 +24,7 @@ require({
       exports: 'Modernizr'
     }
   }
-}, ['modernizr', 'angular', 'app', 'controllers/gitHubController', 'controllers/peopleController', 'controllers/searchHistoryController', 'controllers/twitterController', 'directives/link', 'directives/tabs', 'directives/tab', 'filters/twitterfy'], function(modernizr, angular, app) {
+}, ['angular', 'app', 'controllers/gitHubController', 'controllers/peopleController', 'controllers/searchHistoryController', 'controllers/twitterController', 'directives/link', 'directives/tabs', 'directives/tab', 'filters/twitterfy'], function(angular, app) {
   'use strict';
   app.config([
     '$routeProvider', function($routeProvider) {
@@ -38,5 +39,7 @@ require({
       });
     }
   ]);
-  return angular.bootstrap(window.document, ['app']);
+  return require(['libs/domReady!'], function(document) {
+    return angular.bootstrap(document, ['app']);
+  });
 });

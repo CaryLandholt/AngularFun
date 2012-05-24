@@ -2,11 +2,11 @@
 	baseUrl: '../',
 	mainConfigFile: '../main.js',
 	name: 'main',
-	out: '../scripts.js',
+	out: '../scripts.min.js',
 	preserveLicenseComments: false,
 	paths: {
 		requireLib: 'libs/require'
 	},
 	include: ['requireLib'],
-	optimize: 'none'
+	findNestedDependencies: true
 })

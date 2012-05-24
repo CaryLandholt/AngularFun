@@ -12,12 +12,12 @@ require
 		text: 'libs/text'
 	shim:
 		angular:
+			deps: ['modernizr']
 			exports: 'angular'
 		angularResource: ['angular']
 		modernizr:
 			exports: 'Modernizr'
 	[
-		'modernizr'
 		'angular'
 		'app'
 		'controllers/gitHubController'
@@ -28,7 +28,7 @@ require
 		'directives/tabs'
 		'directives/tab'
 		'filters/twitterfy'
-	], (modernizr, angular, app) ->
+	], (angular, app) ->
 		'use strict'
 
 		app.config ['$routeProvider', ($routeProvider) ->
@@ -42,4 +42,5 @@ require
 			.otherwise redirectTo: '/twitter/@CaryLandholt'
 		]
 
-		angular.bootstrap window.document, ['app']
+		require ['libs/domReady!'], (document) ->
+			angular.bootstrap document, ['app']

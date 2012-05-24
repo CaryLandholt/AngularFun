@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.0.0rc10-acf095d1
+ * @license AngularJS v1.0.0rc9
  * (c) 2010-2012 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -1243,11 +1243,11 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.0.0rc10-acf095d1',    // all of these placeholder strings will be replaced by rake's
+  full: '1.0.0rc9',    // all of these placeholder strings will be replaced by rake's
   major: 1,    // compile task
   minor: 0,
   dot: 0,
-  codeName: 'tesseract-giftwrapping'
+  codeName: 'eggplant-teleportation'
 };
 
 
@@ -1546,8 +1546,8 @@ function JQLiteDealoc(element){
 }
 
 function JQLiteUnbind(element, type, fn) {
-  var events = JQLiteExpandoStore(element, 'events'),
-      handle = JQLiteExpandoStore(element, 'handle');
+  var events = JQLiteData(element, 'events'),
+      handle = JQLiteData(element, 'handle');
 
   if (!handle) return; //no listeners registered
 
@@ -1567,56 +1567,44 @@ function JQLiteUnbind(element, type, fn) {
 }
 
 function JQLiteRemoveData(element) {
-  var expandoId = element[jqName],
-      expandoStore = jqCache[expandoId];
+  var cacheId = element[jqName],
+      cache = jqCache[cacheId];
 
-  if (expandoStore) {
-    if (expandoStore.handle) {
-      expandoStore.events.$destroy && expandoStore.handle({}, '$destroy');
+  if (cache) {
+    if (cache.handle) {
+      cache.events.$destroy && cache.handle({}, '$destroy');
       JQLiteUnbind(element);
     }
-    delete jqCache[expandoId];
+    delete jqCache[cacheId];
     element[jqName] = undefined; // ie does not allow deletion of attributes on elements.
   }
 }
 
-function JQLiteExpandoStore(element, key, value) {
-  var expandoId = element[jqName],
-      expandoStore = jqCache[expandoId || -1];
+function JQLiteData(element, key, value) {
+  var cacheId = element[jqName],
+      cache = jqCache[cacheId || -1];
 
   if (isDefined(value)) {
-    if (!expandoStore) {
-      element[jqName] = expandoId = jqNextId();
-      expandoStore = jqCache[expandoId] = {};
+    if (!cache) {
+      element[jqName] = cacheId = jqNextId();
+      cache = jqCache[cacheId] = {};
     }
-    expandoStore[key] = value;
+    cache[key] = value;
   } else {
-    return expandoStore && expandoStore[key];
-  }
-}
-
-function JQLiteData(element, key, value) {
-  var data = JQLiteExpandoStore(element, 'data'),
-      isSetter = isDefined(value),
-      keyDefined = !isSetter && isDefined(key),
-      isSimpleGetter = keyDefined && !isObject(key);
-
-  if (!data && !isSimpleGetter) {
-    JQLiteExpandoStore(element, 'data', data = {});
-  }
-
-  if (isSetter) {
-    data[key] = value;
-  } else {
-    if (keyDefined) {
-      if (isSimpleGetter) {
-        // don't create data in this case.
-        return data && data[key];
+    if (isDefined(key)) {
+      if (isObject(key)) {
+        if (!cacheId) element[jqName] = cacheId = jqNextId();
+        jqCache[cacheId] = cache = (jqCache[cacheId] || {});
+        extend(cache, key);
       } else {
-        extend(data, key);
+        return cache ? cache[key] : undefined;
       }
     } else {
-      return data;
+      if (!cacheId) element[jqName] = cacheId = jqNextId();
+
+      return cache
+          ? cache
+          : cache = jqCache[cacheId] = {};
     }
   }
 }
@@ -1955,11 +1943,11 @@ forEach({
   dealoc: JQLiteDealoc,
 
   bind: function bindFn(element, type, fn){
-    var events = JQLiteExpandoStore(element, 'events'),
-        handle = JQLiteExpandoStore(element, 'handle');
+    var events = JQLiteData(element, 'events'),
+        handle = JQLiteData(element, 'handle');
 
-    if (!events) JQLiteExpandoStore(element, 'events', events = {});
-    if (!handle) JQLiteExpandoStore(element, 'handle', handle = createEventHandler(element, events));
+    if (!events) JQLiteData(element, 'events', events = {});
+    if (!handle) JQLiteData(element, 'handle', handle = createEventHandler(element, events));
 
     forEach(type.split(' '), function(type){
       var eventFns = events[type];
