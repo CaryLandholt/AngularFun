@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html>
+<!doctype html>
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
 <!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
 <!--[if IE 8]> <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:ng="http://angularjs.org"> <!--<![endif]-->
+<!--[if gt IE 8]> <!--> <html class="no-js" lang="en"> <!--<![endif]-->
 	<head>
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -14,7 +13,7 @@
 		<script data-main="./scripts/main.js" src="./scripts/libs/require.js"></script>
 		<!-- <script src="./scripts/scripts.min.js"></script> -->
 	</head>
-	<body data-ng-cloak>
+	<body ng-cloak>
 		<ng:view></ng:view>
 		<div class="container">
 			<div class="hero-unit">
@@ -26,14 +25,14 @@
 				<div class="span8">
 					<Tabs>
 						<Tab data-tab-id="twitter" caption="Twitter">
-							<section data-ng-controller="twitter">
-								<div class="alert alert-info" data-ng-show="!searchTerm.length">
+							<section ng-controller="twitter">
+								<div class="alert alert-info" ng-show="!searchTerm.length">
 									<h4 class="alert-heading">Heads up!</h4>
 									<span>Enter Twitter search criteria.</span>
 								</div>
 
-								<form class="well form-search" data-ng-submit="search(searchTerm)">
-									<input type="text" class="input-medium search-query" data-ng-model="searchTerm" autofocus />
+								<form class="well form-search" ng-submit="search(searchTerm)">
+									<input type="text" class="input-medium search-query" ng-model="searchTerm" autofocus />
 									<button type="submit" class="btn">Search</button>
 								</form>
 
@@ -41,23 +40,22 @@
 							</section>
 						</Tab>
 						<Tab data-tab-id="gitHub" caption="GitHub">
-							<section data-ng-controller="gitHub">
-								<div class="alert alert-info" data-ng-show="!searchTerm.length">
+							<section ng-controller="gitHub">
+								<div class="alert alert-info" ng-show="!searchTerm.length">
 									<h4 class="alert-heading">Heads up!</h4>
 									<span>Enter GitHub search criteria.</span>
 								</div>
 
-								<form class="well form-search" data-ng-submit="search(searchTerm)">
-									<input type="text" class="input-medium search-query" data-ng-model="searchTerm" />
+								<form class="well form-search" ng-submit="search(searchTerm)">
+									<input type="text" class="input-medium search-query" ng-model="searchTerm" />
 									<button type="submit" class="btn">Search</button>
 								</form>
 
-								<!-- <ng:include ng-init="'./scripts/partials/repos/html'" src="partial"></ng:include> -->
 								<ng:include src="'./scripts/partials/repos.html'"></ng:include>
 							</section>
 						</Tab>
 						<Tab data-tab-id="people" caption="People">
-							<section data-ng-controller="people">
+							<section ng-controller="people">
 								<ng:include src="'./scripts/partials/people.html'"></ng:include>
 							</section>
 						</Tab>
@@ -65,14 +63,14 @@
 				</div>
 				<div class="span4">
 					<h2>Search History</h2>
-					<section data-ng-controller="searchHistory">
+					<section ng-controller="searchHistory">
 						<form class="well form-search">
-							<input type="text" class="input-medium search-query" placeholder="Type filter..." data-ng-model="query" />
-							<label data-ng-bind-template="Displaying:  {{(searchHistory | filter:query).length}}"></label>
+							<input type="text" class="input-medium search-query" placeholder="Type filter..." ng-model="query" />
+							<label ng-bind-template="Displaying:  {{(searchHistory | filter:query).length}}"></label>
 						</form>
 
-						<ol data-ng-hide="!searchHistory.length">
-							<li data-ng-repeat="item in searchHistory | filter:query | orderBy:'timeStamp':true" data-ng-bind-template="{{item.source}}/{{item.criteria}}"></li>
+						<ol ng-hide="!searchHistory.length">
+							<li ng-repeat="item in searchHistory | filter:query | orderBy:'timeStamp':true" ng-bind-template="{{item.source}}/{{item.criteria}}"></li>
 						</ol>
 					</section>
 				</div>

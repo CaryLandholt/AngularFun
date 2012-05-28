@@ -1,6 +1,6 @@
-<ul data-ng-hide="!people.result.length">
+<ul ng-hide="!people.result.length">
 	<li>
 		<button class="btn btn-secondary" ng-click="insertPerson()">Insert</button>
 	</li>
-	<li class="row" data-ng-repeat="person in people.result" data-ng-bind="person.name"></li>
+	<li class="row" ng-repeat="person in people.result" ng-bind="person.name"></li>
 </ul>

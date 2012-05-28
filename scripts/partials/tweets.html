@@ -1,14 +1,14 @@
-<ul data-ng-hide="!tweets.result.results.length">
-	<li class="row" data-ng-repeat="tweet in tweets.result.results">
+<ul ng-hide="!tweets.result.results.length">
+	<li class="row" ng-repeat="tweet in tweets.result.results">
 		<div class="span1 thumbnail">
-			<img data-ng-src="{{tweet.profile_image_url}}" />
+			<img ng-src="{{tweet.profile_image_url}}" />
 		</div>
 		<div class="span10">
 			<div>
-				<b data-ng-bind="tweet.from_user_name"></b>
-				<a data-ng-href="https://twitter.com/{{tweet.from_user}}" data-ng-bind="tweet.from_user | twitterfy" target="_blank"></a>
+				<b ng-bind="tweet.from_user_name"></b>
+				<a ng-href="https://twitter.com/{{tweet.from_user}}" ng-bind="tweet.from_user | twitterfy" target="_blank"></a>
 			</div>
-			<div data-ng-bind="tweet.text"></div>
+			<div ng-bind="tweet.text"></div>
 		</div>
 	</li>
 </ul>
