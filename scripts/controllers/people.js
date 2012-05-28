@@ -5,12 +5,12 @@
 define(['controllers/controllers', 'services/people'], function(controllers) {
   'use strict';
   return controllers.controller('people', [
-    '$scope', 'people', '$log', function($scope, service, $log) {
+    '$scope', 'people', function($scope, service) {
       $scope.people = service.people;
       $scope.insertPerson = function() {
         return service.post();
       };
-      return service.get(function(Resource, getResponseHeaders) {}, function(obj) {});
+      return service.get();
     }
   ]);
 });

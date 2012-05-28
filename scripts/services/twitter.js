@@ -25,7 +25,9 @@ define(['services/services', 'services/message'], function(services) {
             source: 'Twitter',
             criteria: criteria
           });
-          return success.apply(this, arguments);
+          if (angular.isFunction(success)) {
+            return success.apply(this, arguments);
+          }
         }, failure);
       };
       return {

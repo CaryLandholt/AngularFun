@@ -5,7 +5,7 @@
 define(['controllers/controllers', 'services/twitter'], function(controllers) {
   'use strict';
   return controllers.controller('twitter', [
-    '$scope', '$rootScope', '$location', 'twitter', '$log', function($scope, $rootScope, $location, service, $log) {
+    '$scope', '$rootScope', '$location', 'twitter', function($scope, $rootScope, $location, service) {
       $scope.searchTerm = '';
       $scope.tweets = service.tweets;
       $scope.search = function(searchTerm) {
@@ -13,7 +13,7 @@ define(['controllers/controllers', 'services/twitter'], function(controllers) {
       };
       return $rootScope.$on('twitter$afterRouteChange', function(event, currentRoute, priorRoute) {
         $scope.searchTerm = currentRoute.params.searchTerm;
-        service.get($scope.searchTerm, function(Resource, getResponseHeaders) {}, function(obj) {});
+        service.get($scope.searchTerm);
         return $scope.$emit('changeTab#twitter');
       });
     }

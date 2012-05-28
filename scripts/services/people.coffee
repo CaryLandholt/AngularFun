@@ -7,17 +7,13 @@ define ['services/services'], (services) ->
 		people = result: {}
 
 		activity = $resource './members',
-			{
-				callback: 'JSON_CALLBACK'
-			}
-			{
+			callback: 'JSON_CALLBACK',
 				get:
 					method: 'GET'
 					isArray: true
 				post:
 					method: 'POST'
 					isArray: true
-			}
 
 		get = (success, failure) ->
 			people.result = activity.get success, failure

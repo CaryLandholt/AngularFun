@@ -7,18 +7,15 @@ define ['services/services', 'services/message'], (services) ->
 		tweets = result: {}
 
 		activity = $resource 'http://search.twitter.com/search.json',
-			{
-				callback: 'JSON_CALLBACK'
-			}
-			{
+			callback: 'JSON_CALLBACK',
 				get:
 					method: 'JSONP'
-			}
 
 		get = (criteria, success, failure) ->
 			tweets.result = activity.get q: criteria, ->
 				message.publish 'search', source: 'Twitter', criteria: criteria
-				success.apply this, arguments
+
+				success.apply(this, arguments) if angular.isFunction success
 			, failure
 
 		get: get

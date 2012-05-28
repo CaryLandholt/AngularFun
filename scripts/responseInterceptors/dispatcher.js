@@ -7,7 +7,7 @@ define(['responseInterceptors/responseInterceptors', 'statuses'], function(respo
   return responseInterceptors.config([
     '$httpProvider', function($httpProvider) {
       return $httpProvider.responseInterceptors.push([
-        '$rootScope', '$q', '$log', function($rootScope, $q, $log) {
+        '$rootScope', '$q', function($rootScope, $q) {
           var error, success;
           success = function(response) {
             var status;

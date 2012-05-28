@@ -34,7 +34,7 @@ require({
     }
   ]);
   return app.run([
-    '$rootScope', '$log', function($rootScope, $log) {
+    '$rootScope', function($rootScope) {
       $rootScope.$on('error:unauthorized', function(event, response) {});
       $rootScope.$on('success:ok', function(event, response) {});
       return $rootScope.$on('$afterRouteChange', function(event, currentRoute, priorRoute) {

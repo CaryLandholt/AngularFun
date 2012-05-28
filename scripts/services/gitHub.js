@@ -2,7 +2,7 @@
 /*global define
 */
 
-define(['services/services', 'services/message'], function(services) {
+define(['libs/angular', 'services/services', 'services/message'], function(angular, services) {
   'use strict';
   return services.factory('gitHub', [
     '$resource', 'message', function($resource, message) {
@@ -25,7 +25,9 @@ define(['services/services', 'services/message'], function(services) {
             source: 'GitHub',
             criteria: criteria
           });
-          return success.apply(this, arguments);
+          if (angular.isFunction(success)) {
+            return success.apply(this, arguments);
+          }
         }, failure);
       };
       return {

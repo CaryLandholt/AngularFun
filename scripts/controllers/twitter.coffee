@@ -3,7 +3,7 @@
 define ['controllers/controllers', 'services/twitter'], (controllers) ->
 	'use strict'
 
-	controllers.controller 'twitter', ['$scope', '$rootScope', '$location', 'twitter', '$log', ($scope, $rootScope, $location, service, $log) ->
+	controllers.controller 'twitter', ['$scope', '$rootScope', '$location', 'twitter', ($scope, $rootScope, $location, service) ->
 		$scope.searchTerm = ''
 		$scope.tweets = service.tweets
 
@@ -13,12 +13,7 @@ define ['controllers/controllers', 'services/twitter'], (controllers) ->
 		$rootScope.$on 'twitter$afterRouteChange', (event, currentRoute, priorRoute) ->
 			$scope.searchTerm = currentRoute.params.searchTerm
 
-			service.get $scope.searchTerm, (Resource, getResponseHeaders) ->
-				return
-				#$log.info 'twitter.get success', Resource, getResponseHeaders()
-			, (obj) ->
-				return
-				#$log.error 'twitter.get error', obj.config, obj.headers(), obj.status, obj.data
+			service.get $scope.searchTerm
 
 			$scope.$emit 'changeTab#twitter'
 	]

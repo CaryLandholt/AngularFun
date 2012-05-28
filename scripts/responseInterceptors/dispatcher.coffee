@@ -4,7 +4,7 @@ define ['responseInterceptors/responseInterceptors', 'statuses'], (responseInter
 	'use strict'
 
 	responseInterceptors.config ['$httpProvider', ($httpProvider) ->
-		$httpProvider.responseInterceptors.push ['$rootScope', '$q', '$log', ($rootScope, $q, $log) ->
+		$httpProvider.responseInterceptors.push ['$rootScope', '$q', ($rootScope, $q) ->
 			success = (response) ->
 				status = statuses[response.status]
 

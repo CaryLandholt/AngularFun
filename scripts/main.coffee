@@ -39,7 +39,7 @@ require
 				redirectTo: '/twitter/@CaryLandholt'
 		]
 
-		app.run ['$rootScope', '$log', ($rootScope, $log) ->
+		app.run ['$rootScope', ($rootScope) ->
 			$rootScope.$on 'error:unauthorized', (event, response) ->
 
 			$rootScope.$on 'success:ok', (event, response) ->
