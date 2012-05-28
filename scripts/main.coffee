@@ -1,46 +1,49 @@
-###global require, window###
+###global require###
 
 ###
 https://github.com/jrburke/requirejs/tree/dev2.0
 https://github.com/jrburke/requirejs/wiki/Requirejs-2.0-draft
 ###
 require
-	paths:
-		angular: 'libs/angular'
-		angularResource: 'libs/angular-resource'
-		modernizr: 'libs/modernizr'
-		text: 'libs/text'
 	shim:
-		angular:
-			deps: ['modernizr']
+		'libs/angular':
+			deps: ['libs/modernizr']
 			exports: 'angular'
-		angularResource: ['angular']
-		modernizr:
+		'libs/angular-resource': ['libs/angular']
+		'libs/modernizr':
 			exports: 'Modernizr'
 	[
-		'angular'
 		'app'
-		'controllers/gitHubController'
-		'controllers/peopleController'
-		'controllers/searchHistoryController'
-		'controllers/twitterController'
-		'directives/link'
+		'bootstrap'
+		'controllers/gitHub'
+		'controllers/people'
+		'controllers/searchHistory'
+		'controllers/twitter'
 		'directives/tabs'
 		'directives/tab'
 		'filters/twitterfy'
-	], (angular, app) ->
+		'libs/angular'
+		'responseInterceptors/dispatcher'
+	], (app) ->
 		'use strict'
 
 		app.config ['$routeProvider', ($routeProvider) ->
 			$routeProvider
 			.when '/twitter/:searchTerm'
-				controller: 'twitterController'
+				controller: 'twitter'
 				reloadOnSearch: true
 			.when '/github/:searchTerm'
-				controller: 'gitHubController'
+				controller: 'gitHub'
 				reloadOnSearch: true
-			.otherwise redirectTo: '/twitter/@CaryLandholt'
+			.otherwise
+				redirectTo: '/twitter/@CaryLandholt'
 		]
 
-		require ['libs/domReady!'], (document) ->
-			angular.bootstrap document, ['app']
+		app.run ['$rootScope', '$log', ($rootScope, $log) ->
+			$rootScope.$on 'error:unauthorized', (event, response) ->
+
+			$rootScope.$on 'success:ok', (event, response) ->
+
+			$rootScope.$on '$afterRouteChange', (event, currentRoute, priorRoute) ->
+				$rootScope.$emit "#{currentRoute.controller}$afterRouteChange", currentRoute, priorRoute
+		]

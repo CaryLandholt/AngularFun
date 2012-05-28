@@ -2,9 +2,9 @@
 
 ((express, dir, port = 3005) ->
 	people = [
-		{"name": "Cary"}
-		{"name": "Saasha"}
-		{"name": "Planet"}
+		{"id": 0, "name": "Cary"}
+		{"id": 1, "name": "Saasha"}
+		{"id": 2, "name": "Planet"}
 	]
 
 	app = express.createServer()
@@ -42,7 +42,8 @@
 			person = req.body
 			people.push person
 			#res.json people
-			res.send 'Conflictola', 409
+			res.header('Authenticated', 'NOPE')
+			res.send 'Conflictola', 401
 
 		app.listen port, ->
 			console.log "Express server listening on port #{app.address().port} in #{app.settings.env} mode"

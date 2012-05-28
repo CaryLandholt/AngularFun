@@ -1,6 +1,6 @@
 ###global define###
 
-define ['angular'], (angular) ->
+define ['libs/angular'], (angular) ->
 	'use strict'
 
 	angular.module 'filters', []

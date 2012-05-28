@@ -1,6 +1,6 @@
 ###global define###
 
-define ['angular', 'angularResource'], (angular) ->
+define ['libs/angular'], (angular) ->
 	'use strict'
 
-	angular.module 'services', ['ngResource']
+	angular.module 'services', []

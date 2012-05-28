@@ -10,9 +10,9 @@
 		<title>Angular Demo</title>
 		<meta name="description" content="" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="stylesheet" href="styles/bootstrap.css" />
-		<script data-main="scripts/main.js" src="scripts/libs/require.js"></script>
-		<!--<script src="./scripts/scripts.min.js"></script>-->
+		<link rel="stylesheet" href="./styles/bootstrap.css" />
+		<script data-main="./scripts/main.js" src="./scripts/libs/require.js"></script>
+		<!-- <script src="./scripts/scripts.min.js"></script> -->
 	</head>
 	<body data-ng-cloak>
 		<ng:view></ng:view>
@@ -24,9 +24,9 @@
 			</div>
 			<div class="row">
 				<div class="span8">
-					<ng:tabs>
-						<ng:tab caption="Twitter">
-							<section data-ng-controller="twitterController">
+					<Tabs>
+						<Tab data-tab-id="twitter" caption="Twitter">
+							<section data-ng-controller="twitter">
 								<div class="alert alert-info" data-ng-show="!searchTerm.length">
 									<h4 class="alert-heading">Heads up!</h4>
 									<span>Enter Twitter search criteria.</span>
@@ -39,9 +39,9 @@
 
 								<ng:include src="'./scripts/partials/tweets.html'"></ng:include>
 							</section>
-						</ng:tab>
-						<ng:tab caption="GitHub">
-							<section data-ng-controller="gitHubController">
+						</Tab>
+						<Tab data-tab-id="gitHub" caption="GitHub">
+							<section data-ng-controller="gitHub">
 								<div class="alert alert-info" data-ng-show="!searchTerm.length">
 									<h4 class="alert-heading">Heads up!</h4>
 									<span>Enter GitHub search criteria.</span>
@@ -52,27 +52,26 @@
 									<button type="submit" class="btn">Search</button>
 								</form>
 
+								<!-- <ng:include ng-init="'./scripts/partials/repos/html'" src="partial"></ng:include> -->
 								<ng:include src="'./scripts/partials/repos.html'"></ng:include>
 							</section>
-						</ng:tab>
-						<!--
-						<ng:tab caption="People">
-							<section data-ng-controller="peopleController">
+						</Tab>
+						<Tab data-tab-id="people" caption="People">
+							<section data-ng-controller="people">
 								<ng:include src="'./scripts/partials/people.html'"></ng:include>
 							</section>
-						</ng:tab>
-						-->
-					</ng:tabs>
+						</Tab>
+					</Tabs>
 				</div>
 				<div class="span4">
 					<h2>Search History</h2>
-					<section data-ng-controller="searchHistoryController">
+					<section data-ng-controller="searchHistory">
 						<form class="well form-search">
 							<input type="text" class="input-medium search-query" placeholder="Type filter..." data-ng-model="query" />
 							<label data-ng-bind-template="Displaying:  {{(searchHistory | filter:query).length}}"></label>
 						</form>
 
-						<ol>
+						<ol data-ng-hide="!searchHistory.length">
 							<li data-ng-repeat="item in searchHistory | filter:query | orderBy:'timeStamp':true" data-ng-bind-template="{{item.source}}/{{item.criteria}}"></li>
 						</ol>
 					</section>
