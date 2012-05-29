@@ -12,7 +12,8 @@ define ['libs/angular', 'services/services', 'services/message'], (angular, serv
 					method: 'JSONP'
 
 		get = (criteria, success, failure) ->
-			repos.result = activity.get user: criteria, ->
+			repos.result = activity.get user: criteria
+			, (Resource, getResponseHeaders) ->
 				message.publish 'search', source: 'GitHub', criteria: criteria
 
 				success.apply(this, arguments) if angular.isFunction success

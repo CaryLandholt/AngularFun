@@ -20,7 +20,7 @@ define(['services/services', 'services/message'], function(services) {
       get = function(criteria, success, failure) {
         return tweets.result = activity.get({
           q: criteria
-        }, function() {
+        }, function(Resource, getResponseHeaders) {
           message.publish('search', {
             source: 'Twitter',
             criteria: criteria

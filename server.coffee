@@ -1,11 +1,16 @@
 ###global require, __dirname, process###
 
 ((express, dir, port = 3005) ->
+	nextId = 0
+
 	people = [
-		{"id": 0, "name": "Cary"}
-		{"id": 1, "name": "Saasha"}
-		{"id": 2, "name": "Planet"}
+		{"id": "#{nextId++}", "name": "Cary"}
+		{"id": "#{nextId++}", "name": "Saasha"}
+		{"id": "#{nextId++}", "name": "Planet"}
 	]
+
+	isUniqueName = (name) ->
+		(name for person in people when person.name is name).length is 0
 
 	app = express.createServer()
 
@@ -35,15 +40,29 @@
 		app.get '/', (req, res) ->
 			res.render "#{dir}/index.html"
 
-		app.get '/members', (req, res) ->
+		app.get '/people', (req, res) ->
 			res.json people
 
-		app.post '/members', (req, res) ->
-			person = req.body
+		app.post '/people', (req, res) ->
+			name = req.body.name
+
+			#&quot;{{name}}&quot; is a duplicate.  Please enter a new name.
+
+			message =
+				"title": "Duplicate!"
+				"message": "#{name} is a duplicate.  Please enter a new name."
+
+			return res.send(message, 403) if not isUniqueName name
+
+			person =
+				"id": "#{nextId++}"
+				"name": "#{name}"
+
 			people.push person
-			#res.json people
-			res.header('Authenticated', 'NOPE')
-			res.send 'Conflictola', 401
+			res.json person
+
+			#res.header('Authenticated', 'NOPE')
+			#res.send 'Conflictola', 401
 
 		app.listen port, ->
 			console.log "Express server listening on port #{app.address().port} in #{app.settings.env} mode"

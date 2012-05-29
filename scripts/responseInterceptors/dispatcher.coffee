@@ -22,8 +22,8 @@ define ['responseInterceptors/responseInterceptors', 'statuses'], (responseInter
 				deferred = $q.defer()
 
 				$rootScope.$broadcast "error:#{status}", response
-
 				deferred.promise
+				$q.reject response
 
 			(promise) ->
 				promise.then success, error

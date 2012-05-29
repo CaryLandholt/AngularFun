@@ -26,7 +26,8 @@ define(['responseInterceptors/responseInterceptors', 'statuses'], function(respo
             }
             deferred = $q.defer();
             $rootScope.$broadcast("error:" + status, response);
-            return deferred.promise;
+            deferred.promise;
+            return $q.reject(response);
           };
           return function(promise) {
             return promise.then(success, error);

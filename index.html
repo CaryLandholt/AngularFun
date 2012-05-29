@@ -56,6 +56,16 @@
 						</Tab>
 						<Tab data-tab-id="people" caption="People">
 							<section ng-controller="people">
+								<div class="alert alert-error" ng-show="!!error">
+									<h4 class="alert-heading" ng-bind="error.title"></h4>
+									<span ng-bind="error.message"></span>
+								</div>
+
+								<form class="well form-search" ng-submit="insertPerson(name)">
+									<input type="text" class="input-medium search-query" ng-model="name" />
+									<button type="submit" class="btn">Insert</button>
+								</form>
+
 								<ng:include src="'./scripts/partials/people.html'"></ng:include>
 							</section>
 						</Tab>

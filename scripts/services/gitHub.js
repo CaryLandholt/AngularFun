@@ -20,7 +20,7 @@ define(['libs/angular', 'services/services', 'services/message'], function(angul
       get = function(criteria, success, failure) {
         return repos.result = activity.get({
           user: criteria
-        }, function() {
+        }, function(Resource, getResponseHeaders) {
           message.publish('search', {
             source: 'GitHub',
             criteria: criteria

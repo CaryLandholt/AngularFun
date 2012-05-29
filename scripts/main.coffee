@@ -42,6 +42,8 @@ require
 		app.run ['$rootScope', ($rootScope) ->
 			$rootScope.$on 'error:unauthorized', (event, response) ->
 
+			$rootScope.$on 'error:forbidden', (event, response) ->
+
 			$rootScope.$on 'success:ok', (event, response) ->
 
 			$rootScope.$on '$afterRouteChange', (event, currentRoute, priorRoute) ->

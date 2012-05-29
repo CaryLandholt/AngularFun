@@ -12,10 +12,10 @@ define [
 	'use strict'
 
 	angular.module 'app', [
-		'ngResource'
 		'controllers'
 		'directives'
 		'filters'
+		'ngResource'
 		'responseInterceptors'
 		'services'
 	]

@@ -4,5 +4,5 @@
 
 define(['libs/angular', 'controllers/controllers', 'directives/directives', 'filters/filters', 'libs/angular-resource', 'responseInterceptors/responseInterceptors', 'services/services'], function(angular) {
   'use strict';
-  return angular.module('app', ['ngResource', 'controllers', 'directives', 'filters', 'responseInterceptors', 'services']);
+  return angular.module('app', ['controllers', 'directives', 'filters', 'ngResource', 'responseInterceptors', 'services']);
 });

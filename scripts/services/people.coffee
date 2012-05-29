@@ -4,22 +4,26 @@ define ['services/services'], (services) ->
 	'use strict'
 
 	services.factory 'people', ['$resource', ($resource) ->
-		people = result: {}
+		people = result: []
 
-		activity = $resource './members',
+		activity = $resource './people',
 			callback: 'JSON_CALLBACK',
 				get:
 					method: 'GET'
 					isArray: true
 				post:
 					method: 'POST'
-					isArray: true
 
 		get = (success, failure) ->
 			people.result = activity.get success, failure
 
-		post = (person = {"name": "Somebody else"}, success, failure) ->
-			people.result = activity.post person, success, failure
+		post = (name = "Somebody else", success, failure) ->
+			activity.post "name": name
+			, (person) ->
+				people.result.push person
+
+				success.apply(this, arguments) if angular.isFunction success
+			, failure
 
 		get: get
 		people: people

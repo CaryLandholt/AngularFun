@@ -6,9 +6,18 @@ define(['controllers/controllers', 'services/people'], function(controllers) {
   'use strict';
   return controllers.controller('people', [
     '$scope', 'people', function($scope, service) {
+      $scope.error = '';
+      $scope.name = '';
       $scope.people = service.people;
-      $scope.insertPerson = function() {
-        return service.post();
+      $scope.insertPerson = function(name) {
+        return service.post(name, function(Resource, getResponseHeaders) {
+          $scope.error = '';
+          return $scope.name = '';
+        }, function(obj) {
+          if (obj.status === 403) {
+            return $scope.error = obj.data;
+          }
+        });
       };
       return service.get();
     }

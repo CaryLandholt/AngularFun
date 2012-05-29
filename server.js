@@ -3,22 +3,37 @@
 */
 
 (function(express, dir, port) {
-  var app, open, people;
+  var app, isUniqueName, nextId, open, people;
   if (port == null) {
     port = 3005;
   }
+  nextId = 0;
   people = [
     {
-      "id": 0,
+      "id": "" + (nextId++),
       "name": "Cary"
     }, {
-      "id": 1,
+      "id": "" + (nextId++),
       "name": "Saasha"
     }, {
-      "id": 2,
+      "id": "" + (nextId++),
       "name": "Planet"
     }
   ];
+  isUniqueName = function(name) {
+    var person;
+    return ((function() {
+      var _i, _len, _results;
+      _results = [];
+      for (_i = 0, _len = people.length; _i < _len; _i++) {
+        person = people[_i];
+        if (person.name === name) {
+          _results.push(name);
+        }
+      }
+      return _results;
+    })()).length === 0;
+  };
   app = express.createServer();
   open = function(command) {
     var ostype, spawn, url;
@@ -51,15 +66,25 @@
     app.get('/', function(req, res) {
       return res.render("" + dir + "/index.html");
     });
-    app.get('/members', function(req, res) {
+    app.get('/people', function(req, res) {
       return res.json(people);
     });
-    app.post('/members', function(req, res) {
-      var person;
-      person = req.body;
+    app.post('/people', function(req, res) {
+      var message, name, person;
+      name = req.body.name;
+      message = {
+        "title": "Duplicate!",
+        "message": "" + name + " is a duplicate.  Please enter a new name."
+      };
+      if (!isUniqueName(name)) {
+        return res.send(message, 403);
+      }
+      person = {
+        "id": "" + (nextId++),
+        "name": "" + name
+      };
       people.push(person);
-      res.header('Authenticated', 'NOPE');
-      return res.send('Conflictola', 401);
+      return res.json(person);
     });
     return app.listen(port, function() {
       console.log("Express server listening on port " + (app.address().port) + " in " + app.settings.env + " mode");

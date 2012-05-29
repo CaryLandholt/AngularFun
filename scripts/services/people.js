@@ -8,9 +8,9 @@ define(['services/services'], function(services) {
     '$resource', function($resource) {
       var activity, get, people, post;
       people = {
-        result: {}
+        result: []
       };
-      activity = $resource('./members', {
+      activity = $resource('./people', {
         callback: 'JSON_CALLBACK'
       }, {
         get: {
@@ -18,20 +18,24 @@ define(['services/services'], function(services) {
           isArray: true
         },
         post: {
-          method: 'POST',
-          isArray: true
+          method: 'POST'
         }
       });
       get = function(success, failure) {
         return people.result = activity.get(success, failure);
       };
-      post = function(person, success, failure) {
-        if (person == null) {
-          person = {
-            "name": "Somebody else"
-          };
+      post = function(name, success, failure) {
+        if (name == null) {
+          name = "Somebody else";
         }
-        return people.result = activity.post(person, success, failure);
+        return activity.post({
+          "name": name
+        }, function(person) {
+          people.result.push(person);
+          if (angular.isFunction(success)) {
+            return success.apply(this, arguments);
+          }
+        }, failure);
       };
       return {
         get: get,

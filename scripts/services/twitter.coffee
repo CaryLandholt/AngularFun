@@ -12,7 +12,8 @@ define ['services/services', 'services/message'], (services) ->
 					method: 'JSONP'
 
 		get = (criteria, success, failure) ->
-			tweets.result = activity.get q: criteria, ->
+			tweets.result = activity.get q: criteria
+			, (Resource, getResponseHeaders) ->
 				message.publish 'search', source: 'Twitter', criteria: criteria
 
 				success.apply(this, arguments) if angular.isFunction success

@@ -36,6 +36,7 @@ require({
   return app.run([
     '$rootScope', function($rootScope) {
       $rootScope.$on('error:unauthorized', function(event, response) {});
+      $rootScope.$on('error:forbidden', function(event, response) {});
       $rootScope.$on('success:ok', function(event, response) {});
       return $rootScope.$on('$afterRouteChange', function(event, currentRoute, priorRoute) {
         return $rootScope.$emit("" + currentRoute.controller + "$afterRouteChange", currentRoute, priorRoute);
