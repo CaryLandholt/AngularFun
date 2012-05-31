@@ -18,26 +18,38 @@ require({
       exports: 'Modernizr'
     }
   }
-}, ['app', 'bootstrap', 'controllers/gitHub', 'controllers/people', 'controllers/searchHistory', 'controllers/twitter', 'directives/tabs', 'directives/tab', 'filters/twitterfy', 'libs/angular', 'responseInterceptors/dispatcher'], function(app) {
+}, ['app', 'bootstrap', 'controllers/gitHub', 'controllers/people', 'controllers/personDetails', 'controllers/searchHistory', 'controllers/twitter', 'directives/tabs', 'directives/tab', 'filters/twitterfy', 'libs/angular', 'responseInterceptors/dispatcher'], function(app) {
   'use strict';
   app.config([
     '$routeProvider', function($routeProvider) {
-      return $routeProvider.when('/twitter/:searchTerm', {
-        controller: 'twitter',
-        reloadOnSearch: true
-      }).when('/github/:searchTerm', {
+      return $routeProvider.when('/github/:searchTerm', {
         controller: 'gitHub',
         reloadOnSearch: true
+      }).when('/people/details/:id', {
+        controller: 'personDetails',
+        reloadOnSearch: true
+      }).when('/twitter/:searchTerm', {
+        controller: 'twitter',
+        reloadOnSearch: true
       }).otherwise({
-        redirectTo: '/twitter/@CaryLandholt'
+        redirectTo: '/github/CaryLandholt'
       });
     }
   ]);
   return app.run([
-    '$rootScope', function($rootScope) {
-      $rootScope.$on('error:unauthorized', function(event, response) {});
-      $rootScope.$on('error:forbidden', function(event, response) {});
-      $rootScope.$on('success:ok', function(event, response) {});
+    '$rootScope', '$log', function($rootScope, $log) {
+      $rootScope.$on('error:unauthorized', function(event, response) {
+        return $log.error('unauthorized');
+      });
+      $rootScope.$on('error:forbidden', function(event, response) {
+        return $log.error('forbidden');
+      });
+      $rootScope.$on('error:403', function(event, response) {
+        return $log.error('403');
+      });
+      $rootScope.$on('success:ok', function(event, response) {
+        return $log.info('success');
+      });
       return $rootScope.$on('$afterRouteChange', function(event, currentRoute, priorRoute) {
         return $rootScope.$emit("" + currentRoute.controller + "$afterRouteChange", currentRoute, priorRoute);
       });

@@ -6,13 +6,14 @@ define(['services/services'], function(services) {
   'use strict';
   return services.factory('people', [
     '$resource', function($resource) {
-      var activity, get, people, post;
+      var activity, get, getPerson, people, person, personActivity, post;
       people = {
         result: []
       };
-      activity = $resource('./people', {
-        callback: 'JSON_CALLBACK'
-      }, {
+      person = {
+        result: {}
+      };
+      activity = $resource('./people', {}, {
         get: {
           method: 'GET',
           isArray: true
@@ -21,8 +22,22 @@ define(['services/services'], function(services) {
           method: 'POST'
         }
       });
+      personActivity = $resource('./people/details/:id', {}, {
+        get: {
+          method: 'GET',
+          isArray: false
+        }
+      });
       get = function(success, failure) {
-        return people.result = activity.get(success, failure);
+        return people.result = activity.get(function() {
+          if (angular.isFunction(success)) {
+            return success.apply(this, arguments);
+          }
+        }, function() {
+          if (angular.isFunction(failure)) {
+            return failure.apply(this, arguments);
+          }
+        });
       };
       post = function(name, success, failure) {
         if (name == null) {
@@ -37,10 +52,25 @@ define(['services/services'], function(services) {
           }
         }, failure);
       };
+      getPerson = function(id, success, failure) {
+        return person.result = personActivity.get({
+          id: id
+        }, function() {
+          if (angular.isFunction(success)) {
+            return success.apply(this, arguments);
+          }
+        }, function() {
+          if (angular.isFunction(failure)) {
+            return failure.apply(this, arguments);
+          }
+        });
+      };
       return {
         get: get,
         people: people,
-        post: post
+        post: post,
+        person: person,
+        getPerson: getPerson
       };
     }
   ]);

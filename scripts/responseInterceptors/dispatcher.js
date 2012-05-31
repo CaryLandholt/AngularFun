@@ -12,20 +12,20 @@ define(['responseInterceptors/responseInterceptors', 'statuses'], function(respo
           success = function(response) {
             var status;
             status = statuses[response.status];
-            if (!status) {
-              return response;
+            $rootScope.$broadcast("success:" + response.status, response);
+            if (status) {
+              $rootScope.$broadcast("success:" + status, response);
             }
-            $rootScope.$broadcast("success:" + status, response);
             return response;
           };
           error = function(response) {
             var deferred, status;
             status = statuses[response.status];
-            if (!status) {
-              return response;
-            }
             deferred = $q.defer();
-            $rootScope.$broadcast("error:" + status, response);
+            $rootScope.$broadcast("error:" + response.status, response);
+            if (status) {
+              $rootScope.$broadcast("error:" + status, response);
+            }
             deferred.promise;
             return $q.reject(response);
           };

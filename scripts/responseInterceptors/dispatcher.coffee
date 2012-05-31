@@ -8,20 +8,17 @@ define ['responseInterceptors/responseInterceptors', 'statuses'], (responseInter
 			success = (response) ->
 				status = statuses[response.status]
 
-				return response if not status
-
-				$rootScope.$broadcast "success:#{status}", response
+				$rootScope.$broadcast "success:#{response.status}", response
+				$rootScope.$broadcast("success:#{status}", response)  if status
 
 				response
 
 			error = (response) ->
 				status = statuses[response.status]
-
-				return response if not status
-
 				deferred = $q.defer()
 
-				$rootScope.$broadcast "error:#{status}", response
+				$rootScope.$broadcast "error:#{response.status}", response
+				$rootScope.$broadcast("error:#{status}", response)  if status
 				deferred.promise
 				$q.reject response
 

@@ -55,19 +55,28 @@
 							</section>
 						</Tab>
 						<Tab data-tab-id="people" caption="People">
-							<section ng-controller="people">
-								<div class="alert alert-error" ng-show="!!error">
-									<h4 class="alert-heading" ng-bind="error.title"></h4>
-									<span ng-bind="error.message"></span>
+							<div class="row">
+								<div class="span4">
+									<section ng-controller="people">
+										<div class="alert alert-error" ng-show="!!error">
+											<h4 class="alert-heading" ng-bind="error.title"></h4>
+											<span ng-bind="error.message"></span>
+										</div>
+
+										<form class="well form-search" ng-submit="insertPerson(name)">
+											<input type="text" class="input-medium search-query" ng-model="name" />
+											<button type="submit" class="btn">Insert</button>
+										</form>
+
+										<ng:include src="'./scripts/partials/people.html'"></ng:include>
+									</section>
 								</div>
-
-								<form class="well form-search" ng-submit="insertPerson(name)">
-									<input type="text" class="input-medium search-query" ng-model="name" />
-									<button type="submit" class="btn">Insert</button>
-								</form>
-
-								<ng:include src="'./scripts/partials/people.html'"></ng:include>
-							</section>
+								<div class="span4">
+									<section ng-controller="personDetails">
+										Age:  <span ng-bind="person.result.age"></span>
+									</section>
+								</div>
+							</div>
 						</Tab>
 					</Tabs>
 				</div>

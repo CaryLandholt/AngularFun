@@ -1,5 +1,5 @@
 /**
- * @license r.js 2.0.0zdev Wed, 23 May 2012 23:40:27 GMT Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
+ * @license r.js 2.0.0 Mon, 28 May 2012 19:47:45 GMT Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
  * see: http://github.com/jrburke/requirejs for details
  */
@@ -20,7 +20,7 @@ var requirejs, require, define;
 
     var fileName, env, fs, vm, path, exec, rhinoContext, dir, nodeRequire,
         nodeDefine, exists, reqMain, loadedOptimizedLib, existsForNode,
-        version = '2.0.0zdev Wed, 23 May 2012 23:40:27 GMT',
+        version = '2.0.0 Mon, 28 May 2012 19:47:45 GMT',
         jsSuffixRegExp = /\.js$/,
         commandOption = '',
         useLibLoaded = {},
@@ -105,7 +105,7 @@ var requirejs, require, define;
     }
 
     /** vim: et:ts=4:sw=4:sts=4
- * @license RequireJS 2.0.0zdev Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
+ * @license RequireJS 2.0.0 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
  * see: http://github.com/jrburke/requirejs for details
  */
@@ -116,7 +116,7 @@ var requirejs, require, define;
 (function (global) {
     'use strict';
 
-    var version = '2.0.0zdev',
+    var version = '2.0.0',
         commentRegExp = /(\/\*([\s\S]*?)\*\/|([^:]|^)\/\/(.*)$)/mg,
         cjsRequireRegExp = /require\s*\(\s*["']([^'"\s]+)["']\s*\)/g,
         jsSuffixRegExp = /\.js$/,
@@ -140,7 +140,7 @@ var requirejs, require, define;
         cfg = {},
         globalDefQueue = [],
         useInteractive = false,
-        req, s, head, baseElement, scripts, globalI, script, dataMain, src,
+        req, s, head, baseElement, dataMain, src,
         interactiveScript, currentlyAddingScript, mainScript, subPath;
 
     function isFunction(it) {
@@ -164,6 +164,25 @@ var requirejs, require, define;
                 }
             }
         }
+    }
+
+    /**
+     * Helper function for iterating over an array backwards. If the func
+     * returns a true value, it will break out of the loop.
+     */
+    function eachReverse(ary, func) {
+        if (ary) {
+            var i;
+            for (i = ary.length - 1; i > -1; i -= 1) {
+                if (func(ary[i], i, ary)) {
+                    break;
+                }
+            }
+        }
+    }
+
+    function hasProp(obj, prop) {
+        return obj.hasOwnProperty(prop);
     }
 
     /**
@@ -192,7 +211,7 @@ var requirejs, require, define;
     function mixin(target, source, force) {
         if (source) {
             eachProp(source, function (value, prop) {
-                if (force || !target.hasOwnProperty(prop)) {
+                if (force || !hasProp(target, prop)) {
                     target[prop] = value;
                 }
             });
@@ -205,6 +224,49 @@ var requirejs, require, define;
         return function () {
             return fn.apply(obj, arguments);
         };
+    }
+
+    function scripts() {
+        return document.getElementsByTagName('script');
+    }
+
+    //Allow getting a global that expressed in
+    //dot notation, like 'a.b.c'.
+    function getGlobal(value) {
+        if (!value) {
+            return value;
+        }
+        var g = global;
+        each(value.split('.'), function (part) {
+            g = g[part];
+        });
+        return g;
+    }
+
+    function makeContextModuleFunc(func, relMap, enableBuildCallback) {
+        return function () {
+            //A version of a require function that passes a moduleName
+            //value for items that may need to
+            //look up paths relative to the moduleName
+            var args = aps.call(arguments, 0), lastArg;
+            if (enableBuildCallback &&
+                isFunction((lastArg = args[args.length - 1]))) {
+                lastArg.__requireJsBuild = true;
+            }
+            args.push(relMap);
+            return func.apply(null, args);
+        };
+    }
+
+    function addRequireMethods(req, context, relMap) {
+        each([
+            ['toUrl'],
+            ['undef'],
+            ['defined', 'requireDefined'],
+            ['specified', 'requireSpecified']
+        ], function (item) {
+            req[item[0]] = makeContextModuleFunc(context[item[1] || item[0]], relMap);
+        });
     }
 
     /**
@@ -257,6 +319,7 @@ var requirejs, require, define;
             },
             registry = {},
             undefEvents = {},
+            defQueue = [],
             defined = {},
             urlMap = {},
             urlFetched = {},
@@ -309,9 +372,11 @@ var requirejs, require, define;
          * @param {String} name the relative name
          * @param {String} baseName a real name that the name arg is relative
          * to.
+         * @param {Boolean} applyMap apply the map config to the value. Should
+         * only be done if this normalization is for a dependency ID.
          * @returns {String} normalized name
          */
-        function normalize(name, baseName) {
+        function normalize(name, baseName, applyMap) {
             var baseParts = baseName && baseName.split('/'),
                 map = config.map,
                 starMap = map && map['*'],
@@ -355,7 +420,7 @@ var requirejs, require, define;
             }
 
             //Apply map config if available.
-            if ((baseParts || starMap) && map) {
+            if (applyMap && (baseParts || starMap) && map) {
                 nameParts = name.split('/');
 
                 for (i = nameParts.length; i > 0; i -= 1) {
@@ -397,17 +462,13 @@ var requirejs, require, define;
 
         function removeScript(name) {
             if (isBrowser) {
-                var scripts = document.getElementsByTagName('script'),
-                    i, scriptNode;
-                for (i = 0; i < scripts.length; i += 1) {
-                    scriptNode = scripts[i];
+                each(scripts(), function (scriptNode) {
                     if (scriptNode.getAttribute('data-requiremodule') === name &&
                         scriptNode.getAttribute('data-requirecontext') === context.contextName) {
                         scriptNode.parentNode.removeChild(scriptNode);
-                        context.scriptCount -= 1;
-                        break;
+                        return true;
                     }
-                }
+                });
             }
         }
 
@@ -434,10 +495,12 @@ var requirejs, require, define;
          * for the module name, used to resolve relative names.
          * @param {Boolean} isNormalized: is the ID already normalized.
          * This is true if this call is done for a define() module ID.
+         * @param {Boolean} applyMap: apply the map config to the ID.
+         * Should only be true if this map is for a dependency.
          *
          * @returns {Object}
          */
-        function makeModuleMap(name, parentModuleMap, isNormalized) {
+        function makeModuleMap(name, parentModuleMap, isNormalized, applyMap) {
             var index = name ? name.indexOf('!') : -1,
                 prefix = null,
                 parentName = parentModuleMap ? parentModuleMap.name : null,
@@ -458,7 +521,7 @@ var requirejs, require, define;
             }
 
             if (prefix) {
-                prefix = normalize(prefix, parentName);
+                prefix = normalize(prefix, parentName, applyMap);
             }
 
             //Account for relative paths if there is a base name.
@@ -468,14 +531,14 @@ var requirejs, require, define;
                     if (pluginModule && pluginModule.normalize) {
                         //Plugin is loaded, use its normalize method.
                         normalizedName = pluginModule.normalize(name, function (name) {
-                            return normalize(name, parentName);
+                            return normalize(name, parentName, applyMap);
                         });
                     } else {
-                        normalizedName = normalize(name, parentName);
+                        normalizedName = normalize(name, parentName, applyMap);
                     }
                 } else {
                     //A regular module.
-                    normalizedName = normalize(name, parentName);
+                    normalizedName = normalize(name, parentName, applyMap);
 
                     url = urlMap[normalizedName];
                     if (!url) {
@@ -532,7 +595,7 @@ var requirejs, require, define;
             var id = depMap.id,
                 mod = registry[id];
 
-            if (defined.hasOwnProperty(id) &&
+            if (hasProp(defined, id) &&
                 (!mod || mod.defineEmitComplete)) {
                 if (name === 'defined') {
                     fn(defined[id]);
@@ -577,25 +640,10 @@ var requirejs, require, define;
                 //Array splice in the values since the context code has a
                 //local var ref to defQueue, so cannot just reassign the one
                 //on context.
-                apsp.apply(context.defQueue,
-                           [context.defQueue.length - 1, 0].concat(globalDefQueue));
+                apsp.apply(defQueue,
+                           [defQueue.length - 1, 0].concat(globalDefQueue));
                 globalDefQueue = [];
             }
-        }
-
-        function makeContextModuleFunc(func, relMap, enableBuildCallback) {
-            return function () {
-                //A version of a require function that passes a moduleName
-                //value for items that may need to
-                //look up paths relative to the moduleName
-                var args = aps.call(arguments, 0), lastArg;
-                if (enableBuildCallback &&
-                    isFunction((lastArg = args[args.length - 1]))) {
-                    lastArg.__requireJsBuild = true;
-                }
-                args.push(relMap);
-                return func.apply(null, args);
-            };
         }
 
         /**
@@ -606,14 +654,12 @@ var requirejs, require, define;
          */
         function makeRequire(mod, enableBuildCallback, altRequire) {
             var relMap = mod && mod.map,
-                modRequire = makeContextModuleFunc(altRequire || context.require, relMap, enableBuildCallback);
+                modRequire = makeContextModuleFunc(altRequire || context.require,
+                                                   relMap,
+                                                   enableBuildCallback);
 
-            mixin(modRequire, {
-                toUrl: makeContextModuleFunc(context.toUrl, relMap),
-                nameToUrl: makeContextModuleFunc(context.nameToUrl, relMap),
-                defined: makeContextModuleFunc(context.requireDefined, relMap),
-                specified: makeContextModuleFunc(context.requireSpecified, relMap)
-            });
+            addRequireMethods(modRequire, context, relMap);
+
             return modRequire;
         }
 
@@ -895,7 +941,9 @@ var requirejs, require, define;
                 each(depMaps, bind(this, function (depMap, i) {
                     if (typeof depMap === 'string') {
                         depMap = makeModuleMap(depMap,
-                                               (this.map.isDefine ? this.map : this.map.parentMap));
+                                               (this.map.isDefine ? this.map : this.map.parentMap),
+                                               false,
+                                               true);
                         this.depMaps.push(depMap);
                     }
 
@@ -1103,7 +1151,7 @@ var requirejs, require, define;
             callPlugin: function() {
                 var map = this.map,
                     id = map.id,
-                    pluginMap = makeModuleMap(map.prefix);
+                    pluginMap = makeModuleMap(map.prefix, null, false, true);
 
                 on(pluginMap, 'defined', bind(this, function (plugin) {
                     var name = this.map.name,
@@ -1116,7 +1164,7 @@ var requirejs, require, define;
                         //Normalize the ID if the plugin allows it.
                         if (plugin.normalize) {
                             name = plugin.normalize(name, function (name) {
-                                return normalize(name, parentName);
+                                return normalize(name, parentName, true);
                             });
                         }
 
@@ -1300,7 +1348,7 @@ var requirejs, require, define;
             urlMap: urlMap,
             urlFetched: urlFetched,
             waitCount: 0,
-            defQueue: [],
+            defQueue: defQueue,
             Module: Module,
             makeModuleMap: makeModuleMap,
 
@@ -1394,7 +1442,7 @@ var requirejs, require, define;
                 var func;
                 if (typeof exports === 'string') {
                     func = function () {
-                        return global[exports];
+                        return getGlobal(exports);
                     };
                     //Save the exports for use in nodefine checking.
                     func.exports = exports;
@@ -1404,6 +1452,15 @@ var requirejs, require, define;
                         return exports.apply(global, arguments);
                     };
                 }
+            },
+
+            requireDefined: function (id, relMap) {
+                return hasProp(defined, makeModuleMap(id, relMap, false, true).id);
+            },
+
+            requireSpecified: function (id, relMap) {
+                id = makeModuleMap(id, relMap, false, true).id;
+                return hasProp(defined, id) || hasProp(registry, id);
             },
 
             require: function (deps, callback, errback, relMap) {
@@ -1428,10 +1485,10 @@ var requirejs, require, define;
                     relMap = callback;
 
                     //Normalize module name, if it contains . or ..
-                    map = makeModuleMap(moduleName, relMap);
+                    map = makeModuleMap(moduleName, relMap, false, true);
                     id = map.id;
 
-                    if (!defined.hasOwnProperty(id)) {
+                    if (!hasProp(defined, id)) {
                         return onError(makeError('notloaded', 'Module name "' +
                                     id +
                                     '" has not been loaded yet for context: ' +
@@ -1440,19 +1497,23 @@ var requirejs, require, define;
                     return defined[id];
                 }
 
-                //Callback require. Normalize args. if errback is not a function,
-                //it means it is a relMap.
+                //Callback require. Normalize args. if callback or errback is
+                //not a function, it means it is a relMap. Test errback first.
                 if (errback && !isFunction(errback)) {
                     relMap = errback;
                     errback = undefined;
+                }
+                if (callback && !isFunction(callback)) {
+                    relMap = callback;
+                    callback = undefined;
                 }
 
                 //Any defined modules in the global queue, intake them now.
                 takeGlobalQueue();
 
                 //Make sure any remaining defQueue items get properly processed.
-                while (context.defQueue.length) {
-                    args = context.defQueue.shift();
+                while (defQueue.length) {
+                    args = defQueue.shift();
                     if (args[0] === null) {
                         return onError(makeError('mismatch', 'Mismatched anonymous define() module: ' + args[args.length - 1]));
                     } else {
@@ -1520,8 +1581,8 @@ var requirejs, require, define;
 
                 takeGlobalQueue();
 
-                while (context.defQueue.length) {
-                    args = context.defQueue.shift();
+                while (defQueue.length) {
+                    args = defQueue.shift();
                     if (args[0] === null) {
                         args[0] = moduleName;
                         //If already found an anonymous module and bound it
@@ -1546,7 +1607,7 @@ var requirejs, require, define;
                 if (!found &&
                     !defined[moduleName] &&
                     mod && !mod.inited) {
-                    if (config.enforceDefine && (!shExports || !global[shExports])) {
+                    if (config.enforceDefine && (!shExports || !getGlobal(shExports))) {
                         if (hasPathFallback(moduleName)) {
                             return;
                         } else {
@@ -1591,7 +1652,7 @@ var requirejs, require, define;
                     parentPath;
 
                 //Normalize module name if have a base relative module name to work from.
-                moduleName = normalize(moduleName, relModuleMap && relModuleMap.id);
+                moduleName = normalize(moduleName, relModuleMap && relModuleMap.id, true);
 
                 //If a colon is in the URL, it indicates a protocol is used and it is just
                 //an URL to a file, or if it starts with a slash, contains a query arg (i.e. ?)
@@ -1762,24 +1823,6 @@ var requirejs, require, define;
         require = req;
     }
 
-    /**
-     * Global require.toUrl(), to match global require, mostly useful
-     * for debugging/work in the global space.
-     */
-    req.toUrl = function (moduleNamePlusExt) {
-        return contexts[defContextName].toUrl(moduleNamePlusExt);
-    };
-
-    /**
-     * Global require.undef(), to allow undefining a module, and resetting
-     * internal state to act like it was not loaded. It *does not* clean up
-     * any script tag that may have been used to load the module, unless the
-     * script timed out from loading via a waitSeconds expiration.
-     */
-    req.undef = function (name, contextName) {
-        contexts[contextName || defContextName].undef(name);
-    };
-
     req.version = version;
 
     //Used to filter out dependencies that are already paths.
@@ -1789,6 +1832,13 @@ var requirejs, require, define;
         contexts: contexts,
         newContext: newContext
     };
+
+    //Create default context.
+    req({});
+
+    //Exports some context-sensitive methods on global require, using
+    //default context if no context specified.
+    addRequireMethods(req, contexts[defContextName]);
 
     if (isBrowser) {
         head = s.head = document.getElementsByTagName('head')[0];
@@ -1842,13 +1892,14 @@ var requirejs, require, define;
             //UNFORTUNATELY Opera implements attachEvent but does not follow the script
             //script execution mode.
             if (node.attachEvent &&
-                // check if node.attachEvent is artificially added by custom script or
-                // natively supported by browser
-                // read https://github.com/jrburke/requirejs/issues/187
-                // if we can NOT find [native code] then it must NOT natively supported.
-                // in IE8, node.attachEvent does not have toString()
-                // TODO: a better way to check interactive mode
-                !(node.attachEvent.toString && node.attachEvent.toString().indexOf('[native code]') < 0) &&
+                //Check if node.attachEvent is artificially added by custom script or
+                //natively supported by browser
+                //read https://github.com/jrburke/requirejs/issues/187
+                //if we can NOT find [native code] then it must NOT natively supported.
+                //in IE8, node.attachEvent does not have toString()
+                //Note the test for "[native code" with no closing brace, see:
+                //https://github.com/jrburke/requirejs/issues/273
+                !(node.attachEvent.toString && node.attachEvent.toString().indexOf('[native code') < 0) &&
                 !isOpera) {
                 //Probably IE. IE (at least 6-8) do not fire
                 //script onload right after executing the script, so
@@ -1903,28 +1954,22 @@ var requirejs, require, define;
     };
 
     function getInteractiveScript() {
-        var scripts, i, script;
         if (interactiveScript && interactiveScript.readyState === 'interactive') {
             return interactiveScript;
         }
 
-        scripts = document.getElementsByTagName('script');
-        for (i = scripts.length - 1; i > -1; i -= 1) {
-            script = scripts[i];
+        eachReverse(scripts(), function (script) {
             if (script.readyState === 'interactive') {
                 return (interactiveScript = script);
             }
-        }
+        });
+        return interactiveScript;
     }
 
     //Look for a data-main script attribute, which could also adjust the baseUrl.
     if (isBrowser) {
         //Figure out baseUrl. Get it from the script tag with require.js in it.
-        scripts = document.getElementsByTagName('script');
-
-        for (globalI = scripts.length - 1; globalI > -1; globalI -= 1) {
-            script = scripts[globalI];
-
+        eachReverse(scripts(), function (script) {
             //Set the 'head' where we can append children by
             //using the script's parent.
             if (!head) {
@@ -1953,9 +1998,9 @@ var requirejs, require, define;
                 //Put the data-main script in the files to load.
                 cfg.deps = cfg.deps ? cfg.deps.concat(dataMain) : [dataMain];
 
-                break;
+                return true;
             }
-        }
+        });
     }
 
     /**
@@ -2042,19 +2087,8 @@ var requirejs, require, define;
         return eval(text);
     };
 
-    //Set up default context. If require was a configuration object, use that as base config.
+    //Set up with config info.
     req(cfg);
-
-    //If modules are built into require.js, then need to make sure dependencies are
-    //traced. Use a setTimeout in the browser world, to allow all the modules to register
-    //themselves. In a non-browser env, assume that modules are not built into require.js,
-    //which seems odd to do on the server.
-    if (typeof setTimeout !== 'undefined') {
-        setTimeout(function () {
-            var ctx = s.contexts[(cfg.context || defContextName)];
-            ctx.require([]);
-        }, 0);
-    }
 }(this));
 
 
@@ -2901,6 +2935,27 @@ define('rhino/file', function () {
     };
 
     return file;
+});
+
+}
+
+if(env === 'node') {
+/*global process */
+define('node/quit', function () {
+    'use strict';
+    return function (code) {
+        return process.exit(code);
+    };
+});
+}
+
+if(env === 'rhino') {
+/*global quit */
+define('rhino/quit', function () {
+    'use strict';
+    return function (code) {
+        return quit(code);
+    };
 });
 
 }
@@ -13693,16 +13748,267 @@ define('parse', ['./esprima', './uglifyjs/index'], function (esprima, uglify) {
     return parse;
 });
 /**
+ * @license Copyright (c) 2012, The Dojo Foundation All Rights Reserved.
+ * Available via the MIT or new BSD license.
+ * see: http://github.com/jrburke/requirejs for details
+ */
+
+/*jslint */
+
+define('transform', ['./esprima', './parse', 'logger'], function (esprima, parse, logger) {
+    'use strict';
+
+    return {
+        toTransport: function (namespace, moduleName, path, contents, onFound) {
+
+            var defineRanges = [],
+                contentInsertion = '',
+                depString = '',
+                tokens, info, deps;
+
+            try {
+                tokens = esprima.parse(contents, {
+                        tokens: true,
+                        range: true
+                    }).tokens;
+            } catch(e) {
+                logger.trace('toTransport skipping ' + path + ': ' +
+                             e.toString());
+                return contents;
+            }
+
+            //Find the define calls and their position in the files.
+            tokens.forEach(function (token, i) {
+                var namespaceExists = false,
+                    prev, prev2, next, next2, next3, next4,
+                    needsId, depAction, nameCommaRange, foundId;
+
+                if (token.type === 'Identifier' && token.value === 'define') {
+                    //Possible match. Do not want something.define calls
+                    //though, and only defines follow by a paren
+                    prev = tokens[i - 1];
+                    next = tokens[i + 1];
+
+                    if (prev && prev.type === 'Punctuator' &&
+                        prev.value === '.') {
+                        //a define on a sub-object, not a top level
+                        //define() call. If the sub object is the
+                        //namespace, then it is ok.
+                        prev2 = tokens[i - 2];
+                        if (!prev2) {
+                            return;
+                        }
+
+                        //If the prev2 does not match namespace, then bail.
+                        if (!namespace || prev2.type !== 'Identifier' ||
+                            prev2.value !== namespace) {
+                           return;
+                        } else if (namespace) {
+                            namespaceExists = true;
+                        }
+                    }
+
+                    if (!next || next.type !== 'Punctuator' ||
+                        next.value !== '(') {
+                       //Not a define() function call. Bail.
+                        return;
+                    }
+
+                    next2 = tokens[i + 2];
+                    if (!next2) {
+                        return;
+                    }
+
+                    //Figure out if this needs a named define call.
+                    if (next2.type === 'Punctuator' &&
+                        next2.value === '[') {
+                        //Dependency array
+                        needsId = true;
+                        depAction = 'skip';
+                    } else if (next2.type === 'Punctuator' &&
+                               next2.value === '{') {
+                        //Object literal
+                        needsId = true;
+                        depAction = 'skip';
+                    } else if (next2.type === 'Keyword' &&
+                               next2.value === 'function') {
+                        //function
+                        needsId = true;
+                        depAction = 'scan';
+                    } else if (next2.type === 'String') {
+                        //Named module
+                        needsId = false;
+
+                        //The value includes the quotes around the string,
+                        //so remove them.
+                        foundId = next2.value.substring(1,
+                                                        next2.value.length - 1);
+
+                        //assumed it does not need dependencies injected
+
+                        //If next argument is a function it means we need
+                        //dependency scanning.
+                        next3 = tokens[i + 3];
+                        next4 = tokens[i + 4];
+                        if (!next3 || !next4) {
+                            return;
+                        }
+
+                        if (next3.type === 'Punctuator' &&
+                            next3.value === ',' &&
+                            next4.type === 'Keyword' &&
+                            next4.value === 'function') {
+                            depAction = 'scan';
+                            nameCommaRange = next3.range;
+                        } else {
+                            depAction = 'skip';
+                        }
+                    } else if (next2.type === 'Identifier') {
+                        //May be the define(factory); type.
+                        next3 = tokens[i + 3];
+                        if (!next3) {
+                            return;
+                        }
+                        if (next3.type === 'Punctuator' &&
+                            next3.value === ')') {
+                            needsId = true;
+                            depAction = 'empty';
+                        } else {
+                            return;
+                        }
+                    } else if (next2.type === 'Numeric') {
+                        //May be the define(12345); type.
+                        next3 = tokens[i + 3];
+                        if (!next3) {
+                            return;
+                        }
+                        if (next3.type === 'Punctuator' &&
+                            next3.value === ')') {
+                            needsId = true;
+                            depAction = 'skip';
+                        } else {
+                            return;
+                        }
+                    } else if (next2.type === 'Punctuator' &&
+                               next2.value === '-') {
+                        //May be the define(-12345); type.
+                        next3 = tokens[i + 3];
+                        if (!next3) {
+                            return;
+                        }
+                        if (next3.type === 'Numeric') {
+                            next4 = tokens[i + 4];
+                            if (!next4) {
+                                return;
+                            }
+                            if (next4.type === 'Punctuator' &&
+                                next4.value === ')') {
+                                needsId = true;
+                                depAction = 'skip';
+                            } else {
+                                return;
+                            }
+                        } else {
+                            return;
+                        }
+                    } else {
+                        //Not a match, skip it.
+                        return;
+                    }
+
+                    defineRanges.push({
+                        foundId: foundId,
+                        needsId: needsId,
+                        depAction: depAction,
+                        namespaceExists: namespaceExists,
+                        defineRange: token.range,
+                        parenRange: next.range,
+                        nameCommaRange: nameCommaRange
+                    });
+                }
+            });
+
+            //Only do naming and dependency injection if there is one define
+            //call in the file.
+            if (defineRanges.length > 1) {
+                return contents;
+            }
+            if (!defineRanges.length) {
+                return contents;
+            }
+
+            info = defineRanges[0];
+
+            //Do the modifications "backwards", in other words, start with the
+            //one that is farthest down and work up, so that the ranges in the
+            //defineRanges still apply. So that means deps, id, then namespace.
+
+            if (info.needsId && moduleName) {
+                contentInsertion += "'" + moduleName + "',";
+            }
+
+            if (info.depAction === 'scan') {
+                deps = parse.getAnonDeps(path, contents);
+
+                if (deps.length) {
+                    depString = '[' + deps.map(function (dep) {
+                        return "'" + dep + "'";
+                    }) + ']';
+                } else {
+                    depString = '[]';
+                }
+                depString +=  ',';
+
+                if (info.nameCommaRange) {
+                    //Already have a named module, need to insert the
+                    //dependencies after the name.
+                    contents = contents.substring(0, info.nameCommaRange[1]) +
+                               depString +
+                               contents.substring(info.nameCommaRange[1],
+                                              contents.length);
+                } else {
+                    contentInsertion +=  depString;
+                }
+            } else if (info.depAction === 'empty') {
+                contentInsertion += '[],';
+            }
+
+            if (contentInsertion) {
+                contents = contents.substring(0, info.parenRange[1]) +
+                           contentInsertion +
+                           contents.substring(info.parenRange[1],
+                                              contents.length);
+            }
+
+            //Do namespace last so that ui does not mess upthe parenRange
+            //used above.
+            if (namespace && !info.namespaceExists) {
+                contents = contents.substring(0, info.defineRange[0]) +
+                           namespace + '.' +
+                           contents.substring(info.defineRange[0],
+                                              contents.length);
+            }
+
+
+            //Notify any listener for the found info
+            if (onFound) {
+                onFound(info);
+            }
+
+            return contents;
+        }
+    };
+});/**
  * @license Copyright (c) 2010-2011, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
  * see: http://github.com/jrburke/requirejs for details
  */
 
-/*jslint regexp: false, strict: false, plusplus: false  */
+/*jslint regexp: true, plusplus: true  */
 /*global define: false */
 
 define('pragma', ['parse', 'logger'], function (parse, logger) {
-
+    'use strict';
     function Temp() {}
 
     function create(obj, mixin) {
@@ -13714,7 +14020,7 @@ define('pragma', ['parse', 'logger'], function (parse, logger) {
 
         if (mixin) {
             for (prop in mixin) {
-                if (mixin.hasOwnProperty(prop) && !(prop in temp)) {
+                if (mixin.hasOwnProperty(prop) && !temp.hasOwnProperty(prop)) {
                     temp[prop] = mixin[prop];
                 }
             }
@@ -13731,6 +14037,7 @@ define('pragma', ['parse', 'logger'], function (parse, logger) {
         nsWrapRegExp: /\/\*requirejs namespace: true \*\//,
         apiDefRegExp: /var requirejs, require, define;/,
         defineCheckRegExp: /typeof\s+define\s*===\s*["']function["']\s*&&\s*define\s*\.\s*amd/g,
+        defineTypeFirstCheckRegExp: /\s*["']function["']\s*===\s*typeof\s+define\s*&&\s*define\s*\.\s*amd/g,
         defineJQueryRegExp: /typeof\s+define\s*===\s*["']function["']\s*&&\s*define\s*\.\s*amd\s*&&\s*define\s*\.\s*amd\s*\.\s*jQuery/g,
         defineHasRegExp: /typeof\s+define\s*==(=)?\s*['"]function['"]\s*&&\s*typeof\s+define\.amd\s*==(=)?\s*['"]object['"]\s*&&\s*define\.amd/g,
         defineTernaryRegExp: /typeof\s+define\s*===\s*['"]function["']\s*&&\s*define\s*\.\s*amd\s*\?\s*define/,
@@ -13758,10 +14065,12 @@ define('pragma', ['parse', 'logger'], function (parse, logger) {
                                                     "typeof " + ns + ".define === 'function' && typeof " + ns + ".define.amd === 'object' && " + ns + ".define.amd");
 
                 //Namespace define checks.
-                //Do this one last, since it is a subset of the more specific
+                //Do these ones last, since they are a subset of the more specific
                 //checks above.
                 fileContents = fileContents.replace(pragma.defineCheckRegExp,
                                                     "typeof " + ns + ".define === 'function' && " + ns + ".define.amd");
+                fileContents = fileContents.replace(pragma.defineTypeFirstCheckRegExp,
+                                                    "'function' === typeof " + ns + ".define && " + ns + ".define.amd");
 
                 //Check for require.js with the require/define definitions
                 if (pragma.apiDefRegExp.test(fileContents) &&
@@ -13792,7 +14101,7 @@ define('pragma', ['parse', 'logger'], function (parse, logger) {
                                    'requirejs = ' + ns + '.requirejs,' +
                                    'define = ' + ns + '.define;\n' +
                                    fileContents +
-                                   '\n}());'
+                                   '\n}());';
                 }
             }
 
@@ -13807,7 +14116,7 @@ define('pragma', ['parse', 'logger'], function (parse, logger) {
             var foundIndex = -1, startIndex = 0, lineEndIndex, conditionLine,
                 matches, type, marker, condition, isTrue, endRegExp, endMatches,
                 endMarkerIndex, shouldInclude, startLength, lifecycleHas, deps,
-                i, dep, moduleName,
+                i, dep, moduleName, collectorMod,
                 lifecyclePragmas, pragmas = config.pragmas, hasConfig = config.has,
                 //Legacy arg defined to help in dojo conversion script. Remove later
                 //when dojo no longer needs conversion:
@@ -13833,7 +14142,7 @@ define('pragma', ['parse', 'logger'], function (parse, logger) {
             //Replace has references if desired
             if (hasConfig) {
                 fileContents = fileContents.replace(pragma.hasRegExp, function (match, test) {
-                    if (test in hasConfig) {
+                    if (hasConfig.hasOwnProperty(test)) {
                         return !!hasConfig[test];
                     }
                     return match;
@@ -13915,10 +14224,14 @@ define('pragma', ['parse', 'logger'], function (parse, logger) {
                 try {
                     deps = parse.findDependencies(fileName, fileContents);
                     if (deps.length) {
-                        for (i = 0; (dep = deps[i]); i++) {
+                        for (i = 0; i < deps.length; i++) {
+                            dep = deps[i];
                             if (dep.indexOf('!') !== -1) {
-                                (pluginCollector[moduleName] ||
-                                 (pluginCollector[moduleName] = [])).push(dep);
+                                collectorMod = pluginCollector[moduleName];
+                                if (!collectorMod) {
+                                 collectorMod = pluginCollector[moduleName] = [];
+                                }
+                                collectorMod.push(dep);
                             }
                         }
                     }
@@ -14113,7 +14426,8 @@ function (lang,   logger,   envOptimize,        file,           parse,
             //If no slash, so must be just a file name. Use empty string then.
             filePath = (endIndex !== -1) ? fileName.substring(0, endIndex + 1) : "",
             //store a list of merged files
-            importList = [];
+            importList = [],
+            skippedList = [];
 
         //First make a pass by removing an commented out @import calls.
         fileContents = fileContents.replace(cssCommentImportRegExp, '');
@@ -14126,6 +14440,7 @@ function (lang,   logger,   envOptimize,        file,           parse,
         fileContents = fileContents.replace(cssImportRegExp, function (fullMatch, urlStart, importFileName, urlEnd, mediaTypes) {
             //Only process media type "all" or empty media type rules.
             if (mediaTypes && ((mediaTypes.replace(/^\s\s*/, '').replace(/\s\s*$/, '')) !== "all")) {
+                skippedList.push(fileName);
                 return fullMatch;
             }
 
@@ -14159,6 +14474,9 @@ function (lang,   logger,   envOptimize,        file,           parse,
 
                 if (flat.importList.length) {
                     importList.push.apply(importList, flat.importList);
+                }
+                if (flat.skippedList.length) {
+                    skippedList.push.apply(skippedList, flat.skippedList);
                 }
 
                 //Make the full import path
@@ -14212,6 +14530,7 @@ function (lang,   logger,   envOptimize,        file,           parse,
 
         return {
             importList : importList,
+            skippedList: skippedList,
             fileContents : fileContents
         };
     }
@@ -14232,16 +14551,11 @@ function (lang,   logger,   envOptimize,        file,           parse,
          * found.
          */
         jsFile: function (fileName, fileContents, outFileName, config, pluginCollector) {
-            var parts = (String(config.optimize)).split('.'),
-                optimizerName = parts[0],
-                keepLines = parts[1] === 'keepLines';
-
             if (!fileContents) {
                 fileContents = file.readFile(fileName);
             }
 
-            fileContents = optimize.js(fileName, fileContents, optimizerName,
-                                       keepLines, config, pluginCollector);
+            fileContents = optimize.js(fileName, fileContents, config, pluginCollector);
 
             file.saveUtf8File(outFileName, fileContents);
         },
@@ -14254,16 +14568,16 @@ function (lang,   logger,   envOptimize,        file,           parse,
          * @param {String} fileName the name of the file that matches the
          * fileContents.
          * @param {String} fileContents the string of JS to optimize.
-         * @param {String} [optimizerName] optional name of the optimizer to
-         * use. 'uglify' is default.
-         * @param {Boolean} [keepLines] whether to keep line returns in the optimization.
          * @param {Object} [config] the build config object.
          * @param {Array} [pluginCollector] storage for any plugin resources
          * found.
          */
-        js: function (fileName, fileContents, optimizerName, keepLines, config, pluginCollector) {
-            var licenseContents = '',
-                optFunc, match, comment;
+        js: function (fileName, fileContents, config, pluginCollector) {
+            var parts = (String(config.optimize)).split('.'),
+                optimizerName = parts[0],
+                keepLines = parts[1] === 'keepLines',
+                licenseContents = '',
+                optFunc;
 
             config = config || {};
 
@@ -14308,20 +14622,38 @@ function (lang,   logger,   envOptimize,        file,           parse,
             //Read in the file. Make sure we have a JS string.
             var originalFileContents = file.readFile(fileName),
                 flat = flattenCss(fileName, originalFileContents, config.cssImportIgnore, {}),
-                fileContents = flat.fileContents,
-                startIndex, endIndex, buildText;
+                //Do not use the flattened CSS if there was one that was skipped.
+                fileContents = flat.skippedList.length ? originalFileContents : flat.fileContents,
+                startIndex, endIndex, buildText, comment;
+
+            if (flat.skippedList.length) {
+                logger.warn('Cannot inline @imports for ' + fileName +
+                            ',\nthe following files had media queries in them:\n' +
+                            flat.skippedList.join('\n'));
+            }
 
             //Do comment removal.
             try {
                 if (config.optimizeCss.indexOf(".keepComments") === -1) {
-                    startIndex = -1;
+                    startIndex = 0;
                     //Get rid of comments.
-                    while ((startIndex = fileContents.indexOf("/*")) !== -1) {
+                    while ((startIndex = fileContents.indexOf("/*", startIndex)) !== -1) {
                         endIndex = fileContents.indexOf("*/", startIndex + 2);
                         if (endIndex === -1) {
                             throw "Improper comment in CSS file: " + fileName;
                         }
-                        fileContents = fileContents.substring(0, startIndex) + fileContents.substring(endIndex + 2, fileContents.length);
+                        comment = fileContents.substring(startIndex, endIndex);
+
+                        if (config.preserveLicenseComments &&
+                            (comment.indexOf('license') !== -1 ||
+                             comment.indexOf('opyright') !== -1 ||
+                             comment.indexOf('(c)') !== -1)) {
+                            //Keep the comment, just increment the startIndex
+                            startIndex = endIndex;
+                        } else {
+                            fileContents = fileContents.substring(0, startIndex) + fileContents.substring(endIndex + 2, fileContents.length);
+                            startIndex = 0;
+                        }
                     }
                 }
                 //Get rid of newlines.
@@ -14378,7 +14710,7 @@ function (lang,   logger,   envOptimize,        file,           parse,
             uglify: function (fileName, fileContents, keepLines, config) {
                 var parser = uglify.parser,
                     processor = uglify.uglify,
-                    ast;
+                    ast, errMessage, errMatch;
 
                 config = config || {};
 
@@ -14395,7 +14727,12 @@ function (lang,   logger,   envOptimize,        file,           parse,
                         fileContents = processor.split_lines(fileContents, config.max_line_length);
                     }
                 } catch (e) {
-                    logger.error('Cannot uglify file: ' + fileName + '. Skipping it. Error is:\n' + e.toString());
+                    errMessage = e.toString();
+                    errMatch = /\nError(\r)?\n/.exec(errMessage);
+                    if (errMatch) {
+                        errMessage = errMessage.substring(0, errMatch.index);
+                    }
+                    logger.error('Cannot uglify file: ' + fileName + '. Skipping it. Error is:\n' + errMessage);
                 }
                 return fileContents;
             }
@@ -14435,31 +14772,6 @@ function (file,           pragma,   parse,   lang,   logger) {
             pluginBuilderRegExp = /(["']?)pluginBuilder(["']?)\s*[=\:]\s*["']([^'"\s]+)["']/,
             oldNewContext = require.s.newContext,
             oldDef;
-
-        /** Print out some extrs info about the module tree that caused the error. **/
-        require.onError = function (err) {
-
-            var msg = '\nIn module tree:\n',
-                standardIndent = '  ',
-                tree = err.moduleTree,
-                i, j, mod;
-
-            if (tree && tree.length > 0) {
-                for (i = tree.length - 1; i > -1; i--) {
-                    mod = tree[i];
-                    if (mod) {
-                        for (j = tree.length - i; j > -1; j--) {
-                            msg += standardIndent;
-                        }
-                        msg += mod + '\n';
-                    }
-                }
-
-                err = new Error(err.toString() + msg);
-            }
-
-            throw err;
-        };
 
         //Stored cached file contents for reuse in other layers.
         require._cachedFileContents = {};
@@ -14519,7 +14831,7 @@ function (file,           pragma,   parse,   lang,   logger) {
                         result = function () {
                             return '(function (global) {\n' +
                             '    return function () {\n' +
-                            '        return global["' + exports + '"];\n' +
+                            '        return global.' + exports + ';\n' +
                             '    }\n' +
                             '}(this))';
                         };
@@ -14991,14 +15303,14 @@ define('commonJs', ['env!env/file', 'uglifyjs/index'], function (file, uglify) {
  * see: http://github.com/jrburke/requirejs for details
  */
 
-/*jslint plusplus: true, nomen: true  */
+/*jslint plusplus: true, nomen: true, regexp: true  */
 /*global define, require */
 
 
 define('build', [ 'lang', 'logger', 'env!env/file', 'parse', 'optimize', 'pragma',
-         'env!env/load', 'requirePatch'],
+         'transform', 'env!env/load', 'requirePatch', 'env!env/quit'],
 function (lang,   logger,   file,          parse,    optimize,   pragma,
-          load,           requirePatch) {
+          transform,   load,           requirePatch,   quit) {
     'use strict';
 
     var build, buildBaseConfig,
@@ -15042,7 +15354,7 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
 
     //Method used by plugin writeFile calls, defined up here to avoid
     //jslint warning about "making a function in a loop".
-    function makeWriteFile(anonDefRegExp, namespaceWithDot, layer) {
+    function makeWriteFile(namespace, layer) {
         function writeFile(name, contents) {
             logger.trace('Saving plugin-optimized file: ' + name);
             file.saveUtf8File(name, contents);
@@ -15050,7 +15362,7 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
 
         writeFile.asModule = function (moduleName, fileName, contents) {
             writeFile(fileName,
-                build.toTransport(anonDefRegExp, namespaceWithDot, moduleName, fileName, contents, layer));
+                build.toTransport(namespace, moduleName, fileName, contents, layer));
         };
 
         return writeFile;
@@ -15073,31 +15385,79 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
      * there is a problem completing the build.
      */
     build = function (args) {
-        var buildFile, cmdConfig;
+        var stackRegExp = /( {4}at[^\n]+)\n/,
+            standardIndent = '  ',
+            buildFile, cmdConfig, errorMsg, stackMatch, errorTree,
+            i, j, errorMod;
 
-        if (!args || lang.isArray(args)) {
-            if (!args || args.length < 1) {
-                logger.error("build.js buildProfile.js\n" +
-                      "where buildProfile.js is the name of the build file (see example.build.js for hints on how to make a build file).");
-                return undefined;
+        try {
+            if (!args || lang.isArray(args)) {
+                if (!args || args.length < 1) {
+                    logger.error("build.js buildProfile.js\n" +
+                          "where buildProfile.js is the name of the build file (see example.build.js for hints on how to make a build file).");
+                    return undefined;
+                }
+
+                //Next args can include a build file path as well as other build args.
+                //build file path comes first. If it does not contain an = then it is
+                //a build file path. Otherwise, just all build args.
+                if (args[0].indexOf("=") === -1) {
+                    buildFile = args[0];
+                    args.splice(0, 1);
+                }
+
+                //Remaining args are options to the build
+                cmdConfig = build.convertArrayToObject(args);
+                cmdConfig.buildFile = buildFile;
+            } else {
+                cmdConfig = args;
             }
 
-            //Next args can include a build file path as well as other build args.
-            //build file path comes first. If it does not contain an = then it is
-            //a build file path. Otherwise, just all build args.
-            if (args[0].indexOf("=") === -1) {
-                buildFile = args[0];
-                args.splice(0, 1);
+            return build._run(cmdConfig);
+        } catch (e) {
+            errorMsg = e.toString();
+            errorTree = e.moduleTree;
+            stackMatch = stackRegExp.exec(errorMsg);
+
+            if (stackMatch) {
+                errorMsg = errorMsg.substring(0, stackMatch.index + stackMatch[0].length + 1);
+            }
+            logger.error(errorMsg);
+
+            //If a module tree that shows what module triggered the error,
+            //print it out.
+            if (errorTree && errorTree.length > 0) {
+                errorMsg = 'In module tree:\n';
+
+                for (i = errorTree.length - 1; i > -1; i--) {
+                    errorMod = errorTree[i];
+                    if (errorMod) {
+                        for (j = errorTree.length - i; j > -1; j--) {
+                            errorMsg += standardIndent;
+                        }
+                        errorMsg += errorMod + '\n';
+                    }
+                }
+
+                logger.error(errorMsg);
             }
 
-            //Remaining args are options to the build
-            cmdConfig = build.convertArrayToObject(args);
-            cmdConfig.buildFile = buildFile;
-        } else {
-            cmdConfig = args;
+            errorMsg = e.stack;
+
+            if (typeof args === 'string' && args.indexOf('stacktrace=true') !== -1) {
+                logger.error(errorMsg);
+            } else {
+                if (!stackMatch && errorMsg) {
+                    //Just trim out the first "at" in the stack.
+                    stackMatch = stackRegExp.exec(errorMsg);
+                    if (stackMatch) {
+                        logger.error(stackMatch[0] || '');
+                    }
+                }
+            }
+
+            quit(1);
         }
-
-        return build._run(cmdConfig);
     };
 
     build._run = function (cmdConfig) {
@@ -15144,29 +15504,34 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
                 //If no appDir, then make sure to copy the other paths to this directory.
                 for (prop in paths) {
                     if (paths.hasOwnProperty(prop)) {
-                        //Set up build path for each path prefix.
-                        buildPaths[prop] = paths[prop] === 'empty:' ? 'empty:' : prop.replace(/\./g, "/");
+                        //Set up build path for each path prefix, but only do so
+                        //if the path falls out of the current baseUrl
+                        if (paths[prop].indexOf(config.baseUrl) === 0) {
+                            buildPaths[prop] = paths[prop].replace(config.baseUrl, config.dirBaseUrl);
+                        } else {
+                            buildPaths[prop] = paths[prop] === 'empty:' ? 'empty:' : prop.replace(/\./g, "/");
 
-                        //Make sure source path is fully formed with baseUrl,
-                        //if it is a relative URL.
-                        srcPath = paths[prop];
-                        if (srcPath.indexOf('/') !== 0 && srcPath.indexOf(':') === -1) {
-                            srcPath = config.baseUrl + srcPath;
-                        }
+                            //Make sure source path is fully formed with baseUrl,
+                            //if it is a relative URL.
+                            srcPath = paths[prop];
+                            if (srcPath.indexOf('/') !== 0 && srcPath.indexOf(':') === -1) {
+                                srcPath = config.baseUrl + srcPath;
+                            }
 
-                        destPath = config.dirBaseUrl + buildPaths[prop];
+                            destPath = config.dirBaseUrl + buildPaths[prop];
 
-                        //Skip empty: paths
-                        if (srcPath !== 'empty:') {
-                            //If the srcPath is a directory, copy the whole directory.
-                            if (file.exists(srcPath) && file.isDirectory(srcPath)) {
-                                //Copy files to build area. Copy all files (the /\w/ regexp)
-                                file.copyDir(srcPath, destPath, /\w/, true);
-                            } else {
-                                //Try a .js extension
-                                srcPath += '.js';
-                                destPath += '.js';
-                                file.copyFile(srcPath, destPath);
+                            //Skip empty: paths
+                            if (srcPath !== 'empty:') {
+                                //If the srcPath is a directory, copy the whole directory.
+                                if (file.exists(srcPath) && file.isDirectory(srcPath)) {
+                                    //Copy files to build area. Copy all files (the /\w/ regexp)
+                                    file.copyDir(srcPath, destPath, /\w/, true);
+                                } else {
+                                    //Try a .js extension
+                                    srcPath += '.js';
+                                    destPath += '.js';
+                                    file.copyFile(srcPath, destPath);
+                                }
                             }
                         }
                     }
@@ -15208,7 +15573,8 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
             //Just set up the _buildPath for the module layer.
             require(config);
             if (!config.cssIn) {
-                config.modules[0]._buildPath = config.out;
+                config.modules[0]._buildPath = typeof config.out === 'function' ?
+                                               'FUNCTION' : config.out;
             }
         } else if (!config.cssIn) {
             //Now set up the config for require to use the build area, and calculate the
@@ -15293,29 +15659,35 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
                 //Save it to a temp file for now, in case there are other layers that
                 //contain optimized content that should not be included in later
                 //layer optimizations. See issue #56.
-                file.saveUtf8File(module._buildPath + '-temp', builtModule.text);
+                if (module._buildPath === 'FUNCTION') {
+                    module._buildText = builtModule.text;
+                } else {
+                    file.saveUtf8File(module._buildPath + '-temp', builtModule.text);
+                }
                 buildFileContents += builtModule.buildText;
             });
 
             //Now move the build layers to their final position.
             modules.forEach(function (module) {
                 var finalPath = module._buildPath;
-                if (file.exists(finalPath)) {
-                    file.deleteFile(finalPath);
-                }
-                file.renameFile(finalPath + '-temp', finalPath);
+                if (finalPath !== 'FUNCTION') {
+                    if (file.exists(finalPath)) {
+                        file.deleteFile(finalPath);
+                    }
+                    file.renameFile(finalPath + '-temp', finalPath);
 
-                //And finally, if removeCombined is specified, remove
-                //any of the files that were used in this layer.
-                //Be sure not to remove other build layers.
-                if (config.removeCombined) {
-                    module.layer.buildFilePaths.forEach(function (path) {
-                        if (file.exists(path) && !modules.some(function (mod) {
-                            return mod._buildPath === path;
-                        })) {
-                            file.deleteFile(path);
-                        }
-                    });
+                    //And finally, if removeCombined is specified, remove
+                    //any of the files that were used in this layer.
+                    //Be sure not to remove other build layers.
+                    if (config.removeCombined) {
+                        module.layer.buildFilePaths.forEach(function (path) {
+                            if (file.exists(path) && !modules.some(function (mod) {
+                                return mod._buildPath === path;
+                            })) {
+                                file.deleteFile(path);
+                            }
+                        });
+                    }
                 }
             });
         }
@@ -15324,13 +15696,21 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
         if (config.out && !config.cssIn) {
             //Just need to worry about one JS file.
             fileName = config.modules[0]._buildPath;
-            optimize.jsFile(fileName, null, fileName, config);
+            if (fileName === 'FUNCTION') {
+                config.modules[0]._buildText = optimize.js(fileName,
+                                                           config.modules[0]._buildText,
+                                                           config);
+            } else {
+                optimize.jsFile(fileName, null, fileName, config);
+            }
         } else if (!config.cssIn) {
             //Normal optimizations across modules.
 
             //JS optimizations.
             fileNames = file.getFilteredFileList(config.dir, /\.js$/, true);
-            for (i = 0; (fileName = fileNames[i]); i++) {
+            for (i = 0; i < fileNames.length; i++) {
+                fileName = fileNames[i];
+
                 //Generate the module name from the config.dir root.
                 moduleName = fileName.replace(config.dir, '');
                 //Get rid of the extension
@@ -15340,8 +15720,7 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
                 //inserted (by passing null for moduleName) since the files are
                 //standalone, one module per file.
                 fileContents = file.readFile(fileName);
-                fileContents = build.toTransport(config.anonDefRegExp,
-                                                 config.namespaceWithDot,
+                fileContents = build.toTransport(config.namespace,
                                                  null,
                                                  fileName,
                                                  fileContents);
@@ -15356,7 +15735,8 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
                 if (pluginCollector.hasOwnProperty(moduleName)) {
                     parentModuleMap = context.makeModuleMap(moduleName);
                     resources = pluginCollector[moduleName];
-                    for (i = 0; (resource = resources[i]); i++) {
+                    for (i = 0; i < resources.length; i++) {
+                        resource = resources[i];
                         moduleMap = context.makeModuleMap(resource, parentModuleMap);
                         if (!context.plugins[moduleMap.prefix]) {
                             //Set the value in context.plugins so it
@@ -15391,8 +15771,7 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
                                     moduleMap.name,
                                     require,
                                     makeWriteFile(
-                                        config.anonDefRegExp,
-                                        config.namespaceWithDot
+                                        config.namespace
                                     ),
                                     context.config
                                 );
@@ -15415,6 +15794,10 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
         //If just have one CSS file to optimize, do that here.
         if (config.cssIn) {
             buildFileContents += optimize.cssFile(config.cssIn, config.out, config);
+        }
+
+        if (typeof config.out === 'function') {
+            config.out(config.modules[0]._buildText);
         }
 
         //Print out what was built into which layers.
@@ -15482,7 +15865,8 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
             needArray = {
                 "include": true,
                 "exclude": true,
-                "excludeShallow": true
+                "excludeShallow": true,
+                "insertRequire": true
             };
 
         for (i = 0; i < ary.length; i++) {
@@ -15529,8 +15913,9 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
     build.makeAbsObject = function (props, obj, absFilePath) {
         var i, prop;
         if (obj) {
-            for (i = 0; (prop = props[i]); i++) {
-                if (obj.hasOwnProperty(prop)) {
+            for (i = 0; i < props.length; i++) {
+                prop = props[i];
+                if (obj.hasOwnProperty(prop) && typeof obj[prop] === 'string') {
                     obj[prop] = build.makeAbsPath(obj[prop], absFilePath);
                 }
             }
@@ -15545,7 +15930,9 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
         var props, prop, i;
 
         props = ["appDir", "dir", "baseUrl"];
-        for (i = 0; (prop = props[i]); i++) {
+        for (i = 0; i < props.length; i++) {
+            prop = props[i];
+
             if (config[prop]) {
                 //Add abspath if necessary, make sure these paths end in
                 //slashes
@@ -15660,6 +16047,12 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
                     buildFileConfig.dir = (buildFileConfig.baseUrl || config.baseUrl) + "/build/";
                 }
 
+                //Mix in the config now so that items in mainConfigFile can
+                //be resolved relative to them if necessary, like if appDir
+                //is set here, but the baseUrl is in mainConfigFile. Will
+                //re-mix in the same build config later after mainConfigFile
+                //is processed, since build config should take priority.
+                mixConfig(config, buildFileConfig);
             } catch (e) {
                 throw new Error("Build file " + buildFile + " is malformed: " + e);
             }
@@ -15685,10 +16078,18 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
             if (mainConfig) {
                 mainConfigPath = mainConfigFile.substring(0, mainConfigFile.lastIndexOf('/'));
 
+                //Add in some existing config, like appDir, since they can be
+                //used inside the mainConfigFile -- paths and baseUrl are
+                //relative to them.
+                if (config.appDir && !mainConfig.appDir) {
+                    mainConfig.appDir = config.appDir;
+                }
+
                 //If no baseUrl, then use the directory holding the main config.
                 if (!mainConfig.baseUrl) {
                     mainConfig.baseUrl = mainConfigPath;
                 }
+
                 build.makeAbsConfig(mainConfig, mainConfigPath);
                 mixConfig(config, mainConfig);
             }
@@ -15702,7 +16103,6 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
         //Re-apply the override config values. Command line
         //args should take precedence over build file values.
         mixConfig(config, cfg);
-
 
         //Set final output dir
         if (config.hasOwnProperty("baseUrl")) {
@@ -15754,7 +16154,7 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
                     include: config.include,
                     exclude: config.exclude,
                     excludeShallow: config.excludeShallow,
-                    endRequire: config.endRequire
+                    insertRequire: config.insertRequire
                 }
             ];
         } else if (config.modules && config.out) {
@@ -15781,12 +16181,13 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
             }
         }
 
-        //Do not allow URLs for paths resources.
-        if (config.paths) {
-            for (prop in config.paths) {
-                if (config.paths.hasOwnProperty(prop)) {
-                }
-            }
+        //Create a hash lookup for the stubModules config to make lookup
+        //cheaper later.
+        if (config.stubModules) {
+            config.stubModules._byName = {};
+            config.stubModules.forEach(function (id) {
+                config.stubModules._byName[id] = true;
+            });
         }
 
         //Get any wrap text.
@@ -15810,12 +16211,6 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
                             'startFile/endFile: ' + wrapError.toString());
         }
 
-
-        //Set up proper info for namespaces and using namespaces in transport
-        //wrappings.
-        config.namespaceWithDot = config.namespace ? config.namespace + '.' : '';
-        config.anonDefRegExp = build.makeAnonDefRegExp(config.namespaceWithDot);
-
         //Do final input verification
         if (config.context) {
             throw new Error('The build argument "context" is not supported' +
@@ -15824,13 +16219,13 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
         }
 
         //Set file.fileExclusionRegExp if desired
-        if ('fileExclusionRegExp' in config) {
+        if (config.hasOwnProperty('fileExclusionRegExp')) {
             if (typeof config.fileExclusionRegExp === "string") {
                 file.exclusionRegExp = new RegExp(config.fileExclusionRegExp);
             } else {
                 file.exclusionRegExp = config.fileExclusionRegExp;
             }
-        } else if ('dirExclusionRegExp' in config) {
+        } else if (config.hasOwnProperty('dirExclusionRegExp')) {
             //Set file.dirExclusionRegExp if desired, this is the old
             //name for fileExclusionRegExp before 1.0.2. Support for backwards
             //compatibility
@@ -15852,7 +16247,8 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
      */
     build.findBuildModule = function (moduleName, modules) {
         var i, module;
-        for (i = 0; (module = modules[i]); i++) {
+        for (i = 0; i < modules.length; i++) {
+            module = modules[i];
             if (module.name === moduleName) {
                 return module;
             }
@@ -15885,7 +16281,12 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
      * be in the flattened module.
      */
     build.traceDependencies = function (module, config) {
-        var include, override, layer, context, baseConfig, oldContext;
+        var include, override, layer, context, baseConfig, oldContext,
+            registry, id, idParts, pluginId,
+            errMessage = '',
+            failedPluginMap = {},
+            failedPluginIds = [],
+            errIds = [];
 
         //Reset some state set up in requirePatch.js, and clean up require's
         //current context.
@@ -15924,6 +16325,37 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
             require(baseConfig);
         }
 
+        //Check to see if it all loaded. If not, then stop, and give
+        //a message on what is left.
+        registry = context.registry;
+        for (id in registry) {
+            if (registry.hasOwnProperty(id) && id.indexOf('_@r') !== 0) {
+                if (id.indexOf('_unnormalized') === -1) {
+                    errIds.push(id);
+                }
+
+                //Look for plugins that did not call load()
+                idParts = id.split('!');
+                pluginId = idParts[0];
+                if (idParts.length > 1 && !failedPluginMap.hasOwnProperty(pluginId)) {
+                    failedPluginIds.push(pluginId);
+                    failedPluginMap[pluginId] = true;
+                }
+            }
+        }
+
+        if (errIds.length || failedPluginIds.length) {
+            if (failedPluginIds.length) {
+                errMessage += 'Loader plugin' +
+                (failedPluginIds.length === 1 ? '' : 's') +
+                ' did not call ' +
+                'the load callback in the build: ' +
+                failedPluginIds.join(', ') + '\n';
+            }
+            errMessage += 'Module loading did not complete for: ' + errIds.join(', ');
+            throw new Error(errMessage);
+        }
+
         return layer;
     };
 
@@ -15943,9 +16375,10 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
      */
     build.flattenModule = function (module, layer, config) {
         var buildFileContents = "",
-            namespace = config.namespace ? config.namespace + '.' : '',
+            namespace = config.namespace || '',
+            namespaceWithDot = namespace ? namespace + '.' : '',
+            stubModulesByName = (config.stubModules && config.stubModules._byName) || {},
             context = layer.context,
-            anonDefRegExp = config.anonDefRegExp,
             path, reqIndex, fileContents, currContents,
             i, moduleName, shim,
             parts, builder, writeApi;
@@ -15972,7 +16405,8 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
 
         //Write the built module to disk, and build up the build output.
         fileContents = "";
-        for (i = 0; (path = layer.buildFilePaths[i]); i++) {
+        for (i = 0; i < layer.buildFilePaths.length; i++) {
+            path = layer.buildFilePaths[i];
             moduleName = layer.buildFileToModule[path];
 
             //Figure out if the module is a result of a build plugin, and if so,
@@ -15990,7 +16424,7 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
                     writeApi.asModule = function (moduleName, input) {
                         fileContents += "\n" +
                                         addSemiColon(
-                                            build.toTransport(anonDefRegExp, namespace, moduleName, path, input, layer));
+                                            build.toTransport(namespace, moduleName, path, input, layer));
                         if (config.onBuildWrite) {
                             fileContents = config.onBuildWrite(moduleName, path, fileContents);
                         }
@@ -15998,17 +16432,30 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
                     builder.write(parts.prefix, parts.name, writeApi);
                 }
             } else {
-                currContents = file.readFile(path);
+                if (stubModulesByName.hasOwnProperty(moduleName)) {
+                    //Just want to insert a simple module definition instead
+                    //of the source module. Useful for plugins that inline
+                    //all their resources.
+                    if (layer.context.plugins.hasOwnProperty(moduleName)) {
+                        //Slightly different content for plugins, to indicate
+                        //that dynamic loading will not work.
+                        currContents = 'define({load: function(id){throw new Error("Dynamic load not allowed: " + id);}});';
+                    } else {
+                        currContents = 'define({});';
+                    }
+                } else {
+                    currContents = file.readFile(path);
+                }
 
                 if (config.onBuildRead) {
                     currContents = config.onBuildRead(moduleName, path, currContents);
                 }
 
-                if (config.namespace) {
-                    currContents = pragma.namespace(currContents, config.namespace);
+                if (namespace) {
+                    currContents = pragma.namespace(currContents, namespace);
                 }
 
-                currContents = build.toTransport(anonDefRegExp, namespace, moduleName, path, currContents, layer);
+                currContents = build.toTransport(namespace, moduleName, path, currContents, layer);
 
                 if (config.onBuildWrite) {
                     currContents = config.onBuildWrite(moduleName, path, currContents);
@@ -16027,13 +16474,13 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
             if (moduleName && !layer.modulesWithNames[moduleName] && !config.skipModuleInsertion) {
                 shim = config.shim && config.shim[moduleName];
                 if (shim) {
-                    fileContents += '\n' + namespace + 'define("' + moduleName + '", ' +
+                    fileContents += '\n' + namespaceWithDot + 'define("' + moduleName + '", ' +
                                      (shim.deps && shim.deps.length ?
                                             build.makeJsArrayString(shim.deps) + ', ' : '') +
                                      (shim.exports ? shim.exports() : 'function(){}') +
                                      ');\n';
                 } else {
-                    fileContents += '\n' + namespace + 'define("' + moduleName + '", function(){});\n';
+                    fileContents += '\n' + namespaceWithDot + 'define("' + moduleName + '", function(){});\n';
                 }
             }
         }
@@ -16041,8 +16488,8 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
         //Add a require at the end to kick start module execution, if that
         //was desired. Usually this is only specified when using small shim
         //loaders like almond.
-        if (module.endRequire) {
-            fileContents += '\n' + namespace + 'require(["' + module.endRequire.join('", "') + '"]);\n';
+        if (module.insertRequire) {
+            fileContents += '\n' + namespaceWithDot + 'require(["' + module.insertRequire.join('", "') + '"]);\n';
         }
 
         return {
@@ -16062,70 +16509,16 @@ function (lang,   logger,   file,          parse,    optimize,   pragma,
         }).join('","') + '"]';
     };
 
-    /**
-     * Creates the regexp to find anonymous defines.
-     * @param {String} namespace an optional namespace to use. The namespace
-     * should *include* a trailing dot. So a valid value would be 'foo.'
-     * @returns {RegExp}
-     */
-    build.makeAnonDefRegExp = function (namespace) {
-        //This regexp is not bullet-proof, and it has one optional part to
-        //avoid issues with some Dojo transition modules that use a
-        //define(\n//begin v1.x content
-        //for a comment.
-        return new RegExp('(^|[^\\.])(' + (namespace || '').replace(/\./g, '\\.') +
-                          'define|define)\\s*\\(\\s*(\\/\\/[^\\n\\r]*[\\r\\n])?(\\[|function|[\\w\\d_\\-\\$]+\\s*\\)|\\{|["\']([^"\']+)["\'])(\\s*,\\s*f)?');
-    };
-
-    build.leadingCommaRegExp = /^\s*,/;
-
-    build.toTransport = function (anonDefRegExp, namespace, moduleName, path, contents, layer) {
-
-        //If anonymous module, insert the module name.
-        return contents.replace(anonDefRegExp, function (match, start, callName, possibleComment, suffix, namedModule, namedFuncStart) {
-            //A named module with either listed dependencies or an object
-            //literal for a value. Skip it. If named module, only want ones
-            //whose next argument is a function literal to scan for
-            //require('') dependecies.
-            if (namedModule && !namedFuncStart) {
-                return match;
-            }
-
+    build.toTransport = function (namespace, moduleName, path, contents, layer) {
+        function onFound(info) {
             //Only mark this module as having a name if not a named module,
             //or if a named module and the name matches expectations.
-            if (layer && (!namedModule || namedModule === moduleName)) {
+            if (layer && (info.needsId || info.foundId === moduleName)) {
                 layer.modulesWithNames[moduleName] = true;
             }
+        }
 
-            var deps = null,
-                finalName;
-
-            //Look for CommonJS require calls inside the function if this is
-            //an anonymous define call that just has a function registered.
-            //Also look if a named define function but has a factory function
-            //as the second arg that should be scanned for dependencies.
-            if (suffix.indexOf('f') !== -1 || (namedModule)) {
-                deps = parse.getAnonDeps(path, contents);
-
-                if (deps.length) {
-                    deps = deps.map(function (dep) {
-                        return "'" + dep + "'";
-                    });
-                } else {
-                    deps = [];
-                }
-            }
-
-            finalName = namedModule || moduleName || '';
-            if (finalName) {
-                finalName = "'" + (namedModule || moduleName) + "',";
-            }
-
-            return start + namespace + "define(" + finalName +
-                   (deps ? ('[' + deps.toString() + '],') : '') +
-                   (namedModule ? namedFuncStart.replace(build.leadingCommaRegExp, '') : suffix);
-        });
-
+        return transform.toTransport(namespace, moduleName, path, contents, onFound);
     };
 
     return build;

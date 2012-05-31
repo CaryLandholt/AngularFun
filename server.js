@@ -11,13 +11,16 @@
   people = [
     {
       "id": "" + (nextId++),
-      "name": "Cary"
+      "name": "Cary",
+      "age": "42"
     }, {
       "id": "" + (nextId++),
-      "name": "Saasha"
+      "name": "Saasha",
+      "age": "5"
     }, {
       "id": "" + (nextId++),
-      "name": "Planet"
+      "name": "Planet",
+      "age": "7"
     }
   ];
   isUniqueName = function(name) {
@@ -69,6 +72,17 @@
     app.get('/people', function(req, res) {
       return res.json(people);
     });
+    app.get('/people/details/:id', function(req, res) {
+      var current, id, person, _i, _len;
+      id = req.params.id;
+      for (_i = 0, _len = people.length; _i < _len; _i++) {
+        person = people[_i];
+        if (parseInt(person.id, 10) === parseInt(id, 10)) {
+          current = person;
+        }
+      }
+      return res.json(current);
+    });
     app.post('/people', function(req, res) {
       var message, name, person;
       name = req.body.name;
@@ -81,7 +95,8 @@
       }
       person = {
         "id": "" + (nextId++),
-        "name": "" + name
+        "name": "" + name,
+        "age": "0"
       };
       people.push(person);
       return res.json(person);

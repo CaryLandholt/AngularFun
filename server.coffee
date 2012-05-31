@@ -4,9 +4,9 @@
 	nextId = 0
 
 	people = [
-		{"id": "#{nextId++}", "name": "Cary"}
-		{"id": "#{nextId++}", "name": "Saasha"}
-		{"id": "#{nextId++}", "name": "Planet"}
+		{"id": "#{nextId++}", "name": "Cary", "age": "42"}
+		{"id": "#{nextId++}", "name": "Saasha", "age": "5"}
+		{"id": "#{nextId++}", "name": "Planet", "age": "7"}
 	]
 
 	isUniqueName = (name) ->
@@ -43,10 +43,14 @@
 		app.get '/people', (req, res) ->
 			res.json people
 
+		app.get '/people/details/:id', (req, res) ->
+			id = req.params.id
+			current = person for person in people when parseInt(person.id, 10) is parseInt(id, 10)
+
+			res.json current
+
 		app.post '/people', (req, res) ->
 			name = req.body.name
-
-			#&quot;{{name}}&quot; is a duplicate.  Please enter a new name.
 
 			message =
 				"title": "Duplicate!"
@@ -57,6 +61,7 @@
 			person =
 				"id": "#{nextId++}"
 				"name": "#{name}"
+				"age": "0"
 
 			people.push person
 			res.json person

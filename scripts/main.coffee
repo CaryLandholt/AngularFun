@@ -17,6 +17,7 @@ require
 		'bootstrap'
 		'controllers/gitHub'
 		'controllers/people'
+		'controllers/personDetails'
 		'controllers/searchHistory'
 		'controllers/twitter'
 		'directives/tabs'
@@ -29,22 +30,31 @@ require
 
 		app.config ['$routeProvider', ($routeProvider) ->
 			$routeProvider
-			.when '/twitter/:searchTerm'
-				controller: 'twitter'
-				reloadOnSearch: true
 			.when '/github/:searchTerm'
 				controller: 'gitHub'
 				reloadOnSearch: true
+			.when '/people/details/:id'
+				controller: 'personDetails'
+				reloadOnSearch: true
+			.when '/twitter/:searchTerm'
+				controller: 'twitter'
+				reloadOnSearch: true
 			.otherwise
-				redirectTo: '/twitter/@CaryLandholt'
+				redirectTo: '/github/CaryLandholt'
 		]
 
-		app.run ['$rootScope', ($rootScope) ->
+		app.run ['$rootScope', '$log', ($rootScope, $log) ->
 			$rootScope.$on 'error:unauthorized', (event, response) ->
+				$log.error 'unauthorized'
 
 			$rootScope.$on 'error:forbidden', (event, response) ->
+				$log.error 'forbidden'
+
+			$rootScope.$on 'error:403', (event, response) ->
+				$log.error '403'
 
 			$rootScope.$on 'success:ok', (event, response) ->
+				$log.info 'success'
 
 			$rootScope.$on '$afterRouteChange', (event, currentRoute, priorRoute) ->
 				$rootScope.$emit "#{currentRoute.controller}$afterRouteChange", currentRoute, priorRoute

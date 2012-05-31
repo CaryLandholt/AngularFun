@@ -1920,11 +1920,7 @@ function createEventHandler(element, events) {
     };
 
     forEach(events[type || event.type], function(fn) {
-      try {
-        fn.call(element, event);
-      } catch (e) {
-        // Not much to do here since jQuery ignores these anyway
-      }
+      fn.call(element, event);
     });
 
     // Remove monkey-patched methods (IE),
@@ -2345,7 +2341,7 @@ function inferInjectionArgs(fn) {
  * @param {Object=} self The `this` for the invoked method.
  * @param {Object=} locals Optional object. If preset then any argument names are read from this object first, before
  *   the `$injector` is consulted.
- * @return the value returned by the invoked `fn` function.
+ * @returns {*} the value returned by the invoked `fn` function.
  */
 
 /**
@@ -2359,7 +2355,7 @@ function inferInjectionArgs(fn) {
  * @param {function} Type Annotated constructor function.
  * @param {Object=} locals Optional object. If preset then any argument names are read from this object first, before
  *   the `$injector` is consulted.
- * @return new instance of `Type`.
+ * @returns {Object} new instance of `Type`.
  */
 
 
@@ -4906,7 +4902,7 @@ LocationUrl.prototype = {
    * Return full url representation with all segments encoded according to rules specified in
    * {@link http://www.ietf.org/rfc/rfc3986.txt RFC 3986}.
    *
-   * @return {string}
+   * @return {string} full url
    */
   absUrl: locationGetter('$$absUrl'),
 
@@ -4923,7 +4919,7 @@ LocationUrl.prototype = {
    * Change path, search and hash, when called with parameter and return `$location`.
    *
    * @param {string=} url New url without base prefix (e.g. `/path?a=b#hash`)
-   * @return {string}
+   * @return {string} url
    */
   url: function(url, replace) {
     if (isUndefined(url))
@@ -4947,7 +4943,7 @@ LocationUrl.prototype = {
    *
    * Return protocol of current url.
    *
-   * @return {string}
+   * @return {string} protocol of current url
    */
   protocol: locationGetter('$$protocol'),
 
@@ -4961,7 +4957,7 @@ LocationUrl.prototype = {
    *
    * Return host of current url.
    *
-   * @return {string}
+   * @return {string} host of current url.
    */
   host: locationGetter('$$host'),
 
@@ -4975,7 +4971,7 @@ LocationUrl.prototype = {
    *
    * Return port of current url.
    *
-   * @return {Number}
+   * @return {Number} port
    */
   port: locationGetter('$$port'),
 
@@ -4995,7 +4991,7 @@ LocationUrl.prototype = {
    * if it is missing.
    *
    * @param {string=} path New path
-   * @return {string}
+   * @return {string} path
    */
   path: locationGetterSetter('$$path', function(path) {
     return path.charAt(0) == '/' ? path : '/' + path;
@@ -5017,7 +5013,7 @@ LocationUrl.prototype = {
    * @param {string=} paramValue If `search` is a string, then `paramValue` will override only a
    *    single search parameter. If the value is `null`, the parameter will be deleted.
    *
-   * @return {string}
+   * @return {string} search
    */
   search: function(search, paramValue) {
     if (isUndefined(search))
@@ -5050,7 +5046,7 @@ LocationUrl.prototype = {
    * Change hash fragment when called with parameter and return `$location`.
    *
    * @param {string=} hash New hash fragment
-   * @return {string}
+   * @return {string} hash
    */
   hash: locationGetterSetter('$$hash', identity),
 
