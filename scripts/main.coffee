@@ -5,6 +5,9 @@ https://github.com/jrburke/requirejs/tree/dev2.0
 https://github.com/jrburke/requirejs/wiki/Requirejs-2.0-draft
 ###
 require
+	map:
+		'*':
+			'libs/angularResource': 'libs/angular-resource'
 	shim:
 		'libs/angular':
 			deps: ['libs/modernizr']

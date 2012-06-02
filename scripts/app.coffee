@@ -5,7 +5,7 @@ define [
 	'controllers/controllers'
 	'directives/directives'
 	'filters/filters'
-	'libs/angular-resource'
+	'libs/angularResource'
 	'responseInterceptors/responseInterceptors'
 	'services/services'
 	], (angular) ->
