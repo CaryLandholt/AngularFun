@@ -10,7 +10,7 @@ define(['libs/angular', 'services/services', 'services/message'], function(angul
       repos = {
         result: {}
       };
-      activity = $resource('https://github.com/api/v2/json/repos/show/:user', {
+      activity = $resource('https://api.github.com/users/:user/repos', {
         callback: 'JSON_CALLBACK'
       }, {
         get: {
