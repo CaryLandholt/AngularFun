@@ -55,8 +55,11 @@ require({
       $rootScope.$on('success:ok', function(event, response) {
         return $log.info('success');
       });
-      return $rootScope.$on('$afterRouteChange', function(event, currentRoute, priorRoute) {
-        return $rootScope.$emit("" + currentRoute.controller + "$afterRouteChange", currentRoute, priorRoute);
+      $rootScope.$on('$routeUpdate', function() {
+        return console.log('$routeUpdate', arguments);
+      });
+      return $rootScope.$on('$routeChangeSuccess', function(event, currentRoute, priorRoute) {
+        return $rootScope.$broadcast("" + currentRoute.controller + "$routeChangeSuccess", currentRoute, priorRoute);
       });
     }
   ]);

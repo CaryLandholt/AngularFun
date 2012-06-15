@@ -6,9 +6,9 @@ define ['controllers/controllers', 'services/people'], (controllers) ->
 	controllers.controller 'personDetails', ['$scope', '$rootScope', 'people', ($scope, $rootScope, service) ->
 		$scope.person = service.person
 
-		$rootScope.$on 'personDetails$afterRouteChange', (event, currentRoute, priorRoute) ->
+		$rootScope.$on 'personDetails$routeChangeSuccess', (event, currentRoute, priorRoute) ->
 			id = currentRoute.params.id
 
 			service.getPerson id
-			$scope.$emit 'changeTab#people'
+			$scope.$broadcast 'changeTab#people'
 	]

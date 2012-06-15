@@ -59,6 +59,9 @@ require
 			$rootScope.$on 'success:ok', (event, response) ->
 				$log.info 'success'
 
-			$rootScope.$on '$afterRouteChange', (event, currentRoute, priorRoute) ->
-				$rootScope.$emit "#{currentRoute.controller}$afterRouteChange", currentRoute, priorRoute
+			$rootScope.$on '$routeUpdate', ->
+				console.log '$routeUpdate', arguments
+
+			$rootScope.$on '$routeChangeSuccess', (event, currentRoute, priorRoute) ->
+				$rootScope.$broadcast "#{currentRoute.controller}$routeChangeSuccess", currentRoute, priorRoute
 		]

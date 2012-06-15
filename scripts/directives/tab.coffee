@@ -12,7 +12,7 @@ define ['directives/directives', 'libs/text!partials/tab.html', 'directives/tabs
 		require: '^tabs'
 		restrict: 'E'
 		scope:
-			caption: 'bind'
+			caption: '@'
 		template: template
 		transclude: true
 	]

@@ -11,10 +11,10 @@ define(['controllers/controllers', 'services/gitHub'], function(controllers) {
       $scope.search = function(searchTerm) {
         return $location.path("/github/" + searchTerm);
       };
-      return $rootScope.$on('gitHub$afterRouteChange', function(event, currentRoute, priorRoute) {
+      return $rootScope.$on('gitHub$routeChangeSuccess', function(event, currentRoute, priorRoute) {
         $scope.searchTerm = currentRoute.params.searchTerm;
         service.get($scope.searchTerm);
-        return $scope.$emit('changeTab#gitHub');
+        return $scope.$broadcast('changeTab#gitHub');
       });
     }
   ]);
