@@ -10,10 +10,8 @@ define ['controllers/controllers', 'services/gitHub'], (controllers) ->
 		$scope.search = (searchTerm) ->
 			$location.path "/github/#{searchTerm}"
 
-		$rootScope.$on 'gitHub$routeChangeSuccess', (event, currentRoute, priorRoute) ->
-			$scope.searchTerm = currentRoute.params.searchTerm
+		$scope.onRouteChange = (routeParams) ->
+			$scope.searchTerm = routeParams.searchTerm
 
 			service.get $scope.searchTerm
-
-			$scope.$broadcast 'changeTab#gitHub'
 	]

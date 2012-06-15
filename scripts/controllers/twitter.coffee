@@ -10,10 +10,8 @@ define ['controllers/controllers', 'services/twitter'], (controllers) ->
 		$scope.search = (searchTerm) ->
 			$location.path "/twitter/#{searchTerm}"
 
-		$rootScope.$on 'twitter$routeChangeSuccess', (event, currentRoute, priorRoute) ->
-			$scope.searchTerm = currentRoute.params.searchTerm
+		$scope.onRouteChange = (routeParams) ->
+			$scope.searchTerm = routeParams.searchTerm
 
 			service.get $scope.searchTerm
-
-			$scope.$broadcast 'changeTab#twitter'
 	]

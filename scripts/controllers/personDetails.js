@@ -7,12 +7,9 @@ define(['controllers/controllers', 'services/people'], function(controllers) {
   return controllers.controller('personDetails', [
     '$scope', '$rootScope', 'people', function($scope, $rootScope, service) {
       $scope.person = service.person;
-      return $rootScope.$on('personDetails$routeChangeSuccess', function(event, currentRoute, priorRoute) {
-        var id;
-        id = currentRoute.params.id;
-        service.getPerson(id);
-        return $scope.$broadcast('changeTab#people');
-      });
+      return $scope.onRouteChange = function(routeParams) {
+        return service.getPerson(routeParams.id);
+      };
     }
   ]);
 });

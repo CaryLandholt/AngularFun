@@ -11,11 +11,10 @@ define(['controllers/controllers', 'services/twitter'], function(controllers) {
       $scope.search = function(searchTerm) {
         return $location.path("/twitter/" + searchTerm);
       };
-      return $rootScope.$on('twitter$routeChangeSuccess', function(event, currentRoute, priorRoute) {
-        $scope.searchTerm = currentRoute.params.searchTerm;
-        service.get($scope.searchTerm);
-        return $scope.$broadcast('changeTab#twitter');
-      });
+      return $scope.onRouteChange = function(routeParams) {
+        $scope.searchTerm = routeParams.searchTerm;
+        return service.get($scope.searchTerm);
+      };
     }
   ]);
 });

@@ -23,19 +23,34 @@ require({
       exports: 'Modernizr'
     }
   }
-}, ['app', 'bootstrap', 'controllers/gitHub', 'controllers/people', 'controllers/personDetails', 'controllers/searchHistory', 'controllers/twitter', 'directives/tabs', 'directives/tab', 'filters/twitterfy', 'libs/angular', 'responseInterceptors/dispatcher'], function(app) {
+}, ['app', 'bootstrap', 'controllers/gitHub', 'controllers/people', 'controllers/personDetails', 'controllers/searchHistory', 'controllers/twitter', 'directives/ngController', 'directives/tabs', 'directives/tab', 'filters/twitterfy', 'libs/angular', 'responseInterceptors/dispatcher'], function(app) {
   'use strict';
   app.config([
     '$routeProvider', function($routeProvider) {
       return $routeProvider.when('/github/:searchTerm', {
         controller: 'gitHub',
-        reloadOnSearch: true
+        reloadOnSearch: true,
+        resolve: {
+          changeTab: function($rootScope) {
+            return $rootScope.$broadcast('changeTab#gitHub');
+          }
+        }
       }).when('/people/details/:id', {
         controller: 'personDetails',
-        reloadOnSearch: true
+        reloadOnSearch: true,
+        resolve: {
+          changeTab: function($rootScope) {
+            return $rootScope.$broadcast('changeTab#people');
+          }
+        }
       }).when('/twitter/:searchTerm', {
         controller: 'twitter',
-        reloadOnSearch: true
+        reloadOnSearch: true,
+        resolve: {
+          changeTab: function($rootScope) {
+            return $rootScope.$broadcast('changeTab#twitter');
+          }
+        }
       }).otherwise({
         redirectTo: '/github/CaryLandholt'
       });
@@ -43,21 +58,10 @@ require({
   ]);
   return app.run([
     '$rootScope', '$log', function($rootScope, $log) {
-      $rootScope.$on('error:unauthorized', function(event, response) {
-        return $log.error('unauthorized');
-      });
-      $rootScope.$on('error:forbidden', function(event, response) {
-        return $log.error('forbidden');
-      });
-      $rootScope.$on('error:403', function(event, response) {
-        return $log.error('403');
-      });
-      $rootScope.$on('success:ok', function(event, response) {
-        return $log.info('success');
-      });
-      $rootScope.$on('$routeUpdate', function() {
-        return console.log('$routeUpdate', arguments);
-      });
+      $rootScope.$on('error:unauthorized', function(event, response) {});
+      $rootScope.$on('error:forbidden', function(event, response) {});
+      $rootScope.$on('error:403', function(event, response) {});
+      $rootScope.$on('success:ok', function(event, response) {});
       return $rootScope.$on('$routeChangeSuccess', function(event, currentRoute, priorRoute) {
         return $rootScope.$broadcast("" + currentRoute.controller + "$routeChangeSuccess", currentRoute, priorRoute);
       });
