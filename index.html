@@ -9,9 +9,10 @@
 		<title>Angular Demo</title>
 		<meta name="description" content="" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="stylesheet" href="./styles/bootstrap.css" />
-		<script data-main="./scripts/main.js" src="./scripts/libs/require.js"></script>
-		<!-- <script src="./scripts/scripts.min.js"></script> -->
+		<link rel="stylesheet" href="/styles/bootstrap.css" />
+		<script data-main="/build/main.js" src="/build/libs/require.js"></script>
+		<!--<script src="/build/scripts.js"></script>-->
+		<!--<script src="/build/scripts.min.js"></script>-->
 	</head>
 	<body ng-cloak>
 		<ng:view></ng:view>
@@ -36,7 +37,7 @@
 									<button type="submit" class="btn">Search</button>
 								</form>
 
-								<ng:include src="'./scripts/partials/tweets.html'"></ng:include>
+								<ng:include src="'/scripts/partials/tweets.html'"></ng:include>
 							</section>
 						</Tab>
 						<Tab data-tab-id="gitHub" caption="GitHub">
@@ -51,7 +52,7 @@
 									<button type="submit" class="btn">Search</button>
 								</form>
 
-								<ng:include src="'./scripts/partials/repos.html'"></ng:include>
+								<ng:include src="'/scripts/partials/repos.html'"></ng:include>
 							</section>
 						</Tab>
 						<Tab data-tab-id="people" caption="People">
@@ -66,9 +67,10 @@
 										<form class="well form-search" ng-submit="insertPerson(name)">
 											<input type="text" class="input-medium search-query" ng-model="name" />
 											<button type="submit" class="btn">Insert</button>
+											<myinput model="name" kind="text" caption="My Caption" placeholder="Enter something here" help-text="Help me out, bro!" />
 										</form>
 
-										<ng:include src="'./scripts/partials/people.html'"></ng:include>
+										<ng:include src="'/scripts/partials/people.html'"></ng:include>
 									</section>
 								</div>
 								<div class="span4">
