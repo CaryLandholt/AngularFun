@@ -79,6 +79,21 @@ module.exports = function (grunt) {
 			build: ['./build/!(libs)**/*.js']
 		},
 
+		coffeeLint: {
+			build: {
+				src: './scripts/**/*.coffee',
+				indentation: {
+					value: 1
+				},
+				max_line_length: {
+					level: 'ignore'
+				},
+				no_tabs: {
+					level: 'ignore'
+				}
+			}
+		},
+
 		jshint: {
 			options: {
 				// CoffeeScript uses null for default parameter values

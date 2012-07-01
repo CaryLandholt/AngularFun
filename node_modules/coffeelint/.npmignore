@@ -1,0 +1,5 @@
+src/
+test/
+.git*
+Rakefile
+utils/
