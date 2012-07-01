@@ -103,7 +103,7 @@ module.exports = function (grunt) {
 	});
 
 	grunt.loadTasks('tasks');
-	grunt.registerTask('bootstrap', 'clean copy coffee requirejs min');
+	grunt.registerTask('bootstrap', 'coffeeLint clean copy coffee requirejs min');
 	grunt.registerTask('dev', 'bootstrap watch');
 
 	// deletes the js folder
