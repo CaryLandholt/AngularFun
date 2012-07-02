@@ -11,11 +11,11 @@
 ## Requirements
 * Must have [Git](http://git-scm.com/) installed
 * Must have [node.js](http://nodejs.org/) installed with npm (Node Package Manager)
+* Install grunt `npm install -g grunt`
 
 ## Install Angular Fun
 * `git clone git://github.com/CaryLandholt/AngularFun.git`
 * `cd AngularFun`
-* `npm install -g grunt`
 * `npm install`
 * `grunt bootstrap`
 
