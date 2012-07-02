@@ -12,6 +12,7 @@
 * `git clone git://github.com/CaryLandholt/AngularFun.git`
 * `cd AngularFun`
 * `npm install`
+* `grunt bootstrap`
 * `node server`
 
 ## Run It (must have [node.js](http://nodejs.org/) installed to access the people endpoint)
