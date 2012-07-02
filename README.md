@@ -15,6 +15,7 @@
 ## Install Angular Fun
 * `git clone git://github.com/CaryLandholt/AngularFun.git`
 * `cd AngularFun`
+* `npm install -g grunt`
 * `npm install`
 * `grunt bootstrap`
 
