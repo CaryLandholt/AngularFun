@@ -8,6 +8,11 @@
 * Uses the RequireJS [text plugin](http://requirejs.org/docs/api.html#text) for directive partials
 * Contains both CoffeeScript and JavaScript versions
 
+## Install
+* `git clone git://github.com/CaryLandholt/AngularFun.git`
+* `npm install`
+* `node server`
+
 ## Run It (must have [node.js](http://nodejs.org/) installed to access the people endpoint)
 * Navigate to the root of the project
 * Enter node server
