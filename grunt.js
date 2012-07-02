@@ -67,10 +67,10 @@ module.exports = function (grunt) {
 		// concatenates files managed by RequireJS, sans minification
 		requirejs: {
 			build: {
-				baseUrl: './scripts/',
-				mainConfigFile: './scripts/main.js',
+				baseUrl: './scripts/js/',
+				mainConfigFile: './scripts/js/main.js',
 				name: 'main',
-				out: './scripts/scripts.js',
+				out: './scripts/js/scripts.js',
 				preserveLicenseComments: false,
 				paths: {
 					requireLib: 'libs/require'
@@ -116,7 +116,7 @@ module.exports = function (grunt) {
 		watch: {
 			scripts: {
 				files: '<%= pkg.scripts.dev %>**/*.coffee',
-				tasks: 'copy:scripts coffee prune:scripts'
+				tasks: 'coffeeLint copy:scripts coffee prune:scripts'
 			},
 			styles: {
 				files: '<%= pkg.styles.dev %>**/*.less',
