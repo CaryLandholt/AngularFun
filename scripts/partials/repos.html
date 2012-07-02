@@ -1,9 +1,0 @@
-<ul ng-hide="!repos.result.data.length">
-	<li ng-repeat="repo in repos.result.data">
-		<div>
-			<b ng-bind="repo.owner.login"></b>
-			<a ng-href="{{repo.url}}" ng-bind="repo.name" target="_blank"></a>
-		</div>
-		<div ng-bind="repo.description"></div>
-	</li>
-</ul>
