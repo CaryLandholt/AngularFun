@@ -8,18 +8,22 @@
 * Uses the RequireJS [text plugin](http://requirejs.org/docs/api.html#text) for directive partials
 * Contains both CoffeeScript and JavaScript versions
 
-## Install
+## Requirements
+* Must have [Git](http://git-scm.com/) installed
+* Must have [node.js](http://nodejs.org/) installed with npm (Node Package Manager)
+
+## Install Angular Fun
 * `git clone git://github.com/CaryLandholt/AngularFun.git`
 * `cd AngularFun`
 * `npm install`
 * `grunt bootstrap`
+
+## Run It
+* Navigate to the root of the project
 * `node server`
 
-## Run It (must have [node.js](http://nodejs.org/) installed to access the people endpoint)
-* Navigate to the root of the project
-* Enter node server
-* The [Express](http://expressjs.com/) webserver will start and open the site in the default browser
+## Making Changes
+* `grunt watch` will watch for any CoffeeScript (.coffee) or Less (.less) file changes.  When changes are detected, the files will be linted and compiled.
 
-## To-Do  
-
+## To-Do
 * Finish documentation
