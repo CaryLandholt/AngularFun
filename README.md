@@ -8,7 +8,7 @@
 * Uses the RequireJS [text plugin](http://requirejs.org/docs/api.html#text) for directive partials
 * Contains both CoffeeScript and JavaScript versions
 
-## Requirements
+## Prerequisites
 * Must have [Git](http://git-scm.com/) installed
 * Must have [node.js](http://nodejs.org/) installed with npm (Node Package Manager)
 * Install grunt `npm install -g grunt`
