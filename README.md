@@ -10,6 +10,7 @@
 
 ## Install
 * `git clone git://github.com/CaryLandholt/AngularFun.git`
+* `cd AngularFun`
 * `npm install`
 * `node server`
 
