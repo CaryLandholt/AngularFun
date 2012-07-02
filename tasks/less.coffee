@@ -1,0 +1,50 @@
+###global module, require###
+
+module.exports = (grunt) ->
+	fs = require 'fs'
+	growl = require 'growl'
+	less = require 'less'
+	path = require 'path'
+
+	grunt.registerMultiTask 'less', 'Compile LESS to CSS', ->
+		done = @async()
+		src = @file.src
+		dest = @file.dest
+		options = @data.options
+		srcFiles = grunt.file.expandFiles src
+
+		grunt.helper 'less', srcFiles, options, (err, css) ->
+			if err
+				grunt.warn err
+				done false
+
+				return
+
+			grunt.file.write dest, css
+			done()
+
+	grunt.registerHelper 'less', (srcFiles, options, callback) ->
+		compileLessFile = (src, callback) ->
+			parser = new less.Parser {
+				paths: [path.dirname src]
+			}
+
+			fs.readFile src, 'utf8', (err, data) ->
+				callback err if err
+
+				parser.parse data, (err, tree) ->
+					callback err if err
+
+					css = null
+
+					try
+					  css = tree.toCSS()
+					catch e
+						return callback e
+
+					callback null, css
+
+		grunt.utils.async.map srcFiles, compileLessFile, (err, results) ->
+			return callback err if err
+
+			callback null, results.join grunt.utils.linefeed

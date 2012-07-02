@@ -9,10 +9,10 @@
 		<title>Angular Demo</title>
 		<meta name="description" content="" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="stylesheet" href="/styles/bootstrap.css" />
-		<script data-main="/build/main.js" src="/build/libs/require.js"></script>
-		<!--<script src="/build/scripts.js"></script>-->
-		<!--<script src="/build/scripts.min.js"></script>-->
+		<link rel="stylesheet" href="/styles/styles.css" />
+		<script data-main="/scripts/main.js" src="/scripts/libs/require.js"></script>
+		<!--<script src="/scripts/scripts.js"></script>-->
+		<!--<script src="/scripts/scripts.min.js"></script>-->
 	</head>
 	<body ng-cloak>
 		<ng:view></ng:view>
@@ -34,7 +34,7 @@
 
 								<form class="well form-search" ng-submit="search(searchTerm)">
 									<input type="text" class="input-medium search-query" ng-model="searchTerm" autofocus />
-									<button type="submit" class="btn">Search</button>
+									<button type="submit" class="btn"><i class="icon-search"></i> Search</button>
 								</form>
 
 								<ng:include src="'/scripts/partials/tweets.html'"></ng:include>
@@ -49,7 +49,7 @@
 
 								<form class="well form-search" ng-submit="search(searchTerm)">
 									<input type="text" class="input-medium search-query" ng-model="searchTerm" />
-									<button type="submit" class="btn">Search</button>
+									<button type="submit" class="btn"><i class="icon-search"></i> Search</button>
 								</form>
 
 								<ng:include src="'/scripts/partials/repos.html'"></ng:include>
@@ -66,7 +66,7 @@
 
 										<form class="well form-search" ng-submit="insertPerson(name)">
 											<input type="text" class="input-medium search-query" ng-model="name" />
-											<button type="submit" class="btn">Insert</button>
+											<button type="submit" class="btn"><i class="icon-plus"></i> Insert</button>
 											<myinput model="name" kind="text" caption="My Caption" placeholder="Enter something here" help-text="Help me out, bro!" />
 										</form>
 

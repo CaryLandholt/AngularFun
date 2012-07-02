@@ -3,85 +3,26 @@
 module.exports = function (grunt) {
 	'use strict';
 
-	//<config:coffee.dist.dest>
-
-	// grunt clean
-	// grunt copy
-	// grunt coffee
-	// delete coffee files in build folder after compilation?
-
 	grunt.initConfig({
 		pkg: '<json:package.json>',
 
 		meta: {
-			banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
-				'<%= grunt.template.today("yyyy-mm-dd") %> */'
+			banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %> */'
 		},
 
-		watch: {
-			files: './scripts/**/*.coffee',
-			tasks: 'copy coffee'
-		},
-
-		// deletes the build folder
+		// deletes the scripts and styles directories
 		clean: {
-			build: {
-				dest: './build/'
+			scripts: {
+				dest: '<%= pkg.scripts.build %>'
+			},
+			styles: {
+				dest: '<%= pkg.styles.build %>'
 			}
-		},
-
-		// copy scripts to the build directory
-		copy: {
-			build: {
-				src: './scripts/',
-				dest: './build/'
-			}
-		},
-
-		// compiles CoffeeScript to JavaScript
-		coffee: {
-			build: {
-				src: './build/',
-				dest: './build/',
-				bare: true
-			}
-		},
-
-		// concatenates files managed by RequireJS, sans minification
-		requirejs: {
-			build: {
-				baseUrl: './build/',
-				mainConfigFile: './build/main.js',
-				name: 'main',
-				out: './build/scripts.js',
-				preserveLicenseComments: false,
-				paths: {
-					requireLib: 'libs/require'
-				},
-				include: ['requireLib'],
-				findNestedDependencies: true,
-
-				// let grunt's min handle this
-				optimize: 'none'
-			}
-		},
-
-		 // for some reason the minified file fails at runtime
-		 // this is happening regardless of which minifier is used
-		min: {
-			build: {
-				src: ['<banner>', './build/scripts.js'],
-				dest: './build/scripts.min.js'
-			}
-		},
-
-		lint: {
-			build: ['./build/!(libs)**/*.js']
 		},
 
 		coffeeLint: {
-			build: {
-				src: './scripts/**/*.coffee',
+			scripts: {
+				src: '<%= pkg.scripts.dev %>**/*.coffee',
 				indentation: {
 					value: 1
 				},
@@ -94,23 +35,97 @@ module.exports = function (grunt) {
 			}
 		},
 
+		// copy source scripts and source styles to output directories
+		copy: {
+			scripts: {
+				src: '<%= pkg.scripts.dev %>',
+				dest: '<%= pkg.scripts.build %>'
+			},
+			styles: {
+				src: '<%= pkg.styles.dev %>',
+				dest: '<%= pkg.styles.build %>'
+			}
+		},
+
+		// compiles CoffeeScript to JavaScript
+		coffee: {
+			scripts: {
+				src: '<%= pkg.scripts.build %>',
+				dest: '<%= pkg.scripts.build %>',
+				bare: true
+			}
+		},
+
+		// compiles Less to CSS
+		less: {
+			styles: {
+				src: '<%= pkg.styles.build %>bootstrap.less',
+				dest: '<%= pkg.styles.build %>styles.css'
+			}
+		},
+
+		// concatenates files managed by RequireJS, sans minification
+		requirejs: {
+			build: {
+				baseUrl: './scripts/',
+				mainConfigFile: './scripts/main.js',
+				name: 'main',
+				out: './scripts/scripts.js',
+				preserveLicenseComments: false,
+				paths: {
+					requireLib: 'libs/require'
+				},
+				include: ['requireLib'],
+				findNestedDependencies: true,
+
+				// let grunt's min handle this
+				optimize: 'none'
+			}
+		},
+
+		min: {
+			scripts: {
+				src: ['<banner>', '<%= pkg.scripts.build %>scripts.js'],
+				dest: '<%= pkg.scripts.build %>scripts.min.js'
+			}
+		},
+
+		lint: {
+			scripts: ['<%= pkg.scripts.build %>!(libs)**/*.js']
+		},
+
 		jshint: {
 			options: {
 				// CoffeeScript uses null for default parameter values
 				eqnull: true
 			}
+		},
+
+		// delete dev files from build
+		prune: {
+			scripts: {
+				src: '<%= pkg.scripts.build %>**/*.coffee'
+			},
+			styles: {
+				src: '<%= pkg.styles.build %>**/*.less'
+			}
+		},
+
+		// watches for changes in coffe or less files
+		// when changes are detected, copy the files to the build folder and compile
+		watch: {
+			scripts: {
+				files: '<%= pkg.scripts.dev %>**/*.coffee',
+				tasks: 'copy:scripts coffee prune:scripts'
+			},
+			styles: {
+				files: '<%= pkg.styles.dev %>**/*.less',
+				tasks: 'copy:styles less prune:styles'
+			}
 		}
 	});
 
 	grunt.loadTasks('tasks');
-	grunt.registerTask('bootstrap', 'coffeeLint clean copy coffee requirejs min');
+	grunt.registerTask('bootstrap', 'clean coffeeLint copy coffee less requirejs min lint prune');
 	grunt.registerTask('dev', 'bootstrap watch');
-
-	// deletes the js folder
-	// compiles all coffee files
-	// starts watching for coffee changes
-	//grunt.registerTask('refresh', 'clean coffee watch');
-
-	// starts watching for coffee changes
-	//grunt.registerTask('default', 'coffee watch');
 };
