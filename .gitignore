@@ -1,3 +1,4 @@
-/node_modules/
-/scripts/js/
-/styles/css/
+index.html
+node_modules
+scripts/js
+styles/css

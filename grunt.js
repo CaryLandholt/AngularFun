@@ -70,25 +70,24 @@ module.exports = function (grunt) {
 				baseUrl: './scripts/js/',
 				mainConfigFile: './scripts/js/main.js',
 				name: 'main',
-				out: './scripts/js/scripts.js',
+				out: './scripts/js/scripts.min.js',
 				preserveLicenseComments: false,
 				paths: {
 					requireLib: 'libs/require'
 				},
 				include: ['requireLib'],
 				findNestedDependencies: true,
-
-				// let grunt's min handle this
-				optimize: 'none'
 			}
 		},
 
+		/*
 		min: {
 			scripts: {
 				src: ['<banner>', '<%= pkg.scripts.build %>scripts.js'],
 				dest: '<%= pkg.scripts.build %>scripts.min.js'
 			}
 		},
+		*/
 
 		lint: {
 			scripts: ['<%= pkg.scripts.build %>!(libs)**/*.js']
@@ -122,10 +121,43 @@ module.exports = function (grunt) {
 				files: '<%= pkg.styles.dev %>**/*.less',
 				tasks: 'copy:styles less prune:styles'
 			}
+		},
+
+		// make a generic copy task to handle files and folders (include in copy task)
+		copyFile: {
+			index: {
+				src: './templates/index.template.html',
+				dest: './index.html'
+			}
+		},
+
+		template: {
+			dev: {
+				src: './index.html',
+				data: {
+					environment: 'dev'
+				},
+				includes: {
+					tweets: './scripts/js/partials/tweets.html',
+					repos: './scripts/js/partials/repos.html',
+					people: './scripts/js/partials/people.html'
+				}
+			},
+			prod: {
+				src: '<config:template.dev.src>',
+				data: {
+					environment: 'prod'
+				},
+				includes: '<config:template.dev.includes>'
+			}
 		}
 	});
 
 	grunt.loadTasks('tasks');
-	grunt.registerTask('bootstrap', 'clean coffeeLint copy coffee less requirejs min lint prune');
+	grunt.registerTask('reset-index', 'copyFile:index');
+	// for some reason, template:dev isn't working, might be a script loader issue
+	// maybe related to dom load event
+	grunt.registerTask('bootstrap', 'clean coffeeLint copy coffee less requirejs lint prune reset-index template:prod');
 	grunt.registerTask('dev', 'bootstrap watch');
+	grunt.registerTask('prod', 'bootstrap reset-index template:prod');
 };

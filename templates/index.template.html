@@ -9,13 +9,28 @@
 		<title>Angular Demo</title>
 		<meta name="description" content="" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="stylesheet" href="/styles/css/styles.css" />
-		<script data-main="/scripts/js/main.js" src="/scripts/js/libs/require.js"></script>
-		<!--<script src="/scripts/scripts.js"></script>-->
-		<!--<script src="/scripts/scripts.min.js"></script>-->
+
+		<!-- fix environment value when CSS minification task is implemented -->
+		<% if (data.environment === 'prod-todo') { %>
+			<link rel="stylesheet" href="/styles/css/styles.min.css" />
+		<% } else { %>
+			<link rel="stylesheet" href="/styles/css/styles.css" />
+		<% } %>
+
+		<!-- loading vendor libraries outside of RequireJS -->
+		<!-- TODO:  Add min files for vendor libraries -->
+		<!-- figure out a way to continue loading vendor scripts via RequireJS in dev mode, but not in prod -->
+		<script src="/scripts/js/libs/modernizr.js"></script>
+		<script src="/scripts/js/libs/angular.js"></script>
+		<script src="/scripts/js/libs/angular-resource.js"></script>
+
+		<% if (data.environment === 'prod') { %>
+			<script src="/scripts/js/scripts.min.js"></script>
+		<% } else { %>
+			<script data-main="/scripts/js/main.js" src="/scripts/js/libs/require.js"></script>
+		<% } %>
 	</head>
 	<body ng-cloak>
-        <h2>Oh yeah!</h2>
 		<ng:view></ng:view>
 		<div class="container">
 			<div class="hero-unit">
@@ -38,7 +53,8 @@
 									<button type="submit" class="btn"><i class="icon-search"></i> Search</button>
 								</form>
 
-								<ng:include src="'/scripts/js/partials/tweets.html'"></ng:include>
+								<%= includes.tweets %>
+								<!--<ng:include src="'/scripts/js/partials/tweets.html'"></ng:include>-->
 							</section>
 						</Tab>
 						<Tab data-tab-id="gitHub" caption="GitHub">
@@ -53,7 +69,8 @@
 									<button type="submit" class="btn"><i class="icon-search"></i> Search</button>
 								</form>
 
-								<ng:include src="'/scripts/js/partials/repos.html'"></ng:include>
+								<%= includes.repos %>
+								<!--<ng:include src="'/scripts/js/partials/repos.html'"></ng:include>-->
 							</section>
 						</Tab>
 						<Tab data-tab-id="people" caption="People">
@@ -71,7 +88,8 @@
 											<myinput model="name" kind="text" caption="My Caption" placeholder="Enter something here" help-text="Help me out, bro!" />
 										</form>
 
-										<ng:include src="'/scripts/js/partials/people.html'"></ng:include>
+										<%= includes.people %>
+										<!--<ng:include src="'/scripts/js/partials/people.html'"></ng:include>-->
 									</section>
 								</div>
 								<div class="span4">
