@@ -11,7 +11,7 @@
     growl = require('growl');
     path = require('path');
     requirejs = require('requirejs');
-    return grunt.registerMultiTask('requirejs', 'Builds RequireJS modules via the RequireJS Optimizer', function() {
+    return grunt.registerMultiTask('requirejs', 'Runs the RequireJS Optimizer', function() {
       var config, dest, destFullPath;
       config = this.data;
       dest = config.out;
@@ -19,7 +19,6 @@
       return requirejs.optimize(config, function(buildResponse) {
         var message;
         message = "Optimized " + buildResponse;
-        grunt.log.writeln(message);
         return growl(message, {
           title: 'Optimized JavaScript'
         });

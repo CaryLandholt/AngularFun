@@ -1,23 +1,17 @@
 ###global define, require###
 
-###
-map:
-	'*':
-		'libs/angularResource': 'libs/angular-resource'
-shim:
-	'libs/angular':
-		deps: ['libs/modernizr']
-		exports: 'angular'
-	'libs/angular-resource': ['libs/angular']
-	'libs/modernizr':
-		exports: 'Modernizr'
-###
-
-define 'libs/modernizr', -> Modernizr
-define 'libs/angular', ['libs/modernizr'],  -> angular
-define 'libs/angularResource', ['libs/angular']
-
-require [
+require
+	map:
+		'*':
+			'libs/angularResource': 'libs/angular-resource'
+	shim:
+		'libs/angular':
+			deps: ['libs/modernizr']
+			exports: 'angular'
+		'libs/angular-resource': ['libs/angular']
+		'libs/modernizr':
+			exports: 'Modernizr'
+	[
 		'app'
 		'bootstrap'
 		'controllers/gitHub'
@@ -29,7 +23,7 @@ require [
 		'directives/tabs'
 		'directives/tab'
 		'filters/twitterfy'
-		#'libs/angular'
+		'libs/angular'
 		'responseInterceptors/dispatcher'
 	], (app) ->
 		app.config ['$routeProvider', ($routeProvider) ->

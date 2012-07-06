@@ -7,41 +7,22 @@
 (function() {
 
   module.exports = function(grunt) {
-    var growl, path, removeNonPrintableCharacters, rimraf;
-    growl = require('growl');
-    path = require('path');
-    rimraf = require('rimraf');
+    var removeNonPrintableCharacters;
     removeNonPrintableCharacters = function(content) {
       var pattern;
       pattern = /(\t|\r\n|\n|\r)/gm;
       return content.replace(pattern, '');
     };
     return grunt.registerMultiTask('template', 'Compiles a template', function() {
-      var compiled, config, content, key, source, src, template, _ref;
+      var compiled, config, dest, source, src;
       src = this.file.src;
+      dest = this.file.dest;
       source = grunt.file.read(src);
-      config = this.data;
-      _ref = config.includes;
-      for (key in _ref) {
-        template = _ref[key];
-        content = grunt.file.read(template);
-        config.includes[key] = removeNonPrintableCharacters(content);
-      }
+      config = {
+        config: this.data
+      };
       compiled = grunt.template.process(source, config);
-      return grunt.file.write(src, compiled);
-      /*
-      		environment = config.environment
-      
-      		obj =
-      			scripts: scriptsTemplate
-      			styles: stylesTemplate
-      			environment: environment
-      
-      		compiled = grunt.template.process source, obj
-      
-      		grunt.file.write src, compiled
-      */
-
+      return grunt.file.write(dest, compiled);
     });
   };
 

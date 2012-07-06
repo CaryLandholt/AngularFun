@@ -6,20 +6,17 @@ module.exports = function (grunt) {
 	grunt.initConfig({
 		pkg: '<json:package.json>',
 
-		meta: {
-			banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %> */'
-		},
-
 		// deletes the scripts and styles directories
 		clean: {
 			scripts: {
-				dest: '<%= pkg.scripts.build %>'
+				src: '<%= pkg.scripts.build %>'
 			},
 			styles: {
-				dest: '<%= pkg.styles.build %>'
+				src: '<%= pkg.styles.build %>'
 			}
 		},
 
+		// lint CoffeeScript
 		coffeeLint: {
 			scripts: {
 				src: '<%= pkg.scripts.dev %>**/*.coffee',
@@ -64,30 +61,30 @@ module.exports = function (grunt) {
 			}
 		},
 
-		// concatenates files managed by RequireJS, sans minification
+		// optimizes files managed by RequireJS
 		requirejs: {
-			build: {
+			// minify scripts
+			scripts: {
 				baseUrl: './scripts/js/',
+				exclude: ['libs/modernizr', 'libs/angular', 'libs/angularResource'],
+				findNestedDependencies: true,
 				mainConfigFile: './scripts/js/main.js',
 				name: 'main',
 				out: './scripts/js/scripts.min.js',
 				preserveLicenseComments: false,
-				paths: {
-					requireLib: 'libs/require'
-				},
-				include: ['requireLib'],
-				findNestedDependencies: true,
+				wrap: {
+					startFile: './build/inlineDefines.js',
+					end: ';'
+				}
+			},
+			// minify styles
+			styles: {
+				baseUrl: './styles/css/',
+				cssIn: './styles/css/styles.css',
+				optimizeCss: 'standard',
+				out: './styles/css/styles.min.css'
 			}
 		},
-
-		/*
-		min: {
-			scripts: {
-				src: ['<banner>', '<%= pkg.scripts.build %>scripts.js'],
-				dest: '<%= pkg.scripts.build %>scripts.min.js'
-			}
-		},
-		*/
 
 		lint: {
 			scripts: ['<%= pkg.scripts.build %>!(libs)**/*.js']
@@ -123,41 +120,26 @@ module.exports = function (grunt) {
 			}
 		},
 
-		// make a generic copy task to handle files and folders (include in copy task)
-		copyFile: {
-			index: {
-				src: './templates/index.template.html',
-				dest: './index.html'
-			}
-		},
-
 		template: {
 			dev: {
-				src: './index.html',
-				data: {
-					environment: 'dev'
-				},
-				includes: {
-					tweets: './scripts/js/partials/tweets.html',
-					repos: './scripts/js/partials/repos.html',
-					people: './scripts/js/partials/people.html'
-				}
+				src: './templates/index.template.html',
+				dest: './index.html',
+				environment: 'dev'
 			},
 			prod: {
 				src: '<config:template.dev.src>',
-				data: {
-					environment: 'prod'
-				},
-				includes: '<config:template.dev.includes>'
+				dest: '<config:template.dev.dest>',
+				environment: 'prod'
 			}
 		}
 	});
 
 	grunt.loadTasks('tasks');
-	grunt.registerTask('reset-index', 'copyFile:index');
-	// for some reason, template:dev isn't working, might be a script loader issue
-	// maybe related to dom load event
-	grunt.registerTask('bootstrap', 'clean coffeeLint copy coffee less requirejs lint prune reset-index template:prod');
+	grunt.registerTask('minify', 'requirejs');
+	grunt.registerTask('minify-scripts', 'requirejs:scripts');
+	grunt.registerTask('minify-styles', 'requirejs:styles');
+	grunt.registerTask('core', 'clean coffeeLint copy coffee less minify lint prune');
+	grunt.registerTask('bootstrap', 'core template:dev');
 	grunt.registerTask('dev', 'bootstrap watch');
-	grunt.registerTask('prod', 'bootstrap reset-index template:prod');
+	grunt.registerTask('prod', 'core template:prod');
 };

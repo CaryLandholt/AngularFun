@@ -12,15 +12,15 @@
     path = require('path');
     rimraf = require('rimraf');
     return grunt.registerMultiTask('clean', 'Deletes a directory', function() {
-      var dest, destFullPath, exists, message;
-      dest = this.file.dest;
-      exists = path.existsSync(dest);
+      var exists, message, src, srcFullPath;
+      src = this.file.src;
+      exists = path.existsSync(src);
       if (!exists) {
         return;
       }
-      destFullPath = path.resolve(dest);
-      message = "Deleted " + destFullPath + " directory.";
-      rimraf.sync(dest);
+      srcFullPath = path.resolve(src);
+      message = "Deleted " + srcFullPath + " directory.";
+      rimraf.sync(src);
       grunt.log.writeln(message);
       return growl(message, {
         title: 'Directory Deleted'

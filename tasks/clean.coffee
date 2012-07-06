@@ -6,14 +6,14 @@ module.exports = (grunt) ->
 	rimraf = require 'rimraf'
 
 	grunt.registerMultiTask 'clean', 'Deletes a directory', ->
-		dest = @file.dest
-		exists = path.existsSync dest
+		src = @file.src
+		exists = path.existsSync src
 
 		return if not exists
 
-		destFullPath = path.resolve dest
-		message = "Deleted #{destFullPath} directory."
+		srcFullPath = path.resolve src
+		message = "Deleted #{srcFullPath} directory."
 
-		rimraf.sync dest
+		rimraf.sync src
 		grunt.log.writeln message
 		growl message, title: 'Directory Deleted'
