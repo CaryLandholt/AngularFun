@@ -7,21 +7,13 @@
 (function() {
 
   module.exports = function(grunt) {
-    var growl, path, requirejs;
-    growl = require('growl');
-    path = require('path');
+    var requirejs;
     requirejs = require('requirejs');
     return grunt.registerMultiTask('requirejs', 'Runs the RequireJS Optimizer', function() {
-      var config, dest, destFullPath;
+      var config;
       config = this.data;
-      dest = config.out;
-      destFullPath = path.resolve(dest);
       return requirejs.optimize(config, function(buildResponse) {
-        var message;
-        message = "Optimized " + buildResponse;
-        return growl(message, {
-          title: 'Optimized JavaScript'
-        });
+        return grunt.verbose.writeln(buildResponse);
       });
     });
   };
