@@ -13,13 +13,15 @@
     less = require('less');
     path = require('path');
     grunt.registerMultiTask('less', 'Compile LESS to CSS', function() {
-      var dest, done, options, src, srcFiles;
+      var compress, config, dest, done, options, src, srcFiles;
       done = this.async();
       src = this.file.src;
       dest = this.file.dest;
       options = this.data.options;
       srcFiles = grunt.file.expandFiles(src);
-      return grunt.helper('less', srcFiles, options, function(err, css) {
+      config = this.data;
+      compress = !!this.data.compress;
+      return grunt.helper('less', srcFiles, options, compress, function(err, css) {
         if (err) {
           grunt.warn(err);
           done(false);
@@ -29,7 +31,7 @@
         return done();
       });
     });
-    return grunt.registerHelper('less', function(srcFiles, options, callback) {
+    return grunt.registerHelper('less', function(srcFiles, options, compress, callback) {
       var compileLessFile;
       compileLessFile = function(src, callback) {
         var parser;
@@ -47,7 +49,9 @@
             }
             css = null;
             try {
-              css = tree.toCSS();
+              css = tree.toCSS({
+                compress: compress
+              });
             } catch (e) {
               return callback(e);
             }

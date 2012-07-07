@@ -12,8 +12,10 @@ module.exports = (grunt) ->
 		dest = @file.dest
 		options = @data.options
 		srcFiles = grunt.file.expandFiles src
+		config = @data
+		compress = not not @data.compress
 
-		grunt.helper 'less', srcFiles, options, (err, css) ->
+		grunt.helper 'less', srcFiles, options, compress, (err, css) ->
 			if err
 				grunt.warn err
 				done false
@@ -23,7 +25,7 @@ module.exports = (grunt) ->
 			grunt.file.write dest, css
 			done()
 
-	grunt.registerHelper 'less', (srcFiles, options, callback) ->
+	grunt.registerHelper 'less', (srcFiles, options, compress, callback) ->
 		compileLessFile = (src, callback) ->
 			parser = new less.Parser {
 				paths: [path.dirname src]
@@ -38,7 +40,7 @@ module.exports = (grunt) ->
 					css = null
 
 					try
-					  css = tree.toCSS()
+					  css = tree.toCSS compress: compress
 					catch e
 						return callback e
 

@@ -37,11 +37,11 @@ module.exports = function (grunt) {
 			scripts: {
 				src: '<%= pkg.scripts.dev %>',
 				dest: '<%= pkg.scripts.build %>'
-			},
+			}/*,
 			styles: {
 				src: '<%= pkg.styles.dev %>',
 				dest: '<%= pkg.styles.build %>'
-			}
+			}*/
 		},
 
 		// compiles CoffeeScript to JavaScript
@@ -55,9 +55,14 @@ module.exports = function (grunt) {
 
 		// compiles Less to CSS
 		less: {
-			styles: {
-				src: '<%= pkg.styles.build %>bootstrap.less',
+			dev: {
+				src: '<%= pkg.styles.dev %>bootstrap.less',
 				dest: '<%= pkg.styles.build %>styles.css'
+			},
+			prod: {
+				src: '<config:less.dev.src>',
+				dest: '<%= pkg.styles.build %>styles.min.css',
+				compress: true
 			}
 		},
 
@@ -76,14 +81,14 @@ module.exports = function (grunt) {
 					startFile: './build/inlineDefines.js',
 					end: ';'
 				}
-			},
+			}/*,
 			// minify styles
 			styles: {
 				baseUrl: './styles/css/',
 				cssIn: './styles/css/styles.css',
 				optimizeCss: 'standard',
 				out: './styles/css/styles.min.css'
-			}
+			}*/
 		},
 
 		lint: {
@@ -101,10 +106,11 @@ module.exports = function (grunt) {
 		prune: {
 			scripts: {
 				src: '<%= pkg.scripts.build %>**/*.coffee'
-			},
-			styles: {
-				src: '<%= pkg.styles.build %>**/*.less'
 			}
+			//,
+			//styles: {
+			//	src: '<%= pkg.styles.build %>**/*.less'
+			//}
 		},
 
 		// watches for changes in coffe or less files
@@ -137,9 +143,9 @@ module.exports = function (grunt) {
 	grunt.loadTasks('tasks');
 	grunt.registerTask('minify', 'requirejs');
 	grunt.registerTask('minify-scripts', 'requirejs:scripts');
-	grunt.registerTask('minify-styles', 'requirejs:styles');
-	grunt.registerTask('core', 'clean coffeeLint copy coffee less minify lint prune');
-	grunt.registerTask('bootstrap', 'core template:dev');
+	//grunt.registerTask('minify-styles', 'requirejs:styles');
+	grunt.registerTask('core', 'clean coffeeLint copy coffee minify lint prune');
+	grunt.registerTask('bootstrap', 'core less:dev template:dev');
 	grunt.registerTask('dev', 'bootstrap watch');
-	grunt.registerTask('prod', 'core template:prod');
+	grunt.registerTask('prod', 'core less:prod template:prod');
 };
