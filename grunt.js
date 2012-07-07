@@ -37,17 +37,13 @@ module.exports = function (grunt) {
 			scripts: {
 				src: '<%= pkg.scripts.dev %>',
 				dest: '<%= pkg.scripts.build %>'
-			}/*,
-			styles: {
-				src: '<%= pkg.styles.dev %>',
-				dest: '<%= pkg.styles.build %>'
-			}*/
+			}
 		},
 
 		// compiles CoffeeScript to JavaScript
 		coffee: {
 			scripts: {
-				src: '<%= pkg.scripts.build %>',
+				src: '<%= pkg.scripts.dev %>',
 				dest: '<%= pkg.scripts.build %>',
 				bare: true
 			}
@@ -69,7 +65,7 @@ module.exports = function (grunt) {
 		// optimizes files managed by RequireJS
 		requirejs: {
 			// minify scripts
-			scripts: {
+			prod: {
 				baseUrl: './scripts/js/',
 				exclude: ['libs/modernizr', 'libs/angular', 'libs/angularResource'],
 				findNestedDependencies: true,
@@ -81,14 +77,7 @@ module.exports = function (grunt) {
 					startFile: './build/inlineDefines.js',
 					end: ';'
 				}
-			}/*,
-			// minify styles
-			styles: {
-				baseUrl: './styles/css/',
-				cssIn: './styles/css/styles.css',
-				optimizeCss: 'standard',
-				out: './styles/css/styles.min.css'
-			}*/
+			}
 		},
 
 		lint: {
@@ -107,10 +96,6 @@ module.exports = function (grunt) {
 			scripts: {
 				src: '<%= pkg.scripts.build %>**/*.coffee'
 			}
-			//,
-			//styles: {
-			//	src: '<%= pkg.styles.build %>**/*.less'
-			//}
 		},
 
 		// watches for changes in coffe or less files
@@ -141,10 +126,7 @@ module.exports = function (grunt) {
 	});
 
 	grunt.loadTasks('tasks');
-	grunt.registerTask('minify', 'requirejs');
-	grunt.registerTask('minify-scripts', 'requirejs:scripts');
-	//grunt.registerTask('minify-styles', 'requirejs:styles');
-	grunt.registerTask('core', 'clean coffeeLint copy coffee minify lint prune');
+	grunt.registerTask('core', 'clean coffeeLint copy coffee requirejs lint prune');
 	grunt.registerTask('bootstrap', 'core less:dev template:dev');
 	grunt.registerTask('dev', 'bootstrap watch');
 	grunt.registerTask('prod', 'core less:prod template:prod');
