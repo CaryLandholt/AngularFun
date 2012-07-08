@@ -7,21 +7,34 @@
 (function() {
 
   module.exports = function(grunt) {
-    var removeNonPrintableCharacters;
+    var Beautifier, removeNonPrintableCharacters;
+    Beautifier = require('node-js-beautify');
     removeNonPrintableCharacters = function(content) {
       var pattern;
       pattern = /(\t|\r\n|\n|\r)/gm;
       return content.replace(pattern, '');
     };
     return grunt.registerMultiTask('template', 'Compiles a template', function() {
-      var compiled, config, dest, source, src;
+      var beautifier, compiled, config, data, dest, minify, source, src;
       src = this.file.src;
       dest = this.file.dest;
       source = grunt.file.read(src);
+      data = this.data;
+      minify = !!data.minify;
       config = {
-        config: this.data
+        config: data
       };
       compiled = grunt.template.process(source, config);
+      beautifier = new Beautifier();
+      if (minify) {
+        compiled = removeNonPrintableCharacters(compiled);
+      } else {
+        compiled = beautifier.beautify_html(compiled, {
+          indent_size: 1,
+          indent_char: '\t',
+          max_char: 1000
+        });
+      }
       return grunt.file.write(dest, compiled);
     });
   };

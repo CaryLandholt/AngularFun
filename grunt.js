@@ -81,7 +81,8 @@ module.exports = function (grunt) {
 			prod: {
 				src: '<config:template.dev.src>',
 				dest: '<config:template.dev.dest>',
-				environment: 'prod'
+				environment: 'prod',
+				minify: true
 			}
 		},
 

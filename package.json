@@ -1,29 +1,15 @@
 {
 	"name": "AngularFun",
-	"version": "0.2.0",
-
-
-
+	"version": "0.3.0",
 	"src": "./src/",
 	"dist": "./dist/",
-
-
-
-	"scripts": {
-		"dev": "./src/scripts/coffee/",
-		"build": "./dist/scripts/"
-	},
-	"styles": {
-		"dev": "./src/styles/less/",
-		"build": "./dist/styles/css/"
-	},
-	"private": true,
 	"dependencies": {
 		"coffee-script": ">=1.3.3",
 		"coffeelint": ">=0.4.0",
 		"express": "2.5.11",
 		"growl": ">=1.5.1",
 		"less": ">=1.3.0",
+		"node-js-beautify": ">=0.1.0",
 		"requirejs": ">=2.0.2",
 		"rimraf": ">=2.0.2",
 		"wrench": ">=1.3.9"
