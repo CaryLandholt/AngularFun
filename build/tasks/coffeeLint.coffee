@@ -2,7 +2,6 @@
 
 module.exports = (grunt) ->
 	coffeeLint = require 'coffeelint'
-	growl = require 'growl'
 	path = require 'path'
 
 	grunt.registerMultiTask 'coffeeLint', 'Lints CoffeeScript files', ->
@@ -28,4 +27,3 @@ module.exports = (grunt) ->
 		return if not message.length
 
 		grunt.log.writeln message
-		growl message, title: 'CoffeeScript Linting Failed'

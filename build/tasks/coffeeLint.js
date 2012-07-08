@@ -7,9 +7,8 @@
 (function() {
 
   module.exports = function(grunt) {
-    var coffeeLint, growl, path;
+    var coffeeLint, path;
     coffeeLint = require('coffeelint');
-    growl = require('growl');
     path = require('path');
     return grunt.registerMultiTask('coffeeLint', 'Lints CoffeeScript files', function() {
       var config, files, message, src;
@@ -34,10 +33,7 @@
       if (!message.length) {
         return;
       }
-      grunt.log.writeln(message);
-      return growl(message, {
-        title: 'CoffeeScript Linting Failed'
-      });
+      return grunt.log.writeln(message);
     });
   };
 
