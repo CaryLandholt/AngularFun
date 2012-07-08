@@ -38,7 +38,7 @@ module.exports = (grunt) ->
 		options = @data.options
 		srcFiles = grunt.file.expandFiles src
 		config = @data
-		compress = not not @data.compress
+		compress = @data.compress ? false
 
 		grunt.helper 'less', srcFiles, options, compress, (err, css) ->
 			if err

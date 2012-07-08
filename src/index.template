@@ -49,7 +49,7 @@
 									<button type="submit" class="btn"><i class="icon-search"></i> Search</button>
 								</form>
 
-								<%= grunt.file.read('./src/scripts/partials/tweets.html') %>
+								<%= config.include('./src/scripts/partials/tweets.template') %>
 							</section>
 						</Tab>
 						<Tab data-tab-id="gitHub" caption="GitHub">
@@ -64,7 +64,7 @@
 									<button type="submit" class="btn"><i class="icon-search"></i> Search</button>
 								</form>
 
-								<%= grunt.file.read('./src/scripts/partials/repos.html') %>
+								<%= config.include('./src/scripts/partials/repos.template') %>
 							</section>
 						</Tab>
 						<Tab data-tab-id="people" caption="People">
@@ -82,7 +82,7 @@
 											<myinput model="name" kind="text" caption="My Caption" placeholder="Enter something here" help-text="Help me out, bro!" />
 										</form>
 
-										<%= grunt.file.read('./src/scripts/partials/people.html') %>
+										<%= config.include('./src/scripts/partials/people.template') %>
 									</section>
 								</div>
 								<div class="span4">

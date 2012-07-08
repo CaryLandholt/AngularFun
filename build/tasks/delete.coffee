@@ -4,20 +4,20 @@ module.exports = (grunt) ->
 	fs = require 'fs'
 	rimraf = require 'rimraf'
 
-	deleteDirectory = (dest) ->
-		rimraf.sync dest
+	deleteDirectory = (path) ->
+		rimraf.sync path
 
-	deleteFiles = (dest) ->
-		files = grunt.file.expandFiles dest
+	deleteFiles = (path) ->
+		files = grunt.file.expandFiles path
 
 		files.forEach (file) ->
 			fs.unlinkSync file
 
-	isDirectory = (dest) ->
+	isDirectory = (path) ->
 		isDestADirectory = true
 
 		try
-			stats = fs.statSync dest
+			stats = fs.statSync path
 		catch error
 			isDestADirectory = false
 

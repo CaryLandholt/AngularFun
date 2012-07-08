@@ -10,21 +10,21 @@
     var deleteDirectory, deleteFiles, fs, isDirectory, rimraf;
     fs = require('fs');
     rimraf = require('rimraf');
-    deleteDirectory = function(dest) {
-      return rimraf.sync(dest);
+    deleteDirectory = function(path) {
+      return rimraf.sync(path);
     };
-    deleteFiles = function(dest) {
+    deleteFiles = function(path) {
       var files;
-      files = grunt.file.expandFiles(dest);
+      files = grunt.file.expandFiles(path);
       return files.forEach(function(file) {
         return fs.unlinkSync(file);
       });
     };
-    isDirectory = function(dest) {
+    isDirectory = function(path) {
       var isDestADirectory, stats;
       isDestADirectory = true;
       try {
-        stats = fs.statSync(dest);
+        stats = fs.statSync(path);
       } catch (error) {
         isDestADirectory = false;
       }

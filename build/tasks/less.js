@@ -47,14 +47,14 @@
       });
     });
     return grunt.registerMultiTask('less', 'Compile LESS to CSS', function() {
-      var compress, config, dest, done, options, src, srcFiles;
+      var compress, config, dest, done, options, src, srcFiles, _ref;
       done = this.async();
       src = this.file.src;
       dest = this.file.dest;
       options = this.data.options;
       srcFiles = grunt.file.expandFiles(src);
       config = this.data;
-      compress = !!this.data.compress;
+      compress = (_ref = this.data.compress) != null ? _ref : false;
       return grunt.helper('less', srcFiles, options, compress, function(err, css) {
         if (err) {
           grunt.warn(err);

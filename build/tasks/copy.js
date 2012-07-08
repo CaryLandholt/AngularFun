@@ -7,18 +7,12 @@
 (function() {
 
   module.exports = function(grunt) {
-    var fs, wrench;
-    fs = require('fs');
+    var wrench;
     wrench = require('wrench');
     return grunt.registerMultiTask('copy', 'Copies a directory', function() {
-      var dest, exists, src;
+      var dest, src;
       src = this.file.src;
       dest = this.file.dest;
-      exists = fs.existsSync(src);
-      if (!exists) {
-        return;
-      }
-      wrench.mkdirSyncRecursive(dest, 0x1ff);
       return wrench.copyDirSyncRecursive(src, dest);
     });
   };

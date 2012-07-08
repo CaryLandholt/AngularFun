@@ -10,12 +10,6 @@ module.exports = function (grunt) {
 		delete: {
 			dist: {
 				dest: '<%= pkg.dist %>'
-			},
-			coffee: {
-				dest: '<%= pkg.dist %>scripts/**/*.coffee'
-			},
-			less: {
-				dest: '<%= pkg.dist %>styles/**/*.less'
 			}
 		},
 
@@ -35,20 +29,23 @@ module.exports = function (grunt) {
 			}
 		},
 
-		// copy the contents of the src folder to the dist folder
-		copy: {
-			dist: {
-				src: '<%= pkg.src %>',
-				dest: '<%= pkg.dist %>'
-			}
-		},
-
 		// compile CoffeeScript to JavaScript
 		coffee: {
 			dist: {
-				src: '<%= pkg.src %>',
-				dest: '<%= pkg.dist %>',
+				src: '<%= pkg.src %>scripts/',
+				dest: '<%= pkg.dist %>scripts/',
 				bare: true
+			}
+		},
+
+		copy: {
+			libs: {
+				src: '<%= pkg.src %>scripts/libs/',
+				dest: '<%= pkg.dist %>scripts/libs/',
+			},
+			img: {
+				src: '<%= pkg.src %>img/',
+				dest: '<%= pkg.dist %>img/',
 			}
 		},
 
@@ -74,13 +71,18 @@ module.exports = function (grunt) {
 		// compile templates
 		template: {
 			dev: {
-				src: '<%= pkg.src %>index.html',
-				dest: '<%= pkg.dist %>index.html',
-				environment: 'dev'
+				src: '<%= pkg.src %>**/*.template',
+				dest: '<%= pkg.dist %>',
+				ext: '.html',
+				environment: 'dev',
+				indent_size: 1,
+				indent_char: '\t',
+				max_char: 10000
 			},
 			prod: {
 				src: '<config:template.dev.src>',
 				dest: '<config:template.dev.dest>',
+				ext: '<config:template.dev.ext>',
 				environment: 'prod',
 				minify: true
 			}
@@ -88,7 +90,6 @@ module.exports = function (grunt) {
 
 		// optimizes files managed by RequireJS
 		requirejs: {
-			// minify scripts
 			scripts: {
 				baseUrl: './dist/scripts/',
 				exclude: ['libs/modernizr', 'libs/angular', 'libs/angularResource'],
@@ -120,15 +121,15 @@ module.exports = function (grunt) {
 				tasks: 'less'
 			},
 			template: {
-				files: '<%= pkg.src %>index.html',
+				files: '<config:template.dev.src>',
 				tasks: 'template:dev'
 			}
 		}
 	});
 
 	grunt.loadTasks('build/tasks');
-	grunt.registerTask('core', 'delete:dist coffeeLint copy coffee lint less');
+	grunt.registerTask('core', 'delete coffeeLint coffee copy lint less');
 	grunt.registerTask('bootstrap', 'core template:dev');
 	grunt.registerTask('dev', 'bootstrap watch');
-	grunt.registerTask('prod', 'core requirejs template:prod delete:coffee delete:less');
+	grunt.registerTask('prod', 'core template:prod requirejs');
 };
