@@ -7,31 +7,11 @@
 (function() {
 
   module.exports = function(grunt) {
-    var fs, growl, less, path;
+    var fs, less, path;
     fs = require('fs');
-    growl = require('growl');
     less = require('less');
     path = require('path');
-    grunt.registerMultiTask('less', 'Compile LESS to CSS', function() {
-      var compress, config, dest, done, options, src, srcFiles;
-      done = this.async();
-      src = this.file.src;
-      dest = this.file.dest;
-      options = this.data.options;
-      srcFiles = grunt.file.expandFiles(src);
-      config = this.data;
-      compress = !!this.data.compress;
-      return grunt.helper('less', srcFiles, options, compress, function(err, css) {
-        if (err) {
-          grunt.warn(err);
-          done(false);
-          return;
-        }
-        grunt.file.write(dest, css);
-        return done();
-      });
-    });
-    return grunt.registerHelper('less', function(srcFiles, options, compress, callback) {
+    grunt.registerHelper('less', function(srcFiles, options, compress, callback) {
       var compileLessFile;
       compileLessFile = function(src, callback) {
         var parser;
@@ -64,6 +44,25 @@
           return callback(err);
         }
         return callback(null, results.join(grunt.utils.linefeed));
+      });
+    });
+    return grunt.registerMultiTask('less', 'Compile LESS to CSS', function() {
+      var compress, config, dest, done, options, src, srcFiles;
+      done = this.async();
+      src = this.file.src;
+      dest = this.file.dest;
+      options = this.data.options;
+      srcFiles = grunt.file.expandFiles(src);
+      config = this.data;
+      compress = !!this.data.compress;
+      return grunt.helper('less', srcFiles, options, compress, function(err, css) {
+        if (err) {
+          grunt.warn(err);
+          done(false);
+          return;
+        }
+        grunt.file.write(dest, css);
+        return done();
       });
     });
   };

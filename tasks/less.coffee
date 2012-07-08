@@ -2,28 +2,8 @@
 
 module.exports = (grunt) ->
 	fs = require 'fs'
-	growl = require 'growl'
 	less = require 'less'
 	path = require 'path'
-
-	grunt.registerMultiTask 'less', 'Compile LESS to CSS', ->
-		done = @async()
-		src = @file.src
-		dest = @file.dest
-		options = @data.options
-		srcFiles = grunt.file.expandFiles src
-		config = @data
-		compress = not not @data.compress
-
-		grunt.helper 'less', srcFiles, options, compress, (err, css) ->
-			if err
-				grunt.warn err
-				done false
-
-				return
-
-			grunt.file.write dest, css
-			done()
 
 	grunt.registerHelper 'less', (srcFiles, options, compress, callback) ->
 		compileLessFile = (src, callback) ->
@@ -50,3 +30,22 @@ module.exports = (grunt) ->
 			return callback err if err
 
 			callback null, results.join grunt.utils.linefeed
+
+	grunt.registerMultiTask 'less', 'Compile LESS to CSS', ->
+		done = @async()
+		src = @file.src
+		dest = @file.dest
+		options = @data.options
+		srcFiles = grunt.file.expandFiles src
+		config = @data
+		compress = not not @data.compress
+
+		grunt.helper 'less', srcFiles, options, compress, (err, css) ->
+			if err
+				grunt.warn err
+				done false
+
+				return
+
+			grunt.file.write dest, css
+			done()
