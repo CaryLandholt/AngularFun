@@ -6,10 +6,12 @@
 	nextId = 0
 
 	people = [
-		{"id": "#{nextId++}", "name": "Cary", "age": "42"}
 		{"id": "#{nextId++}", "name": "Saasha", "age": "5"}
 		{"id": "#{nextId++}", "name": "Planet", "age": "7"}
 	]
+
+	getUrl = ->
+		"http://localhost:#{app.address().port}"
 
 	isUniqueName = (name) ->
 		(name for person in people when person.name is name).length is 0
@@ -17,7 +19,7 @@
 	app = express.createServer()
 
 	open = (command = 'open') ->
-		url = "http://localhost:#{app.address().port}"
+		url = getUrl()
 		ostype = require('os').type()
 		command = 'explorer' if ostype is 'Windows_NT'
 		spawn = require('child_process').spawn
@@ -72,6 +74,8 @@
 			#res.send 'Conflictola', 401
 
 		app.listen port, ->
-			console.log "Express server listening on port #{app.address().port} in #{app.settings.env} mode"
-			open()
+			#console.log "Express server listening on port #{app.address().port} in #{app.settings.env} mode"
+			console.log "open your browser to the url below"
+			console.log getUrl()
+			#open()
 )(require('express'), __dirname, process.argv.splice(2)[0])
