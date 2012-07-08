@@ -1,13 +1,21 @@
 {
 	"name": "AngularFun",
 	"version": "0.2.0",
+
+
+
+	"src": "./src/",
+	"dist": "./dist/",
+
+
+
 	"scripts": {
-		"dev": "./scripts/coffee/",
-		"build": "./scripts/js/"
+		"dev": "./src/scripts/coffee/",
+		"build": "./dist/scripts/"
 	},
 	"styles": {
-		"dev": "./styles/less/",
-		"build": "./styles/css/"
+		"dev": "./src/styles/less/",
+		"build": "./dist/styles/css/"
 	},
 	"private": true,
 	"dependencies": {

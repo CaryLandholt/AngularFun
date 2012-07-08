@@ -7,22 +7,15 @@
 (function() {
 
   module.exports = function(grunt) {
-    var growl, proc;
-    growl = require('growl');
+    var proc;
     proc = require('child_process');
     return grunt.registerHelper('exec', function(opts, done) {
       var command;
       command = "" + opts.cmd + " " + (opts.args.join(' '));
       return proc.exec(command, opts.opts, function(code, stdout, stderr) {
-        var message;
         if (!done) {
           return;
         }
-        message = "Executed command " + command;
-        grunt.log.writeln(message);
-        growl(message, {
-          title: 'Command Executed'
-        });
         if (code === 0) {
           done(null, stdout, code);
         }

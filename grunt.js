@@ -6,20 +6,23 @@ module.exports = function (grunt) {
 	grunt.initConfig({
 		pkg: '<json:package.json>',
 
-		// deletes the scripts and styles directories
-		clean: {
-			scripts: {
-				src: '<%= pkg.scripts.build %>'
+		// delete the dist folder
+		delete: {
+			dist: {
+				dest: '<%= pkg.dist %>'
 			},
-			styles: {
-				src: '<%= pkg.styles.build %>'
+			coffee: {
+				dest: '<%= pkg.dist %>scripts/**/*.coffee'
+			},
+			less: {
+				dest: '<%= pkg.dist %>styles/**/*.less'
 			}
 		},
 
 		// lint CoffeeScript
 		coffeeLint: {
 			scripts: {
-				src: '<%= pkg.scripts.dev %>**/*.coffee',
+				src: '<%= pkg.src %>/scripts/**/*.coffee',
 				indentation: {
 					value: 1
 				},
@@ -32,56 +35,25 @@ module.exports = function (grunt) {
 			}
 		},
 
-		// copy source scripts and source styles to output directories
+		// copy the contents of the src folder to the dist folder
 		copy: {
-			scripts: {
-				src: '<%= pkg.scripts.dev %>',
-				dest: '<%= pkg.scripts.build %>'
+			dist: {
+				src: '<%= pkg.src %>',
+				dest: '<%= pkg.dist %>'
 			}
 		},
 
-		// compiles CoffeeScript to JavaScript
+		// compile CoffeeScript to JavaScript
 		coffee: {
-			scripts: {
-				src: '<%= pkg.scripts.dev %>',
-				dest: '<%= pkg.scripts.build %>',
+			dist: {
+				src: '<%= pkg.src %>',
+				dest: '<%= pkg.dist %>',
 				bare: true
 			}
 		},
 
-		// compiles Less to CSS
-		less: {
-			dev: {
-				src: '<%= pkg.styles.dev %>bootstrap.less',
-				dest: '<%= pkg.styles.build %>styles.css'
-			},
-			prod: {
-				src: '<config:less.dev.src>',
-				dest: '<%= pkg.styles.build %>styles.min.css',
-				compress: true
-			}
-		},
-
-		// optimizes files managed by RequireJS
-		requirejs: {
-			// minify scripts
-			prod: {
-				baseUrl: './scripts/js/',
-				exclude: ['libs/modernizr', 'libs/angular', 'libs/angularResource'],
-				findNestedDependencies: true,
-				mainConfigFile: './scripts/js/main.js',
-				name: 'main',
-				out: './scripts/js/scripts.min.js',
-				preserveLicenseComments: false,
-				wrap: {
-					startFile: './build/inlineDefines.js',
-					end: ';'
-				}
-			}
-		},
-
 		lint: {
-			scripts: ['<%= pkg.scripts.build %>!(libs)**/*.js']
+			scripts: ['<%= pkg.src %>!(libs)**/*.js']
 		},
 
 		jshint: {
@@ -91,30 +63,19 @@ module.exports = function (grunt) {
 			}
 		},
 
-		// delete dev files from build
-		prune: {
-			scripts: {
-				src: '<%= pkg.scripts.build %>**/*.coffee'
+		// compile Less to CSS
+		less: {
+			dist: {
+				src: '<%= pkg.src %>styles/bootstrap.less',
+				dest: '<%= pkg.dist %>/styles/styles.css'
 			}
 		},
 
-		// watches for changes in coffe or less files
-		// when changes are detected, copy the files to the build folder and compile
-		watch: {
-			scripts: {
-				files: '<%= pkg.scripts.dev %>**/*.coffee',
-				tasks: 'coffeeLint copy:scripts coffee prune:scripts'
-			},
-			styles: {
-				files: '<%= pkg.styles.dev %>**/*.less',
-				tasks: 'copy:styles less prune:styles'
-			}
-		},
-
+		// compile templates
 		template: {
 			dev: {
-				src: './templates/index.template.html',
-				dest: './index.html',
+				src: '<%= pkg.src %>index.html',
+				dest: '<%= pkg.dist %>index.html',
 				environment: 'dev'
 			},
 			prod: {
@@ -122,12 +83,51 @@ module.exports = function (grunt) {
 				dest: '<config:template.dev.dest>',
 				environment: 'prod'
 			}
+		},
+
+		// optimizes files managed by RequireJS
+		requirejs: {
+			// minify scripts
+			scripts: {
+				baseUrl: './dist/scripts/',
+				exclude: ['libs/modernizr', 'libs/angular', 'libs/angularResource'],
+				findNestedDependencies: true,
+				mainConfigFile: './dist/scripts/main.js',
+				name: 'main',
+				out: './dist/scripts/scripts.min.js',
+				preserveLicenseComments: false,
+				wrap: {
+					startFile: './build/inlineDefines.js',
+					end: ';'
+				}
+			},
+			styles: {
+				baseUrl: './dist/styles/',
+				cssIn: './dist/styles/styles.css',
+				optimizeCss: 'standard',
+				out: './dist/styles/styles.min.css'
+			}
+		},
+
+		watch: {
+			coffee: {
+				files: '<%= pkg.src %>scripts/**/*.coffee',
+				tasks: 'coffeeLint coffee lint'
+			},
+			less: {
+				files: '<%= pkg.src %>styles/**/*.less',
+				tasks: 'less'
+			},
+			template: {
+				files: '<%= pkg.src %>index.html',
+				tasks: 'template:dev'
+			}
 		}
 	});
 
-	grunt.loadTasks('tasks');
-	grunt.registerTask('core', 'clean coffeeLint copy coffee requirejs lint prune');
-	grunt.registerTask('bootstrap', 'core less:dev template:dev');
+	grunt.loadTasks('build/tasks');
+	grunt.registerTask('core', 'delete:dist coffeeLint copy coffee lint less');
+	grunt.registerTask('bootstrap', 'core template:dev');
 	grunt.registerTask('dev', 'bootstrap watch');
-	grunt.registerTask('prod', 'core less:prod template:prod');
+	grunt.registerTask('prod', 'core requirejs template:prod delete:coffee delete:less');
 };

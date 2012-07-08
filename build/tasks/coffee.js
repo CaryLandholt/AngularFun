@@ -7,29 +7,17 @@
 (function() {
 
   module.exports = function(grunt) {
-    var coffeeScript, growl, handleResult, path;
+    var coffeeScript, handleResult, path;
     coffeeScript = require('coffee-script');
-    growl = require('growl');
     path = require('path');
     handleResult = function(src, dest, err, stdout, code, done) {
-      var destFullPath, message, srcFullPath;
+      var destFullPath, srcFullPath;
       srcFullPath = path.resolve(src);
       destFullPath = path.resolve(dest);
       if (err) {
-        message = "Failed to compile " + srcFullPath + " to " + destFullPath + ".\n\n" + stdout;
-        grunt.log.writeln(message);
-        growl(message, {
-          title: 'CoffeeScript Compile Error',
-          sticky: true
-        });
         done(false);
         return;
       }
-      message = "Compiled " + srcFullPath + " to " + destFullPath + ".";
-      grunt.log.writeln(message);
-      growl(message, {
-        title: 'CoffeeScript Compiled'
-      });
       return done(true);
     };
     return grunt.registerMultiTask('coffee', 'Compile CoffeeScript to JavaScript', function() {

@@ -1,9 +1,11 @@
-define('../libs/modernizr', function () {
+define('libs/modernizr', function () {
 	return Modernizr;
 });
 
-define('../libs/angular', function () {
+define('libs/angular', function () {
 	return angular;
 });
 
-define('../libs/angular-resource');
+define('libs/angular-resource');
+
+define('libs/angularResource');

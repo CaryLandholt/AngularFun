@@ -11,6 +11,7 @@
     if (port == null) {
       port = 3005;
     }
+    dir += '/dist';
     nextId = 0;
     people = [
       {

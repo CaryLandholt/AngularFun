@@ -11,9 +11,9 @@
 		<meta name="viewport" content="width=device-width" />
 
 		<% if (config.environment === 'prod') { %>
-			<link rel="stylesheet" href="/styles/css/styles.min.css" />
+			<link rel="stylesheet" href="/styles/styles.min.css" />
 		<% } else { %>
-			<link rel="stylesheet" href="/styles/css/styles.css" />
+			<link rel="stylesheet" href="/styles/styles.css" />
 		<% } %>
 
 		<% if (config.environment === 'prod') { %>
@@ -21,9 +21,9 @@
 			<script src="/scripts/libs/angular.min.js"></script>
 			<script src="/scripts/libs/angular-resource.min.js"></script>
 			<script src="/scripts/libs/require.js"></script>
-			<script src="/scripts/js/scripts.min.js"></script>
+			<script src="/scripts/scripts.min.js"></script>
 		<% } else { %>
-			<script data-main="/scripts/js/main.js" src="/scripts/libs/require.js"></script>
+			<script data-main="/scripts/main.js" src="/scripts/libs/require.js"></script>
 		<% } %>
 	</head>
 	<body ng-cloak>
@@ -49,7 +49,7 @@
 									<button type="submit" class="btn"><i class="icon-search"></i> Search</button>
 								</form>
 
-								<%= grunt.file.read('./scripts/partials/tweets.html') %>
+								<%= grunt.file.read('./src/scripts/partials/tweets.html') %>
 							</section>
 						</Tab>
 						<Tab data-tab-id="gitHub" caption="GitHub">
@@ -64,7 +64,7 @@
 									<button type="submit" class="btn"><i class="icon-search"></i> Search</button>
 								</form>
 
-								<%= grunt.file.read('./scripts/partials/repos.html') %>
+								<%= grunt.file.read('./src/scripts/partials/repos.html') %>
 							</section>
 						</Tab>
 						<Tab data-tab-id="people" caption="People">
@@ -82,7 +82,7 @@
 											<myinput model="name" kind="text" caption="My Caption" placeholder="Enter something here" help-text="Help me out, bro!" />
 										</form>
 
-										<%= grunt.file.read('./scripts/partials/people.html') %>
+										<%= grunt.file.read('./src/scripts/partials/people.html') %>
 									</section>
 								</div>
 								<div class="span4">

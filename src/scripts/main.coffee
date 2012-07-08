@@ -3,19 +3,13 @@
 require
 	map:
 		'*':
-			'libs/angular': '../libs/angular'
-			'libs/angularResource': '../libs/angular-resource'
-			'libs/domReady': '../libs/domReady'
-			'libs/modernizr': '../libs/modernizr'
-			'libs/text': '../libs/text'
-			'partials/tab': '../partials/tab'
-			'partials/tabs': '../partials/tabs'
+			'libs/angularResource': 'libs/angular-resource'
 	shim:
-		'../libs/angular':
+		'libs/angular':
 			deps: ['libs/modernizr']
 			exports: 'angular'
-		'../libs/angular-resource': ['libs/angular']
-		'../libs/modernizr':
+		'libs/angular-resource': ['libs/angular']
+		'libs/modernizr':
 			exports: 'Modernizr'
 	[
 		'app'
