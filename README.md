@@ -10,21 +10,26 @@
 
 ## Prerequisites
 * Must have [Git](http://git-scm.com/) installed
-* Must have [node.js](http://nodejs.org/) installed with npm (Node Package Manager)
+* Must have [node.js (at least v0.8.1)](http://nodejs.org/) installed with npm (Node Package Manager)
 * Install grunt `npm install -g grunt`
 
 ## Install Angular Fun
+Enter the following commands in the terminal.
 * `git clone git://github.com/CaryLandholt/AngularFun.git`
 * `cd AngularFun`
 * `npm install`
 * `grunt bootstrap`
+
+You are now ready to run the app.
+However, if you wish to run the app with optimizations (minification, etc.) turned on, enter the following command in the terminal.
+`grunt prod`
 
 ## Run It
 * Navigate to the root of the project
 * `node server`
 
 ## Making Changes
-* `grunt watch` will watch for any CoffeeScript (.coffee) or Less (.less) file changes.  When changes are detected, the files will be linted and compiled.
+* `grunt dev` will watch for any CoffeeScript (.coffee), Less (.less), or .template file changes.  When changes are detected, the files will be linted and compiled.
 
 ## To-Do
 * Finish documentation
