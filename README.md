@@ -4,14 +4,14 @@
 ## About
 * This is an attempt to play with the features of [AngularJS](http://angularjs.org/) and leverage the goodness of [RequireJS](http://requirejs.org/)
 * Uses controllers, services, directives, filters, and partials
-* No optimization has been performed (i.e. concatenation, minification).  Please see the [RequireJS - Optimizer](http://www.youtube.com/watch?v=m6VNhqKDM4E) screencast for a how-to on RequireJS optimization or the official [RequireJS site](http://requirejs.org/docs/optimization.html).
 * Uses the RequireJS [text plugin](http://requirejs.org/docs/api.html#text) for directive partials
-* Contains both CoffeeScript and JavaScript versions
 
 ## Prerequisites
 * Must have [Git](http://git-scm.com/) installed
 * Must have [node.js (at least v0.8.1)](http://nodejs.org/) installed with npm (Node Package Manager)
-* Install grunt `npm install -g grunt`
+* Install the following Node.js modules via the terminal.  This is a one-time task as the `-g` switch will install the modules globally.
+  * `npm install -g grunt`
+  * `npm install -g nodemon`
 
 ## Install Angular Fun
 Enter the following commands in the terminal.
@@ -26,7 +26,9 @@ However, if you wish to run the app with optimizations (minification, etc.) turn
 
 ## Run It
 * Navigate to the root of the project
-* `node server`
+* `nodemon server.coffee -w server.coffee`
+You can override the default port (3005) with the following:
+`nodemon server.coffee -w server.coffee {port}` where {port} represents your desired port number.
 
 ## Making Changes
 * `grunt dev` will watch for any CoffeeScript (.coffee), Less (.less), or .template file changes.  When changes are detected, the files will be linted and compiled.
