@@ -20,7 +20,6 @@ module.exports = (grunt) ->
 		ext = config.ext ? '.html'
 		minify = config.minify ? false
 		beautifier = new Beautifier()
-
 		config.include = grunt.file.read
 
 		files.forEach (file) ->
