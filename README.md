@@ -18,7 +18,7 @@ Enter the following commands in the terminal.
 * `git clone git://github.com/CaryLandholt/AngularFun.git`
 * `cd AngularFun`
 * `npm install`
-* `grunt bootstrap`
+* `grunt`
 
 You are now ready to run the app.
 However, if you wish to run the app with optimizations (minification, etc.) turned on, enter the following command in the terminal.
