@@ -10,8 +10,14 @@
     var requirejs;
     requirejs = require('requirejs');
     return grunt.registerMultiTask('requirejs', 'Runs the RequireJS Optimizer', function() {
-      var config;
+      var config, hash, hashPath, path;
       config = this.data;
+      hashPath = config.hash;
+      if (hashPath) {
+        hash = grunt.file.read(hashPath);
+        path = config.out.replace('{hash}', hash);
+        config.out = path;
+      }
       return requirejs.optimize(config, function(buildResponse) {
         return grunt.verbose.writeln(buildResponse);
       });

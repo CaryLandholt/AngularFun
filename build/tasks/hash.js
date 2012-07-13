@@ -7,9 +7,8 @@
 (function() {
 
   module.exports = function(grunt) {
-    var crypto, fs;
+    var crypto;
     crypto = require('crypto');
-    fs = require('fs');
     return grunt.registerMultiTask('hash', 'Hash a file', function() {
       var dest, hash, source, src;
       src = this.file.src;

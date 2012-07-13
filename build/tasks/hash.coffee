@@ -2,7 +2,7 @@
 
 module.exports = (grunt) ->
 	crypto = require 'crypto'
-	fs = require 'fs'
+	#fs = require 'fs'
 
 	grunt.registerMultiTask 'hash', 'Hash a file', ->
 		src = @file.src

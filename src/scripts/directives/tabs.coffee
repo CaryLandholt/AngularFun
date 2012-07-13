@@ -1,6 +1,6 @@
 ###global define###
 
-define ['libs/angular', 'directives/directives', 'libs/text!partials/tabs.html'], (angular, directives, template) ->
+define ['libs/angular', 'directives/directives', 'libs/text!directives/templates/tabs.html'], (angular, directives, template) ->
 	'use strict'
 
 	directives.directive 'tabs', [->

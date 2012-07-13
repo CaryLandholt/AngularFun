@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.0.1
+ * @license AngularJS v1.0.2-a8b04004
  * (c) 2010-2012 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -1247,11 +1247,11 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.0.1',    // all of these placeholder strings will be replaced by rake's
+  full: '1.0.2-a8b04004',    // all of these placeholder strings will be replaced by rake's
   major: 1,    // compile task
   minor: 0,
-  dot: 1,
-  codeName: 'thorium-shielding'
+  dot: 2,
+  codeName: 'debilitating-awesomeness'
 };
 
 
