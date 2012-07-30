@@ -11,7 +11,6 @@
 * Must have [node.js (at least v0.8.1)](http://nodejs.org/) installed with npm (Node Package Manager)
 * Install the following Node.js modules via the terminal.  This is a one-time task as the `-g` switch will install the modules globally.
   * `npm install -g grunt`
-  * `npm install -g nodemon`
 
 ## Install Angular Fun
 Enter the following commands in the terminal.

@@ -7,5 +7,5 @@ module.exports = (grunt) ->
 		src = @file.src
 		dest = @file.dest
 
-		#wrench.mkdirSyncRecursive dest, 0o0777
+		wrench.mkdirSyncRecursive dest, 0o0777
 		wrench.copyDirSyncRecursive src, dest

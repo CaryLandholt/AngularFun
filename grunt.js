@@ -156,9 +156,17 @@ module.exports = function (grunt) {
 				files: '<config:template.dev.src>',
 				tasks: 'template:dev'
 			}
+		},
+
+		server: {
+			app: {
+				src: './server.coffee',
+				port: 3005
+			}
 		}
 	});
 
+	grunt.loadNpmTasks('grunt-exec');
 	grunt.loadTasks('build/tasks');
 	grunt.registerTask('core', 'delete coffeeLint coffee copy lint less');
 	grunt.registerTask('bootstrap', 'core template:dev');
