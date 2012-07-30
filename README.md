@@ -25,9 +25,7 @@ However, if you wish to run the app with optimizations (minification, etc.) turn
 
 ## Run It
 * Navigate to the root of the project
-* `nodemon server.coffee -w server.coffee`
-
-You can override the default port (3005) with `nodemon server.coffee -w server.coffee {port}` where {port} represents your desired port number.
+* `grunt server`
 
 ## Making Changes
 * `grunt dev` will watch for any CoffeeScript (.coffee), Less (.less), or .template file changes.  When changes are detected, the files will be linted and compiled.
