@@ -29,6 +29,9 @@ module.exports = function(grunt) {
   return grunt.registerMultiTask('delete', 'Deletes a directory', function() {
     var dest, isDestADirectory;
     dest = this.file.dest;
+    if (!fs.existsSync(dest)) {
+      return;
+    }
     isDestADirectory = isDirectory(dest);
     if (isDestADirectory) {
       return deleteDirectory(dest);

@@ -25,6 +25,9 @@ module.exports = (grunt) ->
 
 	grunt.registerMultiTask 'delete', 'Deletes a directory', ->
 		dest = @file.dest
+
+		return if not fs.existsSync dest
+
 		isDestADirectory = isDirectory dest
 
 		if isDestADirectory

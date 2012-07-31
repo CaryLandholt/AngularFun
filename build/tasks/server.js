@@ -10,11 +10,14 @@ module.exports = function(grunt) {
     target = this.target;
     config = this.data;
     port = config.port;
-    options = ['./node_modules/.bin/nodemon', src, '-w', src, port];
+    options = ['"' + './node_modules/.bin/nodemon' + '"', src, '-w', src, port];
     grunt.log.write("starting \"" + target + "\" web server at \"http://localhost:" + port + "\"");
     return grunt.helper('exec', "" + (options.join(' ')), true, true, function(err) {
       if (err) {
-        return grunt.log.write(err);
+        grunt.log.write(err);
+        return done(false);
+      } else {
+        return done(true);
       }
     });
   });

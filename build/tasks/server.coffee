@@ -9,7 +9,7 @@ module.exports = (grunt) ->
 		port = config.port
 
 		options = [
-			'./node_modules/.bin/nodemon'
+			'"' + './node_modules/.bin/nodemon' + '"'
 			src
 			'-w'
 			src
@@ -19,4 +19,8 @@ module.exports = (grunt) ->
 		grunt.log.write "starting \"#{target}\" web server at \"http://localhost:#{port}\""
 
 		grunt.helper 'exec', "#{options.join ' '}", true, true, (err) ->
-			grunt.log.write(err) if err
+			if err
+				grunt.log.write err
+				done false
+			else
+				done true

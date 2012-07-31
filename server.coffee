@@ -33,7 +33,7 @@
 			layout: false
 
 		app.use express.bodyParser()
-		app.use express.static(dir)
+		app.use express.static dir
 		app.use app.router
 
 		app.engine '.html', (str, options) ->
