@@ -6,15 +6,23 @@ module.exports = (grunt) ->
 		src = @file.src
 		target = @target
 		config = @data
+		watch = config.watch ? false
 		port = config.port
 
-		options = [
-			'"' + './node_modules/.bin/nodemon' + '"'
-			src
-			'-w'
-			src
-			port
-		]
+		if watch
+			options = [
+				'"' + './node_modules/.bin/nodemon' + '"'
+				src
+				'-w'
+				src
+				port
+			]
+		else
+			options = [
+				'node'
+				src
+				port
+			]
 
 		grunt.log.write "starting \"#{target}\" web server at \"http://localhost:#{port}\""
 
