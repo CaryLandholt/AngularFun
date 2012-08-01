@@ -167,6 +167,7 @@ module.exports = function (grunt) {
 	});
 
 	grunt.loadNpmTasks('grunt-exec');
+	grunt.loadNpmTasks('grunt-less');
 	grunt.loadTasks('build/tasks');
 	grunt.registerTask('core', 'delete coffeeLint coffee copy lint less');
 	grunt.registerTask('bootstrap', 'core template:dev');
