@@ -1,5 +1,5 @@
 /**
- * @license RequireJS domReady 2.0.0 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
+ * @license RequireJS domReady 2.0.1 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
  * see: http://github.com/requirejs/domReady for details
  */
@@ -12,15 +12,15 @@
 define(function () {
     'use strict';
 
-    var isBrowser = typeof window !== "undefined" && window.document,
+    var isTop, testDiv, scrollIntervalId,
+        isBrowser = typeof window !== "undefined" && window.document,
         isPageLoaded = !isBrowser,
         doc = isBrowser ? document : null,
-        readyCalls = [],
-        isTop, testDiv, scrollIntervalId;
+        readyCalls = [];
 
     function runCallbacks(callbacks) {
         var i;
-        for (i = 0; i < callbacks.length; i++) {
+        for (i = 0; i < callbacks.length; i += 1) {
             callbacks[i](doc);
         }
     }
@@ -63,7 +63,7 @@ define(function () {
             testDiv = document.createElement('div');
             try {
                 isTop = window.frameElement === null;
-            } catch(e) {}
+            } catch (e) {}
 
             //DOMContentLoaded approximation that uses a doScroll, as found by
             //Diego Perini: http://javascript.nwbox.com/IEContentLoaded/,
@@ -84,8 +84,12 @@ define(function () {
         //entering "interactive" or "complete". More details:
         //http://dev.w3.org/html5/spec/the-end.html#the-end
         //http://stackoverflow.com/questions/3665561/document-readystate-of-interactive-vs-ondomcontentloaded
-        if (document.readyState === "complete" ||
-            document.readyState === "interactive") {
+        //Hmm, this is more complicated on further use, see "firing too early"
+        //bug: https://github.com/requirejs/domReady/issues/1
+        //so removing the || document.readyState === "interactive" test.
+        //There is still a window.onload binding that should get fired if
+        //DOMContentLoaded is missed.
+        if (document.readyState === "complete") {
             pageLoaded();
         }
     }
@@ -106,7 +110,7 @@ define(function () {
         return domReady;
     }
 
-    domReady.version = '2.0.0';
+    domReady.version = '2.0.1';
 
     /**
      * Loader Plugin API method
