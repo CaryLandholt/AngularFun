@@ -23,7 +23,6 @@ require
 		'directives/tab'
 		'directives/tabs'
 		'filters/twitterfy'
-		'libs/angular'
 		'responseInterceptors/dispatcher'
 	], (app) ->
 		app.config ['$routeProvider', ($routeProvider) ->

@@ -95,33 +95,21 @@ module.exports = function (grunt) {
 
 		// optimizes files managed by RequireJS
 		requirejs: {
-			directives: {
+			scripts: {
 				baseUrl: './dist/scripts/',
-				exclude: ['libs/modernizr', 'libs/angular', 'libs/angularResource'],
 				findNestedDependencies: true,
+				include: 'requireLib',
 				mainConfigFile: './dist/scripts/main.js',
 				name: 'main',
 				optimize: 'none',
 				out: './dist/scripts/scripts.js',
-				preserveLicenseComments: false,
-				wrap: {
-					startFile: './build/inlineDefines.js',
-					end: ';'
-				}
-			},
-			scripts: {
-				baseUrl: './dist/scripts/',
-				exclude: ['libs/modernizr', 'libs/angular', 'libs/angularResource'],
-				findNestedDependencies: true,
-				mainConfigFile: './dist/scripts/main.js',
-				name: 'main',
-				out: './dist/scripts/scripts.{hash}.min.js',
-				preserveLicenseComments: false,
-				wrap: {
-					startFile: './build/inlineDefines.js',
-					end: ';'
+				paths: {
+					'libs/angular': 'libs/angular.min',
+					'libs/angular-resource': 'libs/angular-resource.min',
+					'libs/modernizr': 'libs/modernizr.min',
+					requireLib: 'libs/require'
 				},
-				hash: './dist/scripts/scripts.hash'
+				preserveLicenseComments: false
 			},
 			styles: {
 				baseUrl: './dist/styles/',
@@ -133,10 +121,6 @@ module.exports = function (grunt) {
 		},
 
 		hash: {
-			scripts: {
-				src: '<%= pkg.dist %>scripts/scripts.js',
-				dest: '<%= pkg.dist %>scripts/scripts.hash'
-			},
 			styles: {
 				src: '<%= pkg.dist %>styles/styles.css',
 				dest: '<%= pkg.dist %>styles/styles.hash'
@@ -174,5 +158,5 @@ module.exports = function (grunt) {
 	grunt.registerTask('bootstrap', 'core template:dev');
 	grunt.registerTask('default', 'bootstrap');
 	grunt.registerTask('dev', 'bootstrap watch');
-	grunt.registerTask('prod', 'core template:directives requirejs:directives hash requirejs:scripts requirejs:styles template:prod');
+	grunt.registerTask('prod', 'core template:directives requirejs:scripts hash requirejs:styles template:prod');
 };

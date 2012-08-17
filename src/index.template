@@ -17,11 +17,7 @@
 		<% } %>
 
 		<% if (config.environment === 'prod') { %>
-			<script src="/scripts/libs/modernizr.js"></script>
-			<script src="/scripts/libs/angular.min.js"></script>
-			<script src="/scripts/libs/angular-resource.min.js"></script>
-			<script src="/scripts/libs/require.js"></script>
-			<script src="/scripts/scripts.<%= config.include('./dist/scripts/scripts.hash') %>.min.js"></script>
+			<script src="/scripts/scripts.js"></script>
 		<% } else { %>
 			<script data-main="/scripts/main.js" src="/scripts/libs/require.js"></script>
 		<% } %>
