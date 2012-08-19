@@ -101,29 +101,24 @@ module.exports = function (grunt) {
 				include: 'requireLib',
 				mainConfigFile: './dist/scripts/main.js',
 				name: 'main',
-				optimize: 'none',
-				out: './dist/scripts/scripts.js',
+				optimize: 'uglify',
+				out: './dist/scripts/scripts.min.js',
 				paths: {
 					'libs/angular': 'libs/angular.min',
 					'libs/angular-resource': 'libs/angular-resource.min',
 					'libs/modernizr': 'libs/modernizr.min',
 					requireLib: 'libs/require'
 				},
-				preserveLicenseComments: false
+				preserveLicenseComments: false,
+				uglify: {
+					no_mangle: true
+				}
 			},
 			styles: {
 				baseUrl: './dist/styles/',
 				cssIn: './dist/styles/styles.css',
 				optimizeCss: 'standard',
-				out: './dist/styles/styles.{hash}.min.css',
-				hash: './dist/styles/styles.hash'
-			}
-		},
-
-		hash: {
-			styles: {
-				src: '<%= pkg.dist %>styles/styles.css',
-				dest: '<%= pkg.dist %>styles/styles.hash'
+				out: './dist/styles/styles.min.css'
 			}
 		},
 
@@ -158,5 +153,5 @@ module.exports = function (grunt) {
 	grunt.registerTask('bootstrap', 'core template:dev');
 	grunt.registerTask('default', 'bootstrap');
 	grunt.registerTask('dev', 'bootstrap watch');
-	grunt.registerTask('prod', 'core template:directives requirejs:scripts hash requirejs:styles template:prod');
+	grunt.registerTask('prod', 'core template:directives requirejs template:prod');
 };
