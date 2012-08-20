@@ -148,7 +148,7 @@ module.exports = function (grunt) {
 
 	grunt.loadNpmTasks('grunt-exec');
 	grunt.loadNpmTasks('grunt-less');
-	grunt.loadTasks('build/tasks');
+	grunt.loadNpmTasks('grunt-hustler');
 	grunt.registerTask('core', 'delete coffeeLint coffee copy lint less');
 	grunt.registerTask('bootstrap', 'core template:dev');
 	grunt.registerTask('default', 'bootstrap');

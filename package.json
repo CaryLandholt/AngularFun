@@ -10,6 +10,7 @@
 		"express": "~3.0.0",
 		"grunt": "~0.3.12",
 		"grunt-exec": "~0.1.1",
+		"grunt-hustler": "~0.1.0",
 		"grunt-less": "~0.1.5",
 		"node-js-beautify": "~0.1.0",
 		"nodemon": "~0.6.23",
