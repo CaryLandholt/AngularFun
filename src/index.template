@@ -12,13 +12,9 @@
 
 		<% if (config.environment === 'prod') { %>
 			<link rel="stylesheet" href="/styles/styles.min.css" />
-		<% } else { %>
-			<link rel="stylesheet" href="/styles/styles.css" />
-		<% } %>
-
-		<% if (config.environment === 'prod') { %>
 			<script src="/scripts/scripts.min.js"></script>
 		<% } else { %>
+			<link rel="stylesheet" href="/styles/styles.css" />
 			<script data-main="/scripts/main.js" src="/scripts/libs/require.js"></script>
 		<% } %>
 	</head>

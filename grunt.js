@@ -104,9 +104,6 @@ module.exports = function (grunt) {
 				optimize: 'uglify',
 				out: './dist/scripts/scripts.min.js',
 				paths: {
-					'libs/angular': 'libs/angular.min',
-					'libs/angular-resource': 'libs/angular-resource.min',
-					'libs/modernizr': 'libs/modernizr.min',
 					requireLib: 'libs/require'
 				},
 				preserveLicenseComments: false,
