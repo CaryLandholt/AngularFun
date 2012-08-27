@@ -1,14 +1,19 @@
-<!doctype html>
-<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
-<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
-<!--[if IE 8]> <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]> <!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js  xmlns:ng="http://angularjs.org" xmlns:app="ignored" lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js  xmlns:ng="http://angularjs.org" xmlns:app="ignored" lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js  xmlns:ng="http://angularjs.org" xmlns:app="ignored" lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" xmlns:ng="http://angularjs.org" xmlns:app="ignored"> <!--<![endif]-->
 	<head>
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-		<title>Angular Demo</title>
+		<title>Angular Fun</title>
 		<meta name="description" content="Having fun with AngularJS" />
 		<meta name="viewport" content="width=device-width" />
+
+		<!--[if lte IE 8]>
+			<script src="/scripts/libs/json2.js"></script>
+			<script src="/scripts/libs/html5shiv-printshiv.js"></script>
+		<![endif]-->
 
 		<% if (config.environment === 'prod') { %>
 			<link rel="stylesheet" href="/styles/styles.min.css" />
@@ -28,8 +33,8 @@
 			</div>
 			<div class="row">
 				<div class="span8">
-					<Tabs>
-						<Tab data-tab-id="twitter" caption="Twitter">
+					<app:tabs>
+						<app:tab data-tab-id="twitter" caption="Twitter">
 							<section ng-controller="twitter">
 								<div class="alert alert-info" ng-show="!searchTerm.length">
 									<h4 class="alert-heading">Heads up!</h4>
@@ -43,8 +48,8 @@
 
 								<%= config.include('./src/scripts/partials/tweets.template') %>
 							</section>
-						</Tab>
-						<Tab data-tab-id="gitHub" caption="GitHub">
+						</app:tab>
+						<app:tab data-tab-id="gitHub" caption="GitHub">
 							<section ng-controller="gitHub">
 								<div class="alert alert-info" ng-show="!searchTerm.length">
 									<h4 class="alert-heading">Heads up!</h4>
@@ -58,8 +63,8 @@
 
 								<%= config.include('./src/scripts/partials/repos.template') %>
 							</section>
-						</Tab>
-						<Tab data-tab-id="people" caption="People">
+						</app:tab>
+						<app:tab data-tab-id="people" caption="People">
 							<div class="row">
 								<div class="span4">
 									<section ng-controller="people">
@@ -83,8 +88,8 @@
 									</section>
 								</div>
 							</div>
-						</Tab>
-					</Tabs>
+						</app:tab>
+					</app:tabs>
 				</div>
 				<div class="span4">
 					<h2>Search History</h2>

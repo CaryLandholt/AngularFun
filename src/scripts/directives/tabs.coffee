@@ -3,7 +3,7 @@
 define ['libs/angular', 'directives/directives', 'libs/text!directives/templates/tabs.html'], (angular, directives, template) ->
 	'use strict'
 
-	directives.directive 'tabs', [->
+	directives.directive 'appTabs', [->
 		controller = ['$scope', '$element', '$rootScope', ($scope, $element, $rootScope) ->
 			$scope.tabs = []
 

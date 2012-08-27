@@ -6,11 +6,8 @@ require
 			'libs/angularResource': 'libs/angular-resource'
 	shim:
 		'libs/angular':
-			deps: ['libs/modernizr']
 			exports: 'angular'
 		'libs/angular-resource': ['libs/angular']
-		'libs/modernizr':
-			exports: 'Modernizr'
 	[
 		'app'
 		'bootstrap'
