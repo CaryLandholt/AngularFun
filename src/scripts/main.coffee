@@ -7,7 +7,10 @@ require
 	shim:
 		'libs/angular':
 			exports: 'angular'
-		'libs/angular-resource': ['libs/angular']
+		'libs/angular-resource':
+			deps: [
+				'libs/angular'
+			]
 	[
 		'app'
 		'bootstrap'
