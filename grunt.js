@@ -88,8 +88,7 @@ module.exports = function (grunt) {
 				src: '<config:template.dev.src>',
 				dest: '<config:template.dev.dest>',
 				ext: '<config:template.dev.ext>',
-				environment: 'prod',
-				minify: true
+				environment: 'prod'
 			}
 		},
 
@@ -143,7 +142,6 @@ module.exports = function (grunt) {
 		}
 	});
 
-	grunt.loadNpmTasks('grunt-exec');
 	grunt.loadNpmTasks('grunt-less');
 	grunt.loadNpmTasks('grunt-hustler');
 	grunt.registerTask('core', 'delete coffeeLint coffee copy lint less');
