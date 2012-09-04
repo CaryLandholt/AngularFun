@@ -138,7 +138,7 @@ module.exports = function (grunt) {
 			app: {
 				src: './server.coffee',
 				port: 3005,
-				watch: true
+				watch: './routes.coffee'
 			}
 		}
 	});
