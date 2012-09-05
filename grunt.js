@@ -18,7 +18,8 @@ module.exports = function (grunt) {
 			scripts: {
 				src: '<%= pkg.src %>/scripts/**/*.coffee',
 				indentation: {
-					value: 1
+					value: 1,
+					level: 'error'
 				},
 				max_line_length: {
 					level: 'ignore'
@@ -98,6 +99,7 @@ module.exports = function (grunt) {
 				baseUrl: './dist/scripts/',
 				findNestedDependencies: true,
 				include: 'requireLib',
+				logLevel: 0,
 				mainConfigFile: './dist/scripts/main.js',
 				name: 'main',
 				optimize: 'uglify',
@@ -113,6 +115,7 @@ module.exports = function (grunt) {
 			styles: {
 				baseUrl: './dist/styles/',
 				cssIn: './dist/styles/styles.css',
+				logLevel: 0,
 				optimizeCss: 'standard',
 				out: './dist/styles/styles.min.css'
 			}
