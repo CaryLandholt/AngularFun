@@ -32,7 +32,7 @@ module.exports = (app) ->
 		people.push person
 		res.json person
 
-	app.get '/people/details/:id', (req, res) ->
+	app.get '/people/:id', (req, res) ->
 		id = req.params.id
 		current = person for person in people when parseInt(person.id, 10) is parseInt(id, 10)
 

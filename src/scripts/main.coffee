@@ -33,7 +33,7 @@ require
 				resolve:
 					changeTab: ($rootScope) ->
 						$rootScope.$broadcast 'changeTab#gitHub'
-			.when '/people/details/:id'
+			.when '/people/:id'
 				controller: 'personDetails'
 				reloadOnSearch: true
 				resolve:

@@ -14,7 +14,7 @@ define ['libs/angular', 'services/services', 'libs/angularResource'], (angular, 
 			post:
 				method: 'POST'
 
-		personActivity = $resource './people/details/:id', {},
+		personActivity = $resource './people/:id', {},
 			get:
 				method: 'GET'
 				isArray: false
