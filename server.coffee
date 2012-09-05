@@ -13,4 +13,4 @@ app.configure ->
 	routes app
 
 app.listen port, ->
-	console.log "starting web server at http://localhost:#{port}"
+	console.log "started web server at http://localhost:#{port}"
