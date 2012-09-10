@@ -9,7 +9,7 @@ module.exports = function (grunt) {
 		// delete the dist folder
 		delete: {
 			dist: {
-				dest: '<%= pkg.dist %>'
+				src: '<%= pkg.dist %>'
 			}
 		},
 
