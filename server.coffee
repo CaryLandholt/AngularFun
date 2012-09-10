@@ -11,7 +11,7 @@ app.configure ->
 	app.use express.errorHandler()
 	app.use express.static dir
 	app.use app.router
-	routes app
+	routes app, dir
 
 app.listen port, ->
 	console.log "started web server at http://localhost:#{port}"

@@ -8,7 +8,7 @@ people = [
 isUniqueName = (name) ->
 	(name for person in people when person.name is name).length is 0
 
-module.exports = (app) ->
+module.exports = (app, dir) ->
 	app.get '/', (req, res) ->
 		res.render "#{dir}/index.html"
 
