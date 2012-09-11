@@ -5,10 +5,9 @@
 	"dist": "./dist/",
 	"main": "./server.coffee",
 	"dependencies": {
-		"coffee-script": "~1.3.3",
 		"express": "~3.0.0",
 		"grunt": "~0.3.12",
-		"grunt-hustler": "~0.4.9",
+		"grunt-hustler": "~0.5.3",
 		"grunt-less": "~0.1.5",
 		"nodemon": "~0.6.23"
 	},
