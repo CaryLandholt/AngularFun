@@ -6,9 +6,9 @@
 	"main": "./server.coffee",
 	"dependencies": {
 		"express": "~3.0.0",
-		"grunt": "~0.3.12",
-		"grunt-hustler": "~0.6.0",
-		"grunt-less": "~0.1.5"
+		"grunt": "~0.3.15",
+		"grunt-hustler": "~0.6.1",
+		"grunt-contrib-less": "~0.3.0"
 	},
 	"engine": "node >= 0.8.1"
 }
