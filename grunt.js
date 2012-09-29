@@ -33,7 +33,7 @@ module.exports = function (grunt) {
 		// compile CoffeeScript to JavaScript
 		coffee: {
 			dist: {
-				src: '<%= pkg.src %>scripts/',
+				src: '<%= pkg.src %>scripts/**/*.coffee',
 				dest: '<%= pkg.dist %>scripts/',
 				bare: true
 			}
