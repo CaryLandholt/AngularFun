@@ -11,6 +11,7 @@
 ## Prerequisites
 * Must have [Git](http://git-scm.com/) installed
 * Must have [node.js (at least v0.8.1)](http://nodejs.org/) installed with npm (Node Package Manager)
+* Must have [CoffeeScript](https://npmjs.org/package/coffee-script) node package installed globally.  `npm install -g coffee-script`
 * You can skip this step if you wish to run Grunt local to the project - Install the following Node.js modules via the terminal.  This is a one-time task as the `-g` switch will install the modules globally.  `npm install -g grunt`
 
 ## Install Angular Fun
