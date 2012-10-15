@@ -16,8 +16,8 @@
 		<![endif]-->
 
 		<% if (config.environment === 'prod') { %>
-			<link rel="stylesheet" href="/styles/styles.min.css" />
-			<script src="/scripts/scripts.min.js"></script>
+			<link rel="stylesheet" href="/styles/styles.min.css?_=v<%= config.uniqueVersion() %>" />
+			<script src="/scripts/scripts.min.js?_=v<%= config.uniqueVersion() %>"></script>
 		<% } else { %>
 			<link rel="stylesheet" href="/styles/styles.css" />
 			<script data-main="/scripts/main.js" src="/scripts/libs/require.js"></script>
