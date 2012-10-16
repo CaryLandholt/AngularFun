@@ -8,15 +8,15 @@ module.exports = function (grunt) {
 
 		// delete the dist folder
 		delete: {
-			dist: {
-				src: '<%= pkg.dist %>'
+			reset: {
+				files: ['./dist/', './staging/']
 			}
 		},
 
 		// lint CoffeeScript
 		coffeeLint: {
 			scripts: {
-				src: '<%= pkg.src %>/scripts/**/*.coffee',
+				src: './src/scripts/**/*.coffee',
 				indentation: {
 					value: 1,
 					level: 'error'
@@ -33,25 +33,36 @@ module.exports = function (grunt) {
 		// compile CoffeeScript to JavaScript
 		coffee: {
 			dist: {
-				src: '<%= pkg.src %>scripts/**/*.coffee',
-				dest: '<%= pkg.dist %>scripts/',
+				src: './src/scripts/**/*.coffee',
+				dest: './staging/scripts/',
 				bare: true
 			}
 		},
 
 		copy: {
-			libs: {
-				src: '<%= pkg.src %>scripts/libs/',
-				dest: '<%= pkg.dist %>scripts/libs/',
+			staging: {
+				files: {
+					'./staging/scripts/libs/': './src/scripts/libs/',
+					'./staging/img/': './src/img/'
+				}
 			},
-			img: {
-				src: '<%= pkg.src %>img/',
-				dest: '<%= pkg.dist %>img/',
+			dev: {
+				files: {
+					'./dist/': './staging/'
+				}
+			},
+			prod: {
+				files: {
+					'./dist/scripts/': './staging/scripts/scripts.min.js',
+					'./dist/styles/': './staging/styles/styles.min.css',
+					'./dist/img/': './staging/img/',
+					'./dist/': './staging/index.html'
+				}
 			}
 		},
 
 		lint: {
-			scripts: ['<%= pkg.src %>!(libs)**/*.js']
+			scripts: ['./src/!(libs)**/*.js']
 		},
 
 		jshint: {
@@ -64,20 +75,20 @@ module.exports = function (grunt) {
 		// compile Less to CSS
 		less: {
 			dist: {
-				src: '<%= pkg.src %>styles/bootstrap.less',
-				dest: '<%= pkg.dist %>/styles/styles.css'
+				src: './src/styles/bootstrap.less',
+				dest: './staging/styles/styles.css'
 			}
 		},
 
 		// compile templates
 		template: {
 			directives: {
-				src: '<%= pkg.src %>/scripts/directives/templates/**/*.template',
-				dest: '<%= pkg.dist %>/scripts/directives/templates/'
+				src: './src/scripts/directives/templates/**/*.template',
+				dest: './staging/scripts/directives/templates/'
 			},
 			dev: {
-				src: '<%= pkg.src %>**/*.template',
-				dest: '<%= pkg.dist %>',
+				src: './src/**/*.template',
+				dest: './staging/',
 				environment: 'dev'
 			},
 			prod: {
@@ -91,14 +102,14 @@ module.exports = function (grunt) {
 		// optimizes files managed by RequireJS
 		requirejs: {
 			scripts: {
-				baseUrl: './dist/scripts/',
+				baseUrl: './staging/scripts/',
 				findNestedDependencies: true,
 				include: 'requireLib',
 				logLevel: 0,
-				mainConfigFile: './dist/scripts/main.js',
+				mainConfigFile: './staging/scripts/main.js',
 				name: 'main',
 				optimize: 'uglify',
-				out: './dist/scripts/scripts.min.js',
+				out: './staging/scripts/scripts.min.js',
 				paths: {
 					requireLib: 'libs/require'
 				},
@@ -108,21 +119,21 @@ module.exports = function (grunt) {
 				}
 			},
 			styles: {
-				baseUrl: './dist/styles/',
-				cssIn: './dist/styles/styles.css',
+				baseUrl: './staging/styles/',
+				cssIn: './staging/styles/styles.css',
 				logLevel: 0,
 				optimizeCss: 'standard',
-				out: './dist/styles/styles.min.css'
+				out: './staging/styles/styles.min.css'
 			}
 		},
 
 		watch: {
 			coffee: {
-				files: '<%= pkg.src %>scripts/**/*.coffee',
+				files: './src/scripts/**/*.coffee',
 				tasks: 'coffeeLint coffee lint'
 			},
 			less: {
-				files: '<%= pkg.src %>styles/**/*.less',
+				files: './ssrc/styles/**/*.less',
 				tasks: 'less'
 			},
 			template: {
@@ -141,9 +152,9 @@ module.exports = function (grunt) {
 	});
 
 	grunt.loadNpmTasks('grunt-hustler');
-	grunt.registerTask('core', 'delete coffeeLint coffee copy lint less');
-	grunt.registerTask('bootstrap', 'core template:dev');
+	grunt.registerTask('core', 'delete coffeeLint coffee lint less');
+	grunt.registerTask('bootstrap', 'core template:dev copy:staging copy:dev');
 	grunt.registerTask('default', 'bootstrap');
 	grunt.registerTask('dev', 'bootstrap watch');
-	grunt.registerTask('prod', 'core template:directives requirejs template:prod');
+	grunt.registerTask('prod', 'core copy:staging template:directives requirejs template:prod copy:prod');
 };

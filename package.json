@@ -1,8 +1,6 @@
 {
 	"name": "AngularFun",
-	"version": "0.5.4",
-	"src": "./src/",
-	"dist": "./dist/",
+	"version": "0.5.5",
 	"main": "./server.coffee",
 	"dependencies": {
 		"express": "~3.0.0",
