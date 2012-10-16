@@ -73,17 +73,12 @@ module.exports = function (grunt) {
 		template: {
 			directives: {
 				src: '<%= pkg.src %>/scripts/directives/templates/**/*.template',
-				dest: '<%= pkg.dist %>/scripts/directives/templates/',
-				ext: '.html'
+				dest: '<%= pkg.dist %>/scripts/directives/templates/'
 			},
 			dev: {
 				src: '<%= pkg.src %>**/*.template',
 				dest: '<%= pkg.dist %>',
-				ext: '.html',
-				environment: 'dev',
-				indent_size: 1,
-				indent_char: '\t',
-				max_char: 10000
+				environment: 'dev'
 			},
 			prod: {
 				src: '<config:template.dev.src>',
@@ -145,7 +140,6 @@ module.exports = function (grunt) {
 		}
 	});
 
-	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-hustler');
 	grunt.registerTask('core', 'delete coffeeLint coffee copy lint less');
 	grunt.registerTask('bootstrap', 'core template:dev');
