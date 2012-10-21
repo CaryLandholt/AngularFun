@@ -113,10 +113,7 @@ module.exports = function (grunt) {
 				paths: {
 					requireLib: 'libs/require'
 				},
-				preserveLicenseComments: false,
-				uglify: {
-					no_mangle: true
-				}
+				preserveLicenseComments: false
 			},
 			styles: {
 				baseUrl: './staging/styles/',

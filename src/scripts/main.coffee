@@ -31,20 +31,23 @@ require
 				controller: 'gitHub'
 				reloadOnSearch: true
 				resolve:
-					changeTab: ($rootScope) ->
+					changeTab: ['$rootScope', ($rootScope) ->
 						$rootScope.$broadcast 'changeTab#gitHub'
+					]
 			.when '/people/:id'
 				controller: 'personDetails'
 				reloadOnSearch: true
 				resolve:
-					changeTab: ($rootScope) ->
+					changeTab: ['$rootScope', ($rootScope) ->
 						$rootScope.$broadcast 'changeTab#people'
+					]
 			.when '/twitter/:searchTerm'
 				controller: 'twitter'
 				reloadOnSearch: true
 				resolve:
-					changeTab: ($rootScope) ->
+					changeTab: ['$rootScope', ($rootScope) ->
 						$rootScope.$broadcast 'changeTab#twitter'
+					]
 			.otherwise
 				redirectTo: '/github/CaryLandholt'
 		]
