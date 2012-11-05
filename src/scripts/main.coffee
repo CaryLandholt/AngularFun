@@ -1,13 +1,13 @@
 ###global define, require###
 
-require
+requirejs
 	map:
 		'*':
 			'libs/angularResource': 'libs/angular-resource'
 	shim:
 		'libs/angular':
 			exports: 'angular'
-		'libs/angular-resource':
+		'libs/angularResource':
 			deps: [
 				'libs/angular'
 			]

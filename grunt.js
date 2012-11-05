@@ -54,9 +54,10 @@ module.exports = function (grunt) {
 			prod: {
 				files: {
 					'./dist/scripts/': './staging/scripts/scripts.min.js',
+					'./dist/scripts/libs/': ['./staging/scripts/libs/html5shiv-printshiv.js', './staging/scripts/libs/json2.js'],
 					'./dist/styles/': './staging/styles/styles.min.css',
 					'./dist/img/': './staging/img/',
-					'./dist/': './staging/index.html'
+					'./dist/index.html': './staging/index.min.html'
 				}
 			}
 		},
@@ -82,10 +83,6 @@ module.exports = function (grunt) {
 
 		// compile templates
 		template: {
-			directives: {
-				src: './src/scripts/directives/templates/**/*.template',
-				dest: './staging/scripts/directives/templates/'
-			},
 			dev: {
 				src: './src/**/*.template',
 				dest: './staging/',
@@ -94,7 +91,6 @@ module.exports = function (grunt) {
 			prod: {
 				src: '<config:template.dev.src>',
 				dest: '<config:template.dev.dest>',
-				ext: '<config:template.dev.ext>',
 				environment: 'prod'
 			}
 		},
@@ -124,6 +120,14 @@ module.exports = function (grunt) {
 			}
 		},
 
+		minifyHtml: {
+			prod: {
+				files: {
+					'./staging/index.min.html': './staging/index.html'
+				}
+			}
+		},
+
 		watch: {
 			coffee: {
 				files: './src/scripts/**/*.coffee',
@@ -149,9 +153,40 @@ module.exports = function (grunt) {
 	});
 
 	grunt.loadNpmTasks('grunt-hustler');
-	grunt.registerTask('core', 'delete coffeeLint coffee lint less');
-	grunt.registerTask('bootstrap', 'core template:dev copy:staging copy:dev');
-	grunt.registerTask('default', 'bootstrap');
-	grunt.registerTask('dev', 'bootstrap watch');
-	grunt.registerTask('prod', 'core copy:staging template:directives requirejs template:prod copy:prod');
+
+	grunt.registerTask('default', [
+		'delete',
+		'coffeeLint',
+		'coffee',
+		'lint',
+		'less',
+		'template:dev',
+		'copy:staging',
+		'copy:dev'
+	]);
+
+	grunt.registerTask('dev', [
+		'delete',
+		'coffeeLint',
+		'coffee',
+		'lint',
+		'less',
+		'template:dev',
+		'copy:staging',
+		'copy:dev',
+		'watch'
+	]);
+
+	grunt.registerTask('prod', [
+		'delete',
+		'coffeeLint',
+		'coffee',
+		'lint',
+		'less',
+		'template:prod',
+		'copy:staging',
+		'requirejs',
+		'minifyHtml',
+		'copy:prod'
+	]);
 };
