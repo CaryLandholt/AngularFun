@@ -17,6 +17,7 @@ module.exports = (app, dir) ->
 
 	app.post '/people', (req, res) ->
 		name = req.body.name
+		age = req.body.age
 
 		message =
 			"title": "Duplicate!"
@@ -27,7 +28,7 @@ module.exports = (app, dir) ->
 		person =
 			"id": "#{nextId++}"
 			"name": "#{name}"
-			"age": "0"
+			"age": "#{age}"
 
 		people.push person
 		res.json person

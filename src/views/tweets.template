@@ -1,9 +1,9 @@
-<ul ng-hide="!tweets.result.results.length">
-	<li class="row" ng-repeat="tweet in tweets.result.results">
+<ul ng-hide="!tweets.length">
+	<li class="row" ng-repeat="tweet in tweets">
 		<div class="span1 thumbnail">
 			<img ng-src="{{tweet.profile_image_url}}" />
 		</div>
-		<div class="span10">
+		<div class="span6">
 			<div>
 				<b ng-bind="tweet.from_user_name"></b>
 				<a ng-href="https://twitter.com/{{tweet.from_user}}" ng-bind="tweet.from_user | twitterfy" target="_blank"></a>

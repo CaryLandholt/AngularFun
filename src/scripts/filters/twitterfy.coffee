@@ -3,6 +3,6 @@
 define ['filters/filters'], (filters) ->
 	'use strict'
 
-	filters.filter 'twitterfy', [-> (username) ->
+	filters.filter 'twitterfy', ['$log', ($log) -> (username) ->
 		"@#{username}"
 	]

@@ -4,12 +4,12 @@ define ['responseInterceptors/responseInterceptors', 'statuses'], (responseInter
 	'use strict'
 
 	responseInterceptors.config ['$httpProvider', ($httpProvider) ->
-		$httpProvider.responseInterceptors.push ['$rootScope', '$q', ($rootScope, $q) ->
+		$httpProvider.responseInterceptors.push ['$log', '$rootScope', '$q', ($log, $rootScope, $q) ->
 			success = (response) ->
 				status = statuses[response.status]
 
 				$rootScope.$broadcast "success:#{response.status}", response
-				$rootScope.$broadcast("success:#{status}", response)  if status
+				$rootScope.$broadcast("success:#{status}", response) if status
 
 				response
 
@@ -18,8 +18,8 @@ define ['responseInterceptors/responseInterceptors', 'statuses'], (responseInter
 				deferred = $q.defer()
 
 				$rootScope.$broadcast "error:#{response.status}", response
-				$rootScope.$broadcast("error:#{status}", response)  if status
-				deferred.promise()
+				$rootScope.$broadcast("error:#{status}", response) if status
+
 				$q.reject response
 
 			(promise) ->

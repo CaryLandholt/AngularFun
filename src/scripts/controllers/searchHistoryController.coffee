@@ -1,0 +1,11 @@
+###global define###
+
+define ['controllers/controllers', 'services/messageService'], (controllers) ->
+	'use strict'
+
+	controllers.controller 'searchHistoryController', ['$log', '$scope', 'messageService', ($log, $scope, messageService) ->
+		$scope.searchHistory = []
+
+		messageService.subscribe 'search', (name, parameters) ->
+			$scope.searchHistory.push parameters
+	]

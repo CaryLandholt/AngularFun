@@ -7,18 +7,18 @@ requirejs
 	shim:
 		'libs/angular':
 			exports: 'angular'
-		'libs/angularResource':
+		'libs/angular-resource':
 			deps: [
 				'libs/angular'
 			]
 	[
 		'app'
 		'bootstrap'
-		'controllers/gitHub'
-		'controllers/people'
-		'controllers/personDetails'
-		'controllers/searchHistory'
-		'controllers/twitter'
+		'controllers/gitHubController'
+		'controllers/personController'
+		'controllers/personDetailsController'
+		'controllers/searchHistoryController'
+		'controllers/twitterController'
 		'directives/ngController'
 		'directives/tab'
 		'directives/tabs'
@@ -28,21 +28,21 @@ requirejs
 		app.config ['$routeProvider', ($routeProvider) ->
 			$routeProvider
 			.when '/github/:searchTerm'
-				controller: 'gitHub'
+				controller: 'gitHubController'
 				reloadOnSearch: true
 				resolve:
 					changeTab: ['$rootScope', ($rootScope) ->
 						$rootScope.$broadcast 'changeTab#gitHub'
 					]
 			.when '/people/:id'
-				controller: 'personDetails'
+				controller: 'personDetailsController'
 				reloadOnSearch: true
 				resolve:
 					changeTab: ['$rootScope', ($rootScope) ->
 						$rootScope.$broadcast 'changeTab#people'
 					]
 			.when '/twitter/:searchTerm'
-				controller: 'twitter'
+				controller: 'twitterController'
 				reloadOnSearch: true
 				resolve:
 					changeTab: ['$rootScope', ($rootScope) ->

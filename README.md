@@ -12,28 +12,30 @@
 * Must have [Git](http://git-scm.com/) installed
 * Must have [node.js (at least v0.8.1)](http://nodejs.org/) installed with npm (Node Package Manager)
 * Must have [CoffeeScript](https://npmjs.org/package/coffee-script) node package installed globally.  `npm install -g coffee-script`
-* You can skip this step if you wish to run Grunt local to the project - Install the following Node.js modules via the terminal.  This is a one-time task as the `-g` switch will install the modules globally.  `npm install -g grunt`
+* Must have [Grunt](https://github.com/gruntjs/grunt) node package installed globally.  `npm install -g grunt`
 
 ## Install Angular Fun
 Enter the following commands in the terminal.
 * `git clone git://github.com/CaryLandholt/AngularFun.git`
 * `cd AngularFun`
 * `npm install`
-* `grunt` or `"./node_modules/.bin/grunt"` to run it local to the project
 
-You are now ready to run the app.
-However, if you wish to run the app with optimizations (minification, etc.) turned on, enter the following command in the terminal.
-`grunt prod`
-This will create one JavaScript file and one CSS file to demonstrate the power of [r.js](http://requirejs.org/docs/optimization.html), the build optimization tool for RequireJS.
+## Compile Angulr Fun
+You have three options.
+1. `grunt` - will compile the app preserving individual files (when run, files will be loaded on-demand)
+2. `grunt dev` - same as `grunt` but will watch for file changes and recompile on the fly
+3. `grunt prod` - will compile using optimizations.  This will create one JavaScript file and one CSS file to demonstrate the power of [r.js](http://requirejs.org/docs/optimization.html), the build optimization tool for RequireJS.  And take a look at the index.html file.  Yep - it's minified too.
 
 ## Run It
 * Navigate to the root of the project
 * `grunt server`
+* Open the [app](http://localhost:3005/) in your browser to run the app
 
 ## Making Changes
 * `grunt dev` will watch for any CoffeeScript (.coffee), Less (.less), or .template file changes.  When changes are detected, the files will be linted, compiled, and ready for you to refresh the browser.
 
 ## Running Tests
+* `grunt`
 * Open /test/runner.html to run the unit tests using Jasmine.
 
 ## To-Do

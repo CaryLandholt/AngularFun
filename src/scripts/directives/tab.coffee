@@ -3,7 +3,7 @@
 define ['directives/directives', 'libs/text!directives/templates/tab.html', 'directives/tabs'], (directives, template) ->
 	'use strict'
 
-	directives.directive 'appTab', [->
+	directives.directive 'appTab', ['$log', ($log) ->
 		link = (scope, element, attrs, controller) ->
 			controller.addTab scope, attrs.tabId
 

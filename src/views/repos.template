@@ -1,0 +1,6 @@
+<ul ng-hide="!repos.length">
+	<li ng-repeat="repo in repos | orderBy:'pushed_at':true">
+		<a ng-href="{{repo.url}}" ng-bind="repo.name" target="_blank"></a>
+		<div ng-bind="repo.description"></div>
+	</li>
+</ul>

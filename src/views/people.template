@@ -1,0 +1,5 @@
+<ul ng-hide="!people.length">
+	<li class="row" ng-repeat="person in people | orderBy:'name'">
+		<a ng-href="#/people/{{person.id}}" ng-bind="person.name"></a>
+	</li>
+</ul>

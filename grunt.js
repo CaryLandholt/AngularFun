@@ -59,6 +59,21 @@ module.exports = function (grunt) {
 					'./dist/img/': './staging/img/',
 					'./dist/index.html': './staging/index.min.html'
 				}
+			},
+			scripts: {
+				files: {
+					'./dist/': './staging/**/*.js'
+				}
+			},
+			styles: {
+				files: {
+					'./dist/': './staging/**/*.css'
+				}
+			},
+			views: {
+				files: {
+					'./dist/': './staging/**/*.html'
+				}
 			}
 		},
 
@@ -131,15 +146,15 @@ module.exports = function (grunt) {
 		watch: {
 			coffee: {
 				files: './src/scripts/**/*.coffee',
-				tasks: 'coffeeLint coffee lint'
+				tasks: 'coffeeLint coffee lint copy:scripts'
 			},
 			less: {
-				files: './ssrc/styles/**/*.less',
-				tasks: 'less'
+				files: './src/styles/**/*.less',
+				tasks: 'less copy:styles'
 			},
 			template: {
 				files: '<config:template.dev.src>',
-				tasks: 'template:dev'
+				tasks: 'template:dev copy:views'
 			}
 		},
 

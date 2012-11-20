@@ -35,7 +35,7 @@
 				<div class="span8">
 					<app:tabs>
 						<app:tab data-tab-id="twitter" caption="Twitter">
-							<section ng-controller="twitter">
+							<section ng-controller="twitterController">
 								<div class="alert alert-info" ng-show="!searchTerm.length">
 									<h4 class="alert-heading">Heads up!</h4>
 									<span>Enter Twitter search criteria.</span>
@@ -46,11 +46,11 @@
 									<button type="submit" class="btn"><i class="icon-search"></i> Search</button>
 								</form>
 
-								<%= config.include('./src/scripts/partials/tweets.template') %>
+								<%= config.include('./src/views/tweets.template') %>
 							</section>
 						</app:tab>
 						<app:tab data-tab-id="gitHub" caption="GitHub">
-							<section ng-controller="gitHub">
+							<section ng-controller="gitHubController">
 								<div class="alert alert-info" ng-show="!searchTerm.length">
 									<h4 class="alert-heading">Heads up!</h4>
 									<span>Enter GitHub search criteria.</span>
@@ -61,30 +61,40 @@
 									<button type="submit" class="btn"><i class="icon-search"></i> Search</button>
 								</form>
 
-								<%= config.include('./src/scripts/partials/repos.template') %>
+								<%= config.include('./src/views/repos.template') %>
 							</section>
 						</app:tab>
 						<app:tab data-tab-id="people" caption="People">
 							<div class="row">
-								<div class="span4">
-									<section ng-controller="people">
+								<div class="span6">
+									<section ng-controller="personController">
 										<div class="alert alert-error" ng-show="!!error">
 											<h4 class="alert-heading" ng-bind="error.title"></h4>
 											<span ng-bind="error.message"></span>
 										</div>
 
-										<form class="well form-search" ng-submit="insertPerson(name)">
-											<input type="text" class="input-medium search-query" ng-model="name" />
-											<button type="submit" class="btn"><i class="icon-plus"></i> Insert</button>
-											<myinput model="name" kind="text" caption="My Caption" placeholder="Enter something here" help-text="Help me out, bro!" />
+										<form class="well form-search" ng-submit="insertPerson(person)">
+											<p>
+												<span class="label label-info">Heads up!</span>
+												<span class="text-info">Try adding a duplicate name.</span>
+											</p>
+
+											<input type="text" class="input-medium" ng-model="person.name" placeholder="Name" />
+											<input type="text" class="input-small" ng-model="person.age" placeholder="Age" />
+											<button type="submit" class="btn"><i class="icon-plus"></i> Add Person</button>
 										</form>
 
-										<%= config.include('./src/scripts/partials/people.template') %>
+										<%= config.include('./src/views/people.template') %>
 									</section>
 								</div>
-								<div class="span4">
-									<section ng-controller="personDetails">
-										Age:  <span ng-bind="person.result.age"></span>
+								<div class="span2">
+									<section ng-controller="personDetailsController">
+										<dl>
+											<dt>Name</dt>
+											<dd ng-bind="person.name"></dd>
+											<dt>Age</dt>
+											<dd ng-bind="person.age"></dd>
+										</dl>
 									</section>
 								</div>
 							</div>
@@ -93,7 +103,7 @@
 				</div>
 				<div class="span4">
 					<h2>Search History</h2>
-					<section ng-controller="searchHistory">
+					<section ng-controller="searchHistoryController">
 						<form class="well form-search">
 							<input type="text" class="input-medium search-query" placeholder="Type filter..." ng-model="query" />
 							<label ng-bind-template="Displaying:  {{(searchHistory | filter:query).length}}"></label>
