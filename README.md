@@ -22,6 +22,7 @@ Enter the following commands in the terminal.
 
 ## Compile Angulr Fun
 You have three options.
+
 1. `grunt` - will compile the app preserving individual files (when run, files will be loaded on-demand)
 2. `grunt dev` - same as `grunt` but will watch for file changes and recompile on the fly
 3. `grunt prod` - will compile using optimizations.  This will create one JavaScript file and one CSS file to demonstrate the power of [r.js](http://requirejs.org/docs/optimization.html), the build optimization tool for RequireJS.  And take a look at the index.html file.  Yep - it's minified too.
