@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.1.1-cf78fb56
+ * @license AngularJS v1.1.1
  * (c) 2010-2012 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -320,8 +320,8 @@ angular.module('ngResource', ['ng']).
 
       function extractParams(data, actionParams){
         var ids = {};
-        paramDefaults = extend(paramDefaults, actionParams);
-        forEach(paramDefaults || {}, function(value, key){
+        actionParams = extend({}, paramDefaults, actionParams);
+        forEach(actionParams, function(value, key){
           ids[key] = value.charAt && value.charAt(0) == '@' ? getter(data, value.substr(1)) : value;
         });
         return ids;
