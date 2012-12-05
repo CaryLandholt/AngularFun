@@ -1,7 +1,7 @@
 express = require 'express'
 routes = require './routes'
 dir = "#{__dirname}/dist"
-port = process.env.PORT ? process.argv.splice(2)[0] ? 3005
+port = process.env.PORT or process.argv.splice(2)[0] or 3005
 app = express()
 
 app.configure ->
