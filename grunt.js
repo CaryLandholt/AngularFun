@@ -27,6 +27,19 @@ module.exports = function (grunt) {
 				no_tabs: {
 					level: 'ignore'
 				}
+			},
+			tests: {
+				src: './test/scripts/**/*.coffee',
+				indentation: {
+					value: 1,
+					level: 'error'
+				},
+				max_line_length: {
+					level: 'ignore'
+				},
+				no_tabs: {
+					level: 'ignore'
+				}
 			}
 		},
 
@@ -35,6 +48,11 @@ module.exports = function (grunt) {
 			dist: {
 				src: './src/scripts/**/*.coffee',
 				dest: './staging/scripts/',
+				bare: true
+			},
+			tests: {
+				src: './test/scripts/**/*.coffee',
+				dest: './test/scripts/',
 				bare: true
 			}
 		},
@@ -169,6 +187,14 @@ module.exports = function (grunt) {
 
 	grunt.loadNpmTasks('grunt-hustler');
 
+  grunt.registerTask('unit-tests', 'run the testacular test driver on jasmine unit tests', function () {
+    var done = this.async();
+    require('child_process').exec('./node_modules/testacular/bin/testacular start ./testacular.conf.js --single-run', function (err, stdout) {
+      grunt.log.write(stdout);
+      done(err);
+    });
+  });
+
 	grunt.registerTask('default', [
 		'delete',
 		'coffeeLint',
@@ -204,4 +230,9 @@ module.exports = function (grunt) {
 		'minifyHtml',
 		'copy:prod'
 	]);
+
+	grunt.registerTask('test', [
+    'default',
+    'unit-tests'
+  ]);
 };
