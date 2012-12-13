@@ -1,4 +1,4 @@
-directives.directive 'appTabs', ['$log', ($log) ->
+angular.module('app').directive 'appTabs', ['$log', ($log) ->
 	controller = ['$scope', '$element', '$rootScope', ($scope, $element, $rootScope) ->
 		$scope.tabs = []
 
