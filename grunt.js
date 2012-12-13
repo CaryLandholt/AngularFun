@@ -134,25 +134,20 @@ module.exports = function (grunt) {
 			scripts: {
 				baseUrl: './staging/scripts/',
 				findNestedDependencies: true,
-				// include: 'requireLib',
 				logLevel: 0,
 				mainConfigFile: './staging/scripts/main.js',
 				name: 'main',
-				optimize: 'uglify',
-				out: './staging/scripts/scripts.min.js',
-				// paths: {
-				// 	requireLib: 'libs/require'
-				// },
-				preserveLicenseComments: false,
-				skipModuleInsertion: true,
 				onBuildWrite: function (moduleName, path, contents) {
 					if (moduleName === 'main') {
 						return '';
 					}
 
 					return contents;
-				}
-				// generateSourceMaps: true
+				},
+				optimize: 'uglify',
+				out: './staging/scripts/scripts.min.js',
+				preserveLicenseComments: false,
+				skipModuleInsertion: true
 			},
 			styles: {
 				baseUrl: './staging/styles/',
