@@ -1,28 +1,18 @@
-###global define###
+angular.coffee('app').config ['$httpProvider', ($httpProvider) ->
+	$httpProvider.responseInterceptors.push ['$log', '$rootScope', '$q', ($log, $rootScope, $q) ->
+		success = (response) ->
+			$rootScope.$broadcast "success:#{response.status}", response
 
-define ['responseInterceptors/responseInterceptors', 'statuses'], (responseInterceptors, statuses) ->
-	'use strict'
+			response
 
-	responseInterceptors.config ['$httpProvider', ($httpProvider) ->
-		$httpProvider.responseInterceptors.push ['$log', '$rootScope', '$q', ($log, $rootScope, $q) ->
-			success = (response) ->
-				status = statuses[response.status]
+		error = (response) ->
+			deferred = $q.defer()
 
-				$rootScope.$broadcast "success:#{response.status}", response
-				$rootScope.$broadcast("success:#{status}", response) if status
+			$rootScope.$broadcast "error:#{response.status}", response
 
-				response
+			$q.reject response
 
-			error = (response) ->
-				status = statuses[response.status]
-				deferred = $q.defer()
-
-				$rootScope.$broadcast "error:#{response.status}", response
-				$rootScope.$broadcast("error:#{status}", response) if status
-
-				$q.reject response
-
-			(promise) ->
-				promise.then success, error
-		]
+		(promise) ->
+			promise.then success, error
 	]
+]
