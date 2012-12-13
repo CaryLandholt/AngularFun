@@ -75,7 +75,8 @@ module.exports = function (grunt) {
 					'./dist/scripts/libs/': ['./staging/scripts/libs/html5shiv-printshiv.js', './staging/scripts/libs/json2.js'],
 					'./dist/styles/': './staging/styles/styles.min.css',
 					'./dist/img/': './staging/img/',
-					'./dist/index.html': './staging/index.min.html'
+					'./dist/index.html': './staging/index.min.html',
+					'./dist/views/': './staging/views/'
 				}
 			},
 			scripts: {
@@ -109,7 +110,7 @@ module.exports = function (grunt) {
 		// compile Less to CSS
 		less: {
 			dist: {
-				src: './src/styles/bootstrap.less',
+				src: './src/styles/styles.less',
 				dest: './staging/styles/styles.css'
 			}
 		},
@@ -133,16 +134,25 @@ module.exports = function (grunt) {
 			scripts: {
 				baseUrl: './staging/scripts/',
 				findNestedDependencies: true,
-				include: 'requireLib',
+				// include: 'requireLib',
 				logLevel: 0,
 				mainConfigFile: './staging/scripts/main.js',
 				name: 'main',
 				optimize: 'uglify',
 				out: './staging/scripts/scripts.min.js',
-				paths: {
-					requireLib: 'libs/require'
-				},
-				preserveLicenseComments: false
+				// paths: {
+				// 	requireLib: 'libs/require'
+				// },
+				preserveLicenseComments: false,
+				skipModuleInsertion: true,
+				onBuildWrite: function (moduleName, path, contents) {
+					if (moduleName === 'main') {
+						return '';
+					}
+
+					return contents;
+				}
+				// generateSourceMaps: true
 			},
 			styles: {
 				baseUrl: './staging/styles/',
@@ -187,13 +197,14 @@ module.exports = function (grunt) {
 
 	grunt.loadNpmTasks('grunt-hustler');
 
-  grunt.registerTask('unit-tests', 'run the testacular test driver on jasmine unit tests', function () {
-    var done = this.async();
-    require('child_process').exec('./node_modules/testacular/bin/testacular start ./testacular.conf.js --single-run', function (err, stdout) {
-      grunt.log.write(stdout);
-      done(err);
-    });
-  });
+	grunt.registerTask('unit-tests', 'run the testacular test driver on jasmine unit tests', function () {
+		var done = this.async();
+
+		require('child_process').exec('./node_modules/testacular/bin/testacular start ./testacular.conf.js --single-run', function (err, stdout) {
+			grunt.log.write(stdout);
+			done(err);
+		});
+	});
 
 	grunt.registerTask('default', [
 		'delete',
@@ -232,7 +243,7 @@ module.exports = function (grunt) {
 	]);
 
 	grunt.registerTask('test', [
-    'default',
-    'unit-tests'
-  ]);
+		'default',
+		'unit-tests'
+	]);
 };

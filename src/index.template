@@ -17,13 +17,11 @@
 
 		<% if (config.environment === 'prod') { %>
 			<link rel="stylesheet" href="/styles/styles.min.css?_=v<%= config.uniqueVersion() %>" />
-			<script src="/scripts/scripts.min.js?_=v<%= config.uniqueVersion() %>"></script>
 		<% } else { %>
 			<link rel="stylesheet" href="/styles/styles.css" />
-			<script data-main="/scripts/main.js" src="/scripts/libs/require.js"></script>
 		<% } %>
 	</head>
-	<body ng-cloak>
+	<body ng-cloak class="ng-cloak">
 		<ng:view></ng:view>
 		<div class="container">
 			<div class="hero-unit">
@@ -116,5 +114,10 @@
 				</div>
 			</div>
 		</div>
+			<% if (config.environment === 'prod') { %>
+				<script src="/scripts/scripts.min.js?_=v<%= config.uniqueVersion() %>"></script>
+			<% } else { %>
+				<script data-main="/scripts/main.js" src="/scripts/libs/require.js"></script>
+			<% } %>
 	</body>
 </html>
