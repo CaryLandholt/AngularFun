@@ -4,7 +4,6 @@
 ## About
 * This is an attempt to play with the features of [AngularJS](http://angularjs.org/) using a structure to support large client-side applications, leverage the goodness of [RequireJS](http://requirejs.org/), [CoffeeScript](http://coffeescript.org/), [LESS](http://lesscss.org/), [Grunt](https://github.com/cowboy/grunt) and [Jasmine](http://pivotal.github.com/jasmine/).
 * Demonstrates controllers, services, directives, filters, and partials
-* Uses the RequireJS [text plugin](http://requirejs.org/docs/api.html#text) to include directive partials in the minified output to reduce server requests
 * Uses Jasmine to run unit tests
 * Uses Grunt to put it all together
 

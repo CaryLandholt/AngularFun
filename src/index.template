@@ -27,7 +27,7 @@
 			<div class="hero-unit">
 				<h1>Playing with <a href="http://angularjs.org" target="_blank">AngularJS</a></h1>
 				<p>and also <a href="http://requirejs.org/" target="_blank">RequireJS</a></p>
-				<p>Dynamically loading templates.  Only getting JSON from the server.</p>
+				<p>Dynamically loading dependencies in <b>dev</b>, but minimize the hell out of it for <b>prod</b>.</p>
 			</div>
 			<div class="row">
 				<div class="span8">
