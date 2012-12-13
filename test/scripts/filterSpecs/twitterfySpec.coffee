@@ -4,7 +4,7 @@ define ['libs/angularMocks', 'filters/twitterfy'], ->
 	'use strict'
 
 	describe 'twitterfy filter', ->
-		beforeEach module 'filters'
+		beforeEach module 'app'
 
 		it 'Twitter username should be prepended with the @ sign', inject ['twitterfyFilter', (twitterfy) ->
 			twitterHandle = 'CaryLandholt'
