@@ -1,33 +1,28 @@
-###global define###
+directives.directive 'appTabs', ['$log', ($log) ->
+	controller = ['$scope', '$element', '$rootScope', ($scope, $element, $rootScope) ->
+		$scope.tabs = []
 
-define ['libs/angular', 'directives/directives', 'libs/text!directives/templates/tabs.html'], (angular, directives, template) ->
-	'use strict'
+		$scope.select = (tab) ->
+			return if tab.selected is true
 
-	directives.directive 'appTabs', ['$log', ($log) ->
-		controller = ['$scope', '$element', '$rootScope', ($scope, $element, $rootScope) ->
-			$scope.tabs = []
+			angular.forEach $scope.tabs, (tab) ->
+				tab.selected = false
 
-			$scope.select = (tab) ->
-				return if tab.selected is true
+			tab.selected = true
 
-				angular.forEach $scope.tabs, (tab) ->
-					tab.selected = false
+		@addTab = (tab, tabId) ->
+			$scope.select tab if $scope.tabs.length is 0
+			$scope.tabs.push tab
 
-				tab.selected = true
-
-			@addTab = (tab, tabId) ->
-				$scope.select tab if $scope.tabs.length is 0
-				$scope.tabs.push tab
-
-				if tabId
-					$rootScope.$on "changeTab##{tabId}", ->
-						$scope.select tab
-		]
-
-		controller: controller
-		replace: true
-		restrict: 'E'
-		scope: {}
-		template: template
-		transclude: true
+			if tabId
+				$rootScope.$on "changeTab##{tabId}", ->
+					$scope.select tab
 	]
+
+	controller: controller
+	replace: true
+	restrict: 'E'
+	scope: {}
+	templateUrl: '/views/directives/tabs.html'
+	transclude: true
+]
