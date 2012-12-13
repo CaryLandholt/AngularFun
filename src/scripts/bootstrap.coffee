@@ -1,1 +1,1 @@
-angular.module('app').bootstrap document, ['app']
+angular.bootstrap document, ['app']

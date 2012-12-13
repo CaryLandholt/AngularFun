@@ -1,4 +1,4 @@
-requirejs
+require
 	shim:
 		'controllers/gitHubController': deps: ['libs/angular', 'app', 'services/gitHubService']
 		'controllers/personController': deps: ['libs/angular', 'app', 'services/personService']
@@ -32,5 +32,5 @@ requirejs
 		'responseInterceptors/dispatcher'
 		'routes'
 		'run'
-	], ->
-		require 'bootstrap'
+	], (require) ->
+		require ['bootstrap']
