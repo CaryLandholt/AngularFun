@@ -1,29 +1,24 @@
-###global define###
+angular.module('app').factory 'personService', ['$log', '$resource', ($log, $resource) ->
+	activity = $resource './people/:id'
 
-define ['libs/angular', 'services/services', 'libs/angularResource'], (angular, services) ->
-	'use strict'
+	get = (success, failure) ->
+		activity.query {}
+		, (people, getResponseHeaders) ->
+			success(people) if angular.isFunction success
+		, failure
 
-	services.factory 'personService', ['$log', '$resource', ($log, $resource) ->
-		activity = $resource './people/:id'
+	getPerson = (id, success, failure) ->
+		activity.get {id: id}
+		, (person, getResponseHeaders) ->
+			success(person) if angular.isFunction success
+		, failure
 
-		get = (success, failure) ->
-			activity.query {}
-			, (people, getResponseHeaders) ->
-				success(people) if angular.isFunction success
-			, failure
+	save = (person, success, failure) ->
+		newPerson = new activity person
 
-		getPerson = (id, success, failure) ->
-			activity.get {id: id}
-			, (person, getResponseHeaders) ->
-				success(person) if angular.isFunction success
-			, failure
+		newPerson.$save (newPerson, getResponseHeaders) ->
+			success(newPerson) if angular.isFunction success
+		, failure
 
-		save = (person, success, failure) ->
-			newPerson = new activity person
-
-			newPerson.$save (newPerson, getResponseHeaders) ->
-				success(newPerson) if angular.isFunction success
-			, failure
-
-		{get, getPerson, save}
-	]
+	{get, getPerson, save}
+]

@@ -1,16 +1,11 @@
-###global define###
+angular.module('app').factory 'messageService', ['$log', '$rootScope', ($log, $rootScope) ->
+	publish = (name, parameters) ->
+		parameters.timeStamp = new Date()
 
-define ['services/services'], (services) ->
-	'use strict'
+		$rootScope.$broadcast name, parameters
 
-	services.factory 'messageService', ['$log', '$rootScope', ($log, $rootScope) ->
-		publish = (name, parameters) ->
-			parameters.timeStamp = new Date()
+	subscribe = (name, listener) ->
+		$rootScope.$on name, listener
 
-			$rootScope.$broadcast name, parameters
-
-		subscribe = (name, listener) ->
-			$rootScope.$on name, listener
-
-		{publish, subscribe}
-	]
+	{publish, subscribe}
+]
