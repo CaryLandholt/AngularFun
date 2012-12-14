@@ -19,7 +19,7 @@ Enter the following commands in the terminal.
 * `cd AngularFun`
 * `npm install`
 
-## Compile Angulr Fun
+## Compile Angular Fun
 You have three options.
 
 1. `grunt` - will compile the app preserving individual files (when run, files will be loaded on-demand)
@@ -35,8 +35,13 @@ You have three options.
 * `grunt dev` will watch for any CoffeeScript (.coffee), Less (.less), or .template file changes.  When changes are detected, the files will be linted, compiled, and ready for you to refresh the browser.
 
 ## Running Tests
+You have two options.
+
+1. Jasmine HTML runner
 * `grunt`
 * Open /test/runner.html to run the unit tests using Jasmine.
+
+2. Testacular - `grunt test` -  Defaults to running the tests in chrome, but you can easily change this in testacular.conf.js browsers section as required.
 
 ## To-Do
 * Add many more unit tests :(

@@ -4,8 +4,7 @@ define ['libs/angularMocks', 'services/personService']
 , () ->
 	'use strict'
 
-	beforeEach module 'ngResource'
-	beforeEach module 'services'
+	beforeEach module 'app'
 	beforeEach () ->
 		this.addMatchers { toEqualData: (expected) ->
 			angular.equals this.actual, expected }

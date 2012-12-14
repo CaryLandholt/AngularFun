@@ -17,6 +17,7 @@ files = [
   {pattern: 'dist/scripts/libs/angular.js', included: false},
   {pattern: 'dist/scripts/libs/angular-resource.js', included: false},
   {pattern: 'test/scripts/libs/*.js', included: false},
+  {pattern: 'dist/scripts/*.js', included: false},
 
   'test/scripts/testacular.js',
 
