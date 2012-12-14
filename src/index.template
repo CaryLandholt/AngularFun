@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" xmlns:ng="http://angularjs.org" xmlns:app="ignored"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"        xmlns:ng="http://angularjs.org" xmlns:app="ignored"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"               xmlns:ng="http://angularjs.org" xmlns:app="ignored"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"                      xmlns:ng="http://angularjs.org" xmlns:app="ignored"> <!--<![endif]-->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" xmlns:ng="http://angularjs.org" xmlns:app="ignored"> <![endif]--> <!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8" xmlns:ng="http://angularjs.org" xmlns:app="ignored"> <![endif]--> <!--[if IE 8]> <html class="no-js lt-ie9" xmlns:ng="http://angularjs.org" xmlns:app="ignored"> <![endif]--> <!--[if gt IE 8]><!--> <html class="no-js" xmlns:ng="http://angularjs.org" xmlns:app="ignored"> <!--<![endif]-->
 	<head>
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -10,24 +7,20 @@
 		<meta name="description" content="Having fun with AngularJS" />
 		<meta name="viewport" content="width=device-width" />
 
-		<!--[if lte IE 8]>
-			<script src="/scripts/libs/json2.js"></script>
-			<script src="/scripts/libs/html5shiv-printshiv.js"></script>
-		<![endif]-->
+		<!--[if lte IE 8]> <script src="/scripts/libs/json2.js"></script> <script src="/scripts/libs/html5shiv-printshiv.js"></script> <![endif]-->
 
 		<% if (config.environment === 'prod') { %>
 			<link rel="stylesheet" href="/styles/styles.min.css?_=v<%= config.uniqueVersion() %>" />
+			<%= config.include('./temp/views/views.html') %>
 		<% } else { %>
 			<link rel="stylesheet" href="/styles/styles.css" />
 		<% } %>
-
-		<%= config.include('./temp/views/views.html') %>
 	</head>
 	<body ng-cloak class="ng-cloak">
 		<ng:view></ng:view>
 		<div class="container">
 			<div class="hero-unit">
-				<h1>Playing with <a href="http://angularjs.org" target="_blank">AngularJS</a></h1>
+				<h1>Cary Playing with <a href="http://angularjs.org" target="_blank">AngularJS</a></h1>
 				<p>and also <a href="http://requirejs.org/" target="_blank">RequireJS</a></p>
 				<p>Dynamically loading dependencies in <b>dev</b>, but minimize the hell out of it for <b>prod</b>.</p>
 			</div>
@@ -116,6 +109,7 @@
 				</div>
 			</div>
 		</div>
+
 		<% if (config.environment === 'prod') { %>
 			<script src="/scripts/scripts.min.js?_=v<%= config.uniqueVersion() %>"></script>
 		<% } else { %>

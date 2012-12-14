@@ -6,17 +6,15 @@ module.exports = function (grunt) {
 	grunt.initConfig({
 		pkg: '<json:package.json>',
 
-		// delete the dist folder
 		delete: {
 			reset: {
 				files: ['./dist/', './temp/']
 			}
 		},
 
-		// lint CoffeeScript
 		coffeeLint: {
 			scripts: {
-				src: './src/scripts/**/*.coffee',
+				files: ['./src/scripts/**/*.coffee'],
 				indentation: {
 					value: 1,
 					level: 'error'
@@ -29,7 +27,7 @@ module.exports = function (grunt) {
 				}
 			},
 			tests: {
-				src: './test/scripts/**/*.coffee',
+				files: ['./test/scripts/**/*.coffee'],
 				indentation: {
 					value: 1,
 					level: 'error'
@@ -43,17 +41,54 @@ module.exports = function (grunt) {
 			}
 		},
 
-		// compile CoffeeScript to JavaScript
 		coffee: {
-			dist: {
-				src: './src/scripts/**/*.coffee',
-				dest: './temp/scripts/',
+			scripts: {
+				files: {
+					'./temp/scripts/': './src/scripts/**/*.coffee'
+				},
 				bare: true
 			},
 			tests: {
-				src: './test/scripts/**/*.coffee',
-				dest: './test/scripts/',
+				files: {
+					'./test/scripts/': './test/scripts/**/*.coffee'
+				},
 				bare: true
+			}
+		},
+
+		less: {
+			styles: {
+				files: {
+					'./temp/styles/styles.css': './src/styles/styles.less'
+				}
+			}
+		},
+
+		template: {
+			views: {
+				files: {
+					'./temp/views/': './src/views/**/*.template'
+				}
+			},
+			dev: {
+				files: {
+					'./temp/index.html': './src/index.template'
+				},
+				environment: 'dev'
+			},
+			prod: {
+				files: '<config:template.dev.files>',
+				environment: 'prod'
+			}
+		},
+
+		inlineTemplate: {
+			views: {
+				files: {
+					'./temp/views/views.html': './temp/views/**/*.html'
+				},
+				type: 'text/ng-template',
+				trim: 'temp'
 			}
 		},
 
@@ -71,70 +106,35 @@ module.exports = function (grunt) {
 			},
 			prod: {
 				files: {
-					'./dist/scripts/': './temp/scripts/scripts.min.js',
-					'./dist/scripts/libs/': ['./temp/scripts/libs/html5shiv-printshiv.js', './temp/scripts/libs/json2.js'],
-					'./dist/styles/': './temp/styles/styles.min.css',
 					'./dist/img/': './temp/img/',
-					'./dist/index.html': './temp/index.min.html',
-					'./dist/views/': './temp/views/'
+					'./dist/scripts/': './temp/scripts/scripts.min.js',
+					'./dist/scripts/libs': ['./temp/scripts/libs/html5shiv-printshiv.js', './temp/scripts/libs/json2.js'],
+					'./dist/styles/': './temp/styles/styles.min.css',
+					'./dist/index.html': './temp/index.min.html'
 				}
 			},
 			scripts: {
 				files: {
-					'./dist/': './temp/**/*.js'
+					'./dist/scripts/': './temp/scripts/'
 				}
 			},
 			styles: {
 				files: {
-					'./dist/': './temp/**/*.css'
+					'./dist/styles/': './temp/styles/'
+				}
+			},
+			index: {
+				files: {
+					'./dist/': './temp/index.html'
 				}
 			},
 			views: {
 				files: {
-					'./dist/': './temp/**/*.html'
+					'./dist/views/': './temp/views/'
 				}
 			}
 		},
 
-		lint: {
-			scripts: ['./src/!(libs)**/*.js']
-		},
-
-		jshint: {
-			options: {
-				// CoffeeScript uses null for default parameter values
-				eqnull: true
-			}
-		},
-
-		// compile Less to CSS
-		less: {
-			dist: {
-				src: './src/styles/styles.less',
-				dest: './temp/styles/styles.css'
-			}
-		},
-
-		// compile templates
-		template: {
-			dev: {
-				src: './src/**/*.template',
-				dest: './temp/',
-				environment: 'dev'
-			},
-			prod: {
-				src: '<config:template.dev.src>',
-				dest: '<config:template.dev.dest>',
-				environment: 'prod'
-			},
-			views: {
-				files: {
-					'./temp/views/': './src/views/**/*.template'
-				}
-			}
-		},
-
-		// optimizes files managed by RequireJS
 		requirejs: {
 			scripts: {
 				baseUrl: './temp/scripts/',
@@ -169,16 +169,6 @@ module.exports = function (grunt) {
 			}
 		},
 
-		inlineTemplate: {
-			views: {
-				files: {
-					'./temp/views/views.html': './temp/views/**/*.html'
-				},
-				type: 'text/ng-template',
-				trim: 'temp'
-			}
-		},
-
 		minifyHtml: {
 			prod: {
 				files: {
@@ -188,17 +178,21 @@ module.exports = function (grunt) {
 		},
 
 		watch: {
-			coffee: {
+			scripts: {
 				files: './src/scripts/**/*.coffee',
-				tasks: 'coffeeLint coffee lint copy:scripts'
+				tasks: 'coffeeLint:scripts coffee:scripts copy:scripts'
 			},
-			less: {
+			styles: {
 				files: './src/styles/**/*.less',
 				tasks: 'less copy:styles'
 			},
-			template: {
-				files: '<config:template.dev.src>',
-				tasks: 'template:dev copy:views'
+			index: {
+				files: './src/index.template',
+				tasks: 'template:dev copy:index'
+			},
+			views: {
+				files: './src/views/**/*.template',
+				tasks: 'template:views copy:views'
 			}
 		},
 
@@ -224,36 +218,24 @@ module.exports = function (grunt) {
 
 	grunt.registerTask('default', [
 		'delete',
-		'coffeeLint',
-		'coffee',
-		'lint',
+		'coffeeLint:scripts',
+		'coffee:scripts',
 		'less',
 		'template:views',
-		'inlineTemplate',
 		'template:dev',
 		'copy:temp',
 		'copy:dev'
 	]);
 
 	grunt.registerTask('dev', [
-		'delete',
-		'coffeeLint',
-		'coffee',
-		'lint',
-		'less',
-		'template:views',
-		'inlineTemplate',
-		'template:dev',
-		'copy:temp',
-		'copy:dev',
+		'default',
 		'watch'
 	]);
 
 	grunt.registerTask('prod', [
 		'delete',
-		'coffeeLint',
-		'coffee',
-		'lint',
+		'coffeeLint:scripts',
+		'coffee:scripts',
 		'less',
 		'template:views',
 		'inlineTemplate',
