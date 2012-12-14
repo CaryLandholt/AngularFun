@@ -21,7 +21,7 @@
 			<link rel="stylesheet" href="/styles/styles.css" />
 		<% } %>
 
-		<%= config.include('./staging/views/views.html') %>
+		<%= config.include('./temp/views/views.html') %>
 	</head>
 	<body ng-cloak class="ng-cloak">
 		<ng:view></ng:view>
@@ -46,7 +46,7 @@
 									<button type="submit" class="btn"><i class="icon-search"></i> Search</button>
 								</form>
 
-								<%= config.include('./src/views/tweets.template') %>
+								<div ng-include="'/views/tweets.html'"></div>
 							</section>
 						</app:tab>
 						<app:tab data-tab-id="gitHub" caption="GitHub">
@@ -61,7 +61,7 @@
 									<button type="submit" class="btn"><i class="icon-search"></i> Search</button>
 								</form>
 
-								<%= config.include('./src/views/repos.template') %>
+								<div ng-include="'/views/repos.html'"></div>
 							</section>
 						</app:tab>
 						<app:tab data-tab-id="people" caption="People">
@@ -84,7 +84,7 @@
 											<button type="submit" class="btn"><i class="icon-plus"></i> Add Person</button>
 										</form>
 
-										<%= config.include('./src/views/people.template') %>
+										<div ng-include="'/views/people.html'"></div>
 									</section>
 								</div>
 								<div class="span2">

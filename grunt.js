@@ -9,7 +9,7 @@ module.exports = function (grunt) {
 		// delete the dist folder
 		delete: {
 			reset: {
-				files: ['./dist/', './staging/']
+				files: ['./dist/', './temp/']
 			}
 		},
 
@@ -47,7 +47,7 @@ module.exports = function (grunt) {
 		coffee: {
 			dist: {
 				src: './src/scripts/**/*.coffee',
-				dest: './staging/scripts/',
+				dest: './temp/scripts/',
 				bare: true
 			},
 			tests: {
@@ -58,40 +58,40 @@ module.exports = function (grunt) {
 		},
 
 		copy: {
-			staging: {
+			temp: {
 				files: {
-					'./staging/scripts/libs/': './src/scripts/libs/',
-					'./staging/img/': './src/img/'
+					'./temp/scripts/libs/': './src/scripts/libs/',
+					'./temp/img/': './src/img/'
 				}
 			},
 			dev: {
 				files: {
-					'./dist/': './staging/'
+					'./dist/': './temp/'
 				}
 			},
 			prod: {
 				files: {
-					'./dist/scripts/': './staging/scripts/scripts.min.js',
-					'./dist/scripts/libs/': ['./staging/scripts/libs/html5shiv-printshiv.js', './staging/scripts/libs/json2.js'],
-					'./dist/styles/': './staging/styles/styles.min.css',
-					'./dist/img/': './staging/img/',
-					'./dist/index.html': './staging/index.min.html',
-					'./dist/views/': './staging/views/'
+					'./dist/scripts/': './temp/scripts/scripts.min.js',
+					'./dist/scripts/libs/': ['./temp/scripts/libs/html5shiv-printshiv.js', './temp/scripts/libs/json2.js'],
+					'./dist/styles/': './temp/styles/styles.min.css',
+					'./dist/img/': './temp/img/',
+					'./dist/index.html': './temp/index.min.html',
+					'./dist/views/': './temp/views/'
 				}
 			},
 			scripts: {
 				files: {
-					'./dist/': './staging/**/*.js'
+					'./dist/': './temp/**/*.js'
 				}
 			},
 			styles: {
 				files: {
-					'./dist/': './staging/**/*.css'
+					'./dist/': './temp/**/*.css'
 				}
 			},
 			views: {
 				files: {
-					'./dist/': './staging/**/*.html'
+					'./dist/': './temp/**/*.html'
 				}
 			}
 		},
@@ -111,7 +111,7 @@ module.exports = function (grunt) {
 		less: {
 			dist: {
 				src: './src/styles/styles.less',
-				dest: './staging/styles/styles.css'
+				dest: './temp/styles/styles.css'
 			}
 		},
 
@@ -119,7 +119,7 @@ module.exports = function (grunt) {
 		template: {
 			dev: {
 				src: './src/**/*.template',
-				dest: './staging/',
+				dest: './temp/',
 				environment: 'dev'
 			},
 			prod: {
@@ -129,7 +129,7 @@ module.exports = function (grunt) {
 			},
 			views: {
 				files: {
-					'./staging/views/': './src/views/**/*.template'
+					'./temp/views/': './src/views/**/*.template'
 				}
 			}
 		},
@@ -137,10 +137,10 @@ module.exports = function (grunt) {
 		// optimizes files managed by RequireJS
 		requirejs: {
 			scripts: {
-				baseUrl: './staging/scripts/',
+				baseUrl: './temp/scripts/',
 				findNestedDependencies: true,
 				logLevel: 0,
-				mainConfigFile: './staging/scripts/main.js',
+				mainConfigFile: './temp/scripts/main.js',
 				name: 'main',
 				onBuildWrite: function (moduleName, path, contents) {
 					var modulesToExclude = ['main'],
@@ -153,7 +153,7 @@ module.exports = function (grunt) {
 					return contents;
 				},
 				optimize: 'uglify',
-				out: './staging/scripts/scripts.min.js',
+				out: './temp/scripts/scripts.min.js',
 				preserveLicenseComments: false,
 				skipModuleInsertion: true,
 				uglify: {
@@ -161,28 +161,28 @@ module.exports = function (grunt) {
 				}
 			},
 			styles: {
-				baseUrl: './staging/styles/',
-				cssIn: './staging/styles/styles.css',
+				baseUrl: './temp/styles/',
+				cssIn: './temp/styles/styles.css',
 				logLevel: 0,
 				optimizeCss: 'standard',
-				out: './staging/styles/styles.min.css'
+				out: './temp/styles/styles.min.css'
 			}
 		},
 
 		inlineTemplate: {
 			views: {
 				files: {
-					'./staging/views/views.html': './staging/views/**/*.html'
+					'./temp/views/views.html': './temp/views/**/*.html'
 				},
 				type: 'text/ng-template',
-				trim: 'staging'
+				trim: 'temp'
 			}
 		},
 
 		minifyHtml: {
 			prod: {
 				files: {
-					'./staging/index.min.html': './staging/index.html'
+					'./temp/index.min.html': './temp/index.html'
 				}
 			}
 		},
@@ -231,7 +231,7 @@ module.exports = function (grunt) {
 		'template:views',
 		'inlineTemplate',
 		'template:dev',
-		'copy:staging',
+		'copy:temp',
 		'copy:dev'
 	]);
 
@@ -244,7 +244,7 @@ module.exports = function (grunt) {
 		'template:views',
 		'inlineTemplate',
 		'template:dev',
-		'copy:staging',
+		'copy:temp',
 		'copy:dev',
 		'watch'
 	]);
@@ -258,7 +258,7 @@ module.exports = function (grunt) {
 		'template:views',
 		'inlineTemplate',
 		'template:prod',
-		'copy:staging',
+		'copy:temp',
 		'requirejs',
 		'minifyHtml',
 		'copy:prod'
