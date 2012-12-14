@@ -126,6 +126,11 @@ module.exports = function (grunt) {
 				src: '<config:template.dev.src>',
 				dest: '<config:template.dev.dest>',
 				environment: 'prod'
+			},
+			views: {
+				files: {
+					'./staging/views/': './src/views/**/*.template'
+				}
 			}
 		},
 
@@ -138,7 +143,10 @@ module.exports = function (grunt) {
 				mainConfigFile: './staging/scripts/main.js',
 				name: 'main',
 				onBuildWrite: function (moduleName, path, contents) {
-					if (moduleName === 'main') {
+					var modulesToExclude = ['main'],
+						shouldExcludeModule = modulesToExclude.indexOf(moduleName) >= 0;
+
+					if (shouldExcludeModule) {
 						return '';
 					}
 
@@ -147,7 +155,10 @@ module.exports = function (grunt) {
 				optimize: 'uglify',
 				out: './staging/scripts/scripts.min.js',
 				preserveLicenseComments: false,
-				skipModuleInsertion: true
+				skipModuleInsertion: true,
+				uglify: {
+					no_mangle: false
+				}
 			},
 			styles: {
 				baseUrl: './staging/styles/',
@@ -155,6 +166,16 @@ module.exports = function (grunt) {
 				logLevel: 0,
 				optimizeCss: 'standard',
 				out: './staging/styles/styles.min.css'
+			}
+		},
+
+		inlineTemplate: {
+			views: {
+				files: {
+					'./staging/views/views.html': './staging/views/**/*.html'
+				},
+				type: 'text/ng-template',
+				trim: 'staging'
 			}
 		},
 
@@ -207,6 +228,8 @@ module.exports = function (grunt) {
 		'coffee',
 		'lint',
 		'less',
+		'template:views',
+		'inlineTemplate',
 		'template:dev',
 		'copy:staging',
 		'copy:dev'
@@ -218,6 +241,8 @@ module.exports = function (grunt) {
 		'coffee',
 		'lint',
 		'less',
+		'template:views',
+		'inlineTemplate',
 		'template:dev',
 		'copy:staging',
 		'copy:dev',
@@ -230,6 +255,8 @@ module.exports = function (grunt) {
 		'coffee',
 		'lint',
 		'less',
+		'template:views',
+		'inlineTemplate',
 		'template:prod',
 		'copy:staging',
 		'requirejs',

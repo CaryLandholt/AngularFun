@@ -20,6 +20,8 @@
 		<% } else { %>
 			<link rel="stylesheet" href="/styles/styles.css" />
 		<% } %>
+
+		<%= config.include('./staging/views/views.html') %>
 	</head>
 	<body ng-cloak class="ng-cloak">
 		<ng:view></ng:view>
@@ -114,10 +116,10 @@
 				</div>
 			</div>
 		</div>
-			<% if (config.environment === 'prod') { %>
-				<script src="/scripts/scripts.min.js?_=v<%= config.uniqueVersion() %>"></script>
-			<% } else { %>
-				<script data-main="/scripts/main.js" src="/scripts/libs/require.js"></script>
-			<% } %>
+		<% if (config.environment === 'prod') { %>
+			<script src="/scripts/scripts.min.js?_=v<%= config.uniqueVersion() %>"></script>
+		<% } else { %>
+			<script data-main="/scripts/main.js" src="/scripts/libs/require.js"></script>
+		<% } %>
 	</body>
 </html>
