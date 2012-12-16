@@ -204,6 +204,8 @@ module.exports = function (grunt) {
 			}
 		},
 
+		// LiveReload
+		// http://help.livereload.com/kb/general-use/browser-extensions
 		reload: {
 			liveReload: true,
 			port: 35729
