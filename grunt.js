@@ -254,6 +254,8 @@ module.exports = function (grunt) {
 	]);
 
 	grunt.registerTask('test', [
+		'coffeeLint:tests',
+		'coffee:tests',
 		'default',
 		'unit-tests'
 	]);
