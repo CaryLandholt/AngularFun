@@ -180,19 +180,19 @@ module.exports = function (grunt) {
 		watch: {
 			scripts: {
 				files: './src/scripts/**/*.coffee',
-				tasks: 'coffeeLint:scripts coffee:scripts copy:scripts'
+				tasks: 'coffeeLint:scripts coffee:scripts copy:scripts reload'
 			},
 			styles: {
 				files: './src/styles/**/*.less',
-				tasks: 'less copy:styles'
+				tasks: 'less copy:styles reload'
 			},
 			index: {
 				files: './src/index.template',
-				tasks: 'template:dev copy:index'
+				tasks: 'template:dev copy:index reload'
 			},
 			views: {
 				files: './src/views/**/*.template',
-				tasks: 'template:views copy:views'
+				tasks: 'template:views copy:views reload'
 			}
 		},
 
@@ -202,10 +202,16 @@ module.exports = function (grunt) {
 				port: 3005,
 				watch: './routes.coffee'
 			}
+		},
+
+		reload: {
+			liveReload: true,
+			port: 35729
 		}
 	});
 
 	grunt.loadNpmTasks('grunt-hustler');
+	grunt.loadNpmTasks('grunt-reload');
 
 	grunt.registerTask('unit-tests', 'run the testacular test driver on jasmine unit tests', function () {
 		var done = this.async();
@@ -229,6 +235,7 @@ module.exports = function (grunt) {
 
 	grunt.registerTask('dev', [
 		'default',
+		'reload',
 		'watch'
 	]);
 

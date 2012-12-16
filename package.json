@@ -1,14 +1,15 @@
 {
   "name": "AngularFun",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "./server.coffee",
   "dependencies": {
     "express": "~3.0.3",
-    "grunt-hustler": "~0.7.3"
+    "grunt-hustler": "~0.7.4"
   },
   "devDependencies": {
     "coffee-script": "~1.4.0",
     "grunt": "~0.3.17",
+    "grunt-reload": "~0.2.0",
     "testacular": "~0.5.5"
   },
   "engine": "node >= 0.8.1"
