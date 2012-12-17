@@ -37,9 +37,7 @@ You have three options.
 ## Running Tests
 You have two options.
 
-1. Jasmine HTML runner
-* `grunt`
-* Open /test/runner.html to run the unit tests using Jasmine.
+1. Jasmine HTML runner -  run `grunt` - Then open /test/runner.html in your browser to run the unit tests using Jasmine.
 
 2. Testacular - `grunt test` -  Defaults to running the tests in chrome, but you can easily change this in testacular.conf.js browsers section as required.
 
