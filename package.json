@@ -9,8 +9,9 @@
 	"description": "AngularJS Reference Architecture",
 	"contributors": [
 		{
-			"name": "",
-			"email": ""
+			"name": "David Bochenski",
+			"email": "david@bochenski.co.uk",
+			"url": "https://github.com/Bochenski"
 		}
 	],
 	"main": "./server.coffee",
