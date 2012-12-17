@@ -8,8 +8,11 @@ module.exports = function (grunt) {
 
 		delete: {
 			reset: {
-				files: ['./dist/', './temp/']
-			}
+				files: ['./dist/']
+			},
+			temp: {
+        files: ['./temp/']
+      }
 		},
 
 		coffeeLint: {
@@ -232,7 +235,8 @@ module.exports = function (grunt) {
 		'template:views',
 		'template:dev',
 		'copy:temp',
-		'copy:dev'
+		'copy:dev',
+		'delete:temp'
 	]);
 
 	grunt.registerTask('dev', [
@@ -252,7 +256,8 @@ module.exports = function (grunt) {
 		'copy:temp',
 		'requirejs',
 		'minifyHtml',
-		'copy:prod'
+		'copy:prod',
+		'delete:temp'
 	]);
 
 	grunt.registerTask('test', [
