@@ -11,8 +11,8 @@ module.exports = function (grunt) {
 				files: ['./dist/']
 			},
 			temp: {
-        files: ['./temp/']
-      }
+				files: ['./temp/']
+			}
 		},
 
 		coffeeLint: {
