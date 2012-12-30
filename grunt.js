@@ -1,13 +1,14 @@
+// Build configurations.
 module.exports = function (grunt) {
 	grunt.initConfig({
 		/*
-			deletes dist and temp directories
-			the temp directory is used during the build process
-			the dist directory contains the artifacts of the build
-			these directories should be deleted before subsequent builds
+			Deletes dist and temp directories.
+			The temp directory is used during the build process.
+			The dist directory contains the artifacts of the build.
+			These directories should be deleted before subsequent builds.
 		*/
 		delete: {
-			reset: {
+			dist: {
 				files: ['./dist/']
 			},
 			temp: {
@@ -15,53 +16,40 @@ module.exports = function (grunt) {
 			}
 		},
 
-		/*
-			contains linting rules for CoffeeScript files
-		*/
+		// CoffeeScript linting rules.
 		coffeeLint: {
 			scripts: {
-				files: ['./src/scripts/**/*.coffee'],
+				files: ['./src/scripts/**/*.coffee', './test/scripts/**/*.coffee'],
+				// Use one tab for indentation.
 				indentation: {
 					value: 1,
 					level: 'error'
 				},
+				// No maximum line length.
 				max_line_length: {
 					level: 'ignore'
 				},
+				// Using tabs should not result in an error.
 				no_tabs: {
 					level: 'ignore'
 				}
-			},
-			tests: {
-				files: ['./test/scripts/**/*.coffee'],
-				indentation: '<config:coffeeLint.scripts.indentation>',
-				max_line_length: '<config:coffeeLint.scripts.max_line_length>',
-				no_tabs: '<config:coffeeLint.scripts.no_tabs>',
 			}
 		},
 
 
-		/*
-			compiles CoffeeScript (.coffee) files to JavaScript (.js)
-		*/
+		// Compile CoffeeScript (.coffee) files to JavaScript (.js).
 		coffee: {
 			scripts: {
 				files: {
-					'./temp/scripts/': './src/scripts/**/*.coffee'
-				},
-				bare: true
-			},
-			tests: {
-				files: {
+					'./temp/scripts/': './src/scripts/**/*.coffee',
 					'./test/scripts/': './test/scripts/**/*.coffee'
 				},
+				// Don't include a surrounding IIFE in the compiled output.
 				bare: true
 			}
 		},
 
-		/*
-			compiles LESS (.less) files to CSS (.css)
-		*/
+		// Compile LESS (.less) files to CSS (.css).
 		less: {
 			styles: {
 				files: {
@@ -71,14 +59,13 @@ module.exports = function (grunt) {
 		},
 
 		/*
-			compiles template files (.template) to HTML (.html)
+			Compile template files (.template) to HTML (.html).
 
-			.template files are essentially html; however, you can take advantage
-			of features provided by grunt such as underscore templating
+			.template files are essentially html; however, you can take advantage of features provided by grunt such as underscore templating.
 
-			the example below demonstrates the use of the environment attribute
-			in 'prod' the concatenated and minified scripts are used along with a unique QueryString parameter to address browser caching
-			in environments other than 'prod' the individual files are used and loaded with RequireJS
+			The example below demonstrates the use of the environment configuration setting.
+			In 'prod' the concatenated and minified scripts are used along with a unique QueryString parameter to address browser caching.
+			In environments other than 'prod' the individual files are used and loaded with RequireJS.
 
 			<% if (config.environment === 'prod') { %>
 				<script src="/scripts/scripts.min.js?_=v<%= config.uniqueVersion() %>"></script>
@@ -105,47 +92,47 @@ module.exports = function (grunt) {
 		},
 
 		/*
-			creates a single file consisting of multiple html (views) files surrounded by script tags
+			Creates a single file consisting of multiple views (html) files surrounded by script tags.
 
-			for example, take the following two files,
-			/temp/views/people.html (compiled from /src/views/people.template)
-			<ul ng-hide="!people.length">
-				<li class="row" ng-repeat="person in people | orderBy:'name'">
-					<a ng-href="#/people/{{person.id}}" ng-bind="person.name"></a>
-				</li>
-			</ul>
-
-			/temp/views/repos.html (compiled from /src/views/repos.html)
-			<ul ng-hide="!repos.length">
-				<li ng-repeat="repo in repos | orderBy:'pushed_at':true">
-					<a ng-href="{{repo.url}}" ng-bind="repo.name" target="_blank"></a>
-					<div ng-bind="repo.description"></div>
-				</li>
-			</ul>
-
-			AngularJS will interpret inlined scripts with type of "text/ng-template" in lieu of retrieving the view from the server
-			the id of the script tag must match the path requested
-			since the path includes the temp directory, this must be trimmed
-
-			the output of the configuration below is:
-			/temp/views/views.html
-			<script id="/views/people.html" type="text/ng-template">
+			For example, take the following two files:
+				<!-- /temp/views/people.html (compiled from /src/views/people.template) -->
 				<ul ng-hide="!people.length">
 					<li class="row" ng-repeat="person in people | orderBy:'name'">
 						<a ng-href="#/people/{{person.id}}" ng-bind="person.name"></a>
 					</li>
 				</ul>
-			</script>
-			<script id="/views/repos.html" type="text/ng-template">
+
+				<!-- /temp/views/repos.html (compiled from /src/views/repos.html) -->
 				<ul ng-hide="!repos.length">
 					<li ng-repeat="repo in repos | orderBy:'pushed_at':true">
 						<a ng-href="{{repo.url}}" ng-bind="repo.name" target="_blank"></a>
 						<div ng-bind="repo.description"></div>
 					</li>
 				</ul>
-			</script>
 
-			now the views.html file can be included in the application and avoid making requests to the server for the templates
+			AngularJS will interpret inlined scripts with type of "text/ng-template" in lieu of retrieving the view from the server.
+			The id of the script tag must match the path requested.
+			Since the path includes the temp directory, this must be trimmed.
+
+			The output of the configuration below is:
+				<!-- /temp/views/views.html -->
+				<script id="/views/people.html" type="text/ng-template">
+					<ul ng-hide="!people.length">
+						<li class="row" ng-repeat="person in people | orderBy:'name'">
+							<a ng-href="#/people/{{person.id}}" ng-bind="person.name"></a>
+						</li>
+					</ul>
+				</script>
+				<script id="/views/repos.html" type="text/ng-template">
+					<ul ng-hide="!repos.length">
+						<li ng-repeat="repo in repos | orderBy:'pushed_at':true">
+							<a ng-href="{{repo.url}}" ng-bind="repo.name" target="_blank"></a>
+							<div ng-bind="repo.description"></div>
+						</li>
+					</ul>
+				</script>
+
+			Now the views.html file can be included in the application and avoid making requests to the server for the views.
 		*/
 		inlineTemplate: {
 			views: {
@@ -157,27 +144,29 @@ module.exports = function (grunt) {
 			}
 		},
 
-		/*
-			copies directories and files from one location to another
-		*/
+		// Copies directories and files from one location to another.
 		copy: {
-			// copies libs and img directories to temp
+			// Copies libs and img directories to temp.
 			temp: {
 				files: {
 					'./temp/scripts/libs/': './src/scripts/libs/',
 					'./temp/img/': './src/img/'
 				}
 			},
-			// copies the contents of the temp directory to the dist directory
-			// in 'dev' individual files are used
+			/*
+				Copies the contents of the temp directory to the dist directory.
+				In 'dev' individual files are used.
+			*/
 			dev: {
 				files: {
 					'./dist/': './temp/'
 				}
 			},
-			// copies select files from the temp directory to the dist directory
-			// in 'prod' minified files are used along with img and libs
-			// the dist artifacts contain only the files necessary to run the application
+			/*
+				Copies select files from the temp directory to the dist directory.
+				In 'prod' minified files are used along with img and libs.
+				The dist artifacts contain only the files necessary to run the application.
+			*/
 			prod: {
 				files: {
 					'./dist/img/': './temp/img/',
@@ -187,25 +176,25 @@ module.exports = function (grunt) {
 					'./dist/index.html': './temp/index.min.html'
 				}
 			},
-			// task is run when a watched script is modified
+			// Task is run when a watched script is modified.
 			scripts: {
 				files: {
 					'./dist/scripts/': './temp/scripts/'
 				}
 			},
-			// task is run when a watched style is modified
+			// Task is run when a watched style is modified.
 			styles: {
 				files: {
 					'./dist/styles/': './temp/styles/'
 				}
 			},
-			// task is run when the watched index.template file is modified
+			// Task is run when the watched index.template file is modified.
 			index: {
 				files: {
 					'./dist/': './temp/index.html'
 				}
 			},
-			// task is run when a watched view is modified
+			// Task is run when a watched view is modified.
 			views: {
 				files: {
 					'./dist/views/': './temp/views/'
@@ -214,12 +203,12 @@ module.exports = function (grunt) {
 		},
 
 		/*
-			RequireJS optimizer configuration for both scripts and styles
-			this configuration is only used in the 'prod' build
-			the optimizer will scan the main file, walk the dependency tree, and write the output in dependent sequence to a single file
-			since RequireJS is not being used outside of the main file, RequireJS is not needed for final output and is excluded
-			RequireJS is still used for the 'dev' build
-			the main file is used only to establish the proper loading sequence
+			RequireJS optimizer configuration for both scripts and styles.
+			This configuration is only used in the 'prod' build.
+			The optimizer will scan the main file, walk the dependency tree, and write the output in dependent sequence to a single file.
+			Since RequireJS is not being used outside of the main file or for dependency resolution (this is handled by AngularJS), RequireJS is not needed for final output and is excluded.
+			RequireJS is still used for the 'dev' build.
+			The main file is used only to establish the proper loading sequence.
 		*/
 		requirejs: {
 			scripts: {
@@ -228,7 +217,7 @@ module.exports = function (grunt) {
 				logLevel: 0,
 				mainConfigFile: './temp/scripts/main.js',
 				name: 'main',
-				// exclude main from the final output to avoid the dependency on RequireJS at runtime
+				// Exclude main from the final output to avoid the dependency on RequireJS at runtime.
 				onBuildWrite: function (moduleName, path, contents) {
 					var modulesToExclude = ['main'],
 						shouldExcludeModule = modulesToExclude.indexOf(moduleName) >= 0;
@@ -244,6 +233,7 @@ module.exports = function (grunt) {
 				preserveLicenseComments: false,
 				skipModuleInsertion: true,
 				uglify: {
+					// Let uglifier replace variables to further reduce file size.
 					no_mangle: false
 				}
 			},
@@ -257,11 +247,11 @@ module.exports = function (grunt) {
 		},
 
 		/*
-			minifies index.html
-			extra white space and comments will be removed
-			content within <pre /> tags will be left unchanged
-			IE conditional comments will be left unchanged
-			as of this writing, the output is reduced by over 14%
+			Minifiy index.html.
+			Extra white space and comments will be removed.
+			Content within <pre /> tags will be left unchanged.
+			IE conditional comments will be left unchanged.
+			As of this writing, the output is reduced by over 14%.
 		*/
 		minifyHtml: {
 			prod: {
@@ -271,9 +261,7 @@ module.exports = function (grunt) {
 			}
 		},
 
-		/*
-			sets up file watchers and runs tasks when watched files are changed
-		*/
+		// Sets up file watchers and runs tasks when watched files are changed.
 		watch: {
 			scripts: {
 				files: './src/scripts/**/*.coffee',
@@ -294,9 +282,9 @@ module.exports = function (grunt) {
 		},
 
 		/*
-			runs a web server at the specified port
-			can optionally watch for changes to the file referenced in the watch setting
-			the web server will automatically restart once the changes have been saved
+			Runs a web server at the specified port.
+			Can optionally watch for changes to the file referenced in the watch setting.
+			The web server will automatically restart once the changes have been saved.
 		*/
 		server: {
 			app: {
@@ -307,11 +295,11 @@ module.exports = function (grunt) {
 		},
 
 		/*
-			leverages the LiveReload browser plugin to automatically reload the browser when watched files have changed
+			Leverages the LiveReload browser plugin to automatically reload the browser when watched files have changed.
 
-			as of this writing, Chrome, Firefox, and Safari are supported
+			As of this writing, Chrome, Firefox, and Safari are supported.
 
-			get the plugin:
+			Get the plugin:
 			here http://help.livereload.com/kb/general-use/browser-extensions
 		*/
 		reload: {
@@ -320,9 +308,21 @@ module.exports = function (grunt) {
 		}
 	});
 
+	/*
+		Register grunt tasks supplied by grunt-hustler.
+		Referenced in package.json.
+		https://github.com/CaryLandholt/grunt-hustler
+	*/
 	grunt.loadNpmTasks('grunt-hustler');
+
+	/*
+		Register grunt tasks supplied by grunt-reload.
+		Referenced in package.json.
+		https://github.com/webxl/grunt-reload
+	*/
 	grunt.loadNpmTasks('grunt-reload');
 
+	// A task to run unit tests in testacular.
 	grunt.registerTask('unit-tests', 'run the testacular test driver on jasmine unit tests', function () {
 		var done = this.async();
 
@@ -332,10 +332,15 @@ module.exports = function (grunt) {
 		});
 	});
 
+	/*
+		Compiles the app with non-optimized build settings and places the build artifacts in the dist directory.
+		Enter the following command at the command line to execute this build task:
+		grunt
+	*/
 	grunt.registerTask('default', [
 		'delete',
-		'coffeeLint:scripts',
-		'coffee:scripts',
+		'coffeeLint',
+		'coffee',
 		'less',
 		'template:views',
 		'template:dev',
@@ -344,16 +349,26 @@ module.exports = function (grunt) {
 		'delete:temp'
 	]);
 
+	/*
+		Compiles the app with non-optimized build settings, places the build artifacts in the dist directory, and watches for file changes.
+		Enter the following command at the command line to execute this build task:
+		grunt dev
+	*/
 	grunt.registerTask('dev', [
 		'default',
 		'reload',
 		'watch'
 	]);
 
+	/*
+		Compiles the app with optimized build settings and places the build artifacts in the dist directory.
+		Enter the following command at the command line to execute this build task:
+		grunt prod
+	*/
 	grunt.registerTask('prod', [
 		'delete',
-		'coffeeLint:scripts',
-		'coffee:scripts',
+		'coffeeLint',
+		'coffee',
 		'less',
 		'template:views',
 		'inlineTemplate',
@@ -365,9 +380,12 @@ module.exports = function (grunt) {
 		'delete:temp'
 	]);
 
+	/*
+		Compiles the app with non-optimized build settings, places the build artifacts in the dist directory, and runs unit tests.
+		Enter the following command at the command line to execute this build task:
+		grunt test
+	*/
 	grunt.registerTask('test', [
-		'coffeeLint:tests',
-		'coffee:tests',
 		'default',
 		'unit-tests'
 	]);
