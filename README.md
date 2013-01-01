@@ -83,7 +83,7 @@ This ultimately provided no benefit, so I got rid of them.  They were just noise
 ### Take 2
 Using only one AngularJS module and rewriting the above script without the functionality-specific AngularJS container modules we have:
 
-```
+```CoffeeScript
 define ['libs/angular', 'services/gitHubService'], (angular) ->
 	angular.module('app').controller 'gitHubController', ['$log', '$scope', '$rootScope', '$location', 'gitHubService', ($log, $scope, $rootScope, $location, gitHubService) ->
 		$scope.search = (searchTerm) ->
@@ -116,7 +116,7 @@ So I decided to refactor the files and remove RequireJS completely, at least fro
 
 Now we have:
 
-```
+```CoffeeScript
 angular.module('app').controller 'gitHubController', ['$log', '$scope', '$rootScope', '$location', 'gitHubService', ($log, $scope, $rootScope, $location, gitHubService) ->
 	$scope.search = (searchTerm) ->
 		$location.path "/github/#{searchTerm}"
