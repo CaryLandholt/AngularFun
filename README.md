@@ -63,7 +63,7 @@ Here's an early example controller in CoffeeScript.
 
 ```CoffeeScript
 define ['controllers/controllers', 'services/gitHubService'], (controllers) ->
-	controllers.controller 'gitHubController', ['$log', '$scope', '$rootScope', '$location', 'gitHubService', ($log, $scope, $rootScope, $location, gitHubService) ->
+	controllers.controller 'gitHubController', ['$scope', '$location', 'gitHubService', ($scope, $location, gitHubService) ->
 		$scope.search = (searchTerm) ->
 			$location.path "/github/#{searchTerm}"
 
@@ -85,7 +85,7 @@ Using only one AngularJS module and rewriting the above script without the funct
 
 ```CoffeeScript
 define ['libs/angular', 'services/gitHubService'], (angular) ->
-	angular.module('app').controller 'gitHubController', ['$log', '$scope', '$rootScope', '$location', 'gitHubService', ($log, $scope, $rootScope, $location, gitHubService) ->
+	angular.module('app').controller 'gitHubController', ['$scope', '$location', 'gitHubService', ($scope, $location, gitHubService) ->
 		$scope.search = (searchTerm) ->
 			$location.path "/github/#{searchTerm}"
 
@@ -117,7 +117,7 @@ So I decided to refactor the files and remove RequireJS completely, at least fro
 Now we have:
 
 ```CoffeeScript
-angular.module('app').controller 'gitHubController', ['$log', '$scope', '$rootScope', '$location', 'gitHubService', ($log, $scope, $rootScope, $location, gitHubService) ->
+angular.module('app').controller 'gitHubController', ['$scope', '$location', 'gitHubService', ($scope, $location, gitHubService) ->
 	$scope.search = (searchTerm) ->
 		$location.path "/github/#{searchTerm}"
 
