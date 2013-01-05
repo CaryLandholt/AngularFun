@@ -9,26 +9,24 @@ basePath = '';
 files = [
   JASMINE,
   JASMINE_ADAPTER,
-  REQUIRE,
-  REQUIRE_ADAPTER,
-  {pattern: 'dist/scripts/filters/*.js', included: false},
-  {pattern: 'dist/scripts/controllers/*.js', included: false},
-  {pattern: 'dist/scripts/services/*.js', included: false},
-  {pattern: 'dist/scripts/libs/angular.js', included: false},
-  {pattern: 'dist/scripts/libs/angular-resource.js', included: false},
-  {pattern: 'test/scripts/libs/*.js', included: false},
-  {pattern: 'dist/scripts/*.js', included: false},
+  './dist/scripts/libs/angular.js',
+  './dist/scripts/libs/angular-resource.js',
+  './test/scripts/libs/angular-mocks.js',
+  './dist/scripts/app.js',
+  './dist/scripts/controllers/*.js',
+  './dist/scripts/directives/*.js',
+  './dist/scripts/filters/*.js',
+  './dist/scripts/responseInterceptors/*.js',
+  './dist/scripts/services/*.js',
 
-  'test/scripts/testacular.js',
-
-  {pattern: 'test/scripts/services/*.js', included: false},
-  {pattern: 'test/scripts/filterSpecs/*.js', included: false}
+  './test/scripts/filters/*.js',
+  './test/scripts/services/*.js',
 ];
 
 
 // list of files to exclude
 exclude = [
-  
+
 ];
 
 
