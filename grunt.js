@@ -44,7 +44,8 @@ module.exports = function (grunt) {
 					'./temp/scripts/': './src/scripts/**/*.coffee',
 					'./test/scripts/': './test/scripts/**/*.coffee'
 				},
-				// Don't include a surrounding IIFE in the compiled output.
+				// Don't include a surrounding Immediately-Invoked Function Expression (IIFE) in the compiled output.
+				// For more information on IIFEs, please visit http://benalman.com/news/2010/11/immediately-invoked-function-expression/
 				bare: true
 			}
 		},

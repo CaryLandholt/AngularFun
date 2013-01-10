@@ -51,7 +51,7 @@ You have two options.
 1. [Jasmine](http://pivotal.github.com/jasmine/) HTML runner -  run `grunt` - Then open /test/runner.html in your browser to run the unit tests using Jasmine.
 2. [Testacular](http://vojtajina.github.com/testacular/) - `grunt test` -  Defaults to running the tests in chrome, but you can easily change this in testacular.conf.js browsers section as required.
 
-## History
+## Commentary
 AngularFun is a by-product of my learning AngularJS and became the reference architecture to my day job project, a very large internally and externally-facing application with extensive user interactions.
 
 I needed something that could support our Architecture Principles, including scale, stability, and maintenance.
