@@ -1,1 +1,1 @@
-web: "./node_modules/grunt/bin/grunt" prod && "./node_modules/grunt/bin/grunt" server
+web: "./node_modules/.bin/grunt" prod && "./node_modules/.bin/grunt" server

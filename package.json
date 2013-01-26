@@ -21,11 +21,11 @@
 	},
 	"dependencies": {
 		"express": "~3.0.3",
+		"grunt": "~0.3.17",
 		"grunt-hustler": "~0.7.4"
 	},
 	"devDependencies": {
 		"coffee-script": "~1.4.0",
-		"grunt": "~0.3.17",
 		"grunt-reload": "~0.2.0",
 		"testacular": "~0.5.5"
 	},
