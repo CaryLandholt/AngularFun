@@ -1,1 +1,1 @@
-web: "$BUILD_DIR./node_modules/.bin/grunt" prod && "$BUILD_DIR./node_modules/.bin/grunt" server
+web: "./node_modules/grunt/bin/grunt" prod && "./node_modules/grunt/bin/grunt" server
