@@ -29,5 +29,8 @@
 		"grunt-reload": "~0.2.0",
 		"testacular": "~0.5.5"
 	},
-	"engine": "node >= 0.8.1"
+	"engines": {
+		"node": "0.8.x",
+		"npm": "1.2.x"
+	}
 }
