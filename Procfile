@@ -1,1 +1,1 @@
-web: grunt prod && grunt server
+web: "./node_modules/.bin/grunt" prod && grunt server
