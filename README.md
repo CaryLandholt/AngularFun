@@ -38,9 +38,10 @@ You have three options.
 3. `grunt prod` - will compile using optimizations.  This will create one JavaScript file and one CSS file to demonstrate the power of [r.js](http://requirejs.org/docs/optimization.html), the build optimization tool for RequireJS.  And take a look at the index.html file.  Yep - it's minified too.
 
 ## Run It
-1. Navigate to the root of the project
-2. `grunt server`
-3. Open the [app](http://localhost:3005/) in your browser to run the app
+1. Compile the app using one of the above three options.
+2. Navigate to the root of the project
+3. `grunt server`
+4. Open the [app](http://localhost:3005/) in your browser to run the app
 
 ## Making Changes
 * `grunt dev` will watch for any CoffeeScript (.coffee), Less (.less), or .template file changes.  When changes are detected, the files will be linted, compiled, and ready for you to refresh the browser.
