@@ -20,7 +20,7 @@ files = [
   './dist/scripts/services/*.js',
 
   './test/scripts/filters/*.js',
-  './test/scripts/services/*.js',
+  './test/scripts/services/*.js'
 ];
 
 
