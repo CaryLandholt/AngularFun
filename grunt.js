@@ -65,11 +65,11 @@ module.exports = function (grunt) {
 			.template files are essentially html; however, you can take advantage of features provided by grunt such as underscore templating.
 
 			The example below demonstrates the use of the environment configuration setting.
-			In 'prod' the concatenated and minified scripts are used along with a unique QueryString parameter to address browser caching.
+			In 'prod' the concatenated and minified scripts are used along with a QueryString parameter of the hash of the file contents to address browser caching.
 			In environments other than 'prod' the individual files are used and loaded with RequireJS.
 
 			<% if (config.environment === 'prod') { %>
-				<script src="/scripts/scripts.min.js?_=v<%= config.uniqueVersion() %>"></script>
+				<script src="/scripts/scripts.min.js?v=<%= config.hash('./temp/scripts/scripts.min.js') %>"></script>
 			<% } else { %>
 				<script data-main="/scripts/main.js" src="/scripts/libs/require.js"></script>
 			<% } %>
@@ -306,6 +306,12 @@ module.exports = function (grunt) {
 		reload: {
 			liveReload: true,
 			port: 35729
+		},
+
+		hash: {
+			dist: {
+				files: ['./dist/scripts/**/*.js']
+			}
 		}
 	});
 
@@ -344,8 +350,8 @@ module.exports = function (grunt) {
 		'coffee',
 		'less',
 		'template:views',
-		'template:dev',
 		'copy:temp',
+		'template:dev',
 		'copy:dev',
 		'delete:temp'
 	]);
@@ -373,9 +379,9 @@ module.exports = function (grunt) {
 		'less',
 		'template:views',
 		'inlineTemplate',
-		'template:prod',
 		'copy:temp',
 		'requirejs',
+		'template:prod',
 		'minifyHtml',
 		'copy:prod',
 		'delete:temp'

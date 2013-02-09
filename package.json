@@ -1,6 +1,6 @@
 {
 	"name": "AngularFun",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"author": {
 		"name": "Cary Landholt",
 		"email": "cary@landholt.com",
@@ -20,9 +20,9 @@
 		"url": "https://github.com/CaryLandholt/AngularFun.git"
 	},
 	"dependencies": {
-		"express": "~3.0.3",
+		"express": "~3.1.0",
 		"grunt": "~0.3.17",
-		"grunt-hustler": "~0.7.4",
+		"grunt-hustler": "~0.8.0",
 		"grunt-reload": "~0.2.0"
 	},
 	"devDependencies": {

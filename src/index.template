@@ -10,10 +10,10 @@
 		<meta name="description" content="AngularJS Reference Architecture" />
 		<meta name="viewport" content="width=device-width" />
 
-		<!--[if lte IE 8]> <script src="/scripts/libs/json2.js"></script> <script src="/scripts/libs/html5shiv-printshiv.js"></script> <![endif]-->
+		<!--[if lte IE 8]> <script src="/scripts/libs/json2.js?v=<%= config.hash('./temp/scripts/libs/json2.js') %>"></script> <script src="/scripts/libs/html5shiv-printshiv.js?v=<%= config.hash('./temp/scripts/libs/html5shiv-printshiv.js') %>"></script> <![endif]-->
 
 		<% if (config.environment === 'prod') { %>
-			<link rel="stylesheet" href="/styles/styles.min.css?_=v<%= config.uniqueVersion() %>" />
+			<link rel="stylesheet" href="/styles/styles.min.css?v=<%= config.hash('./temp/styles/styles.min.css') %>" />
 			<%= config.include('./temp/views/views.html') %>
 		<% } else { %>
 			<link rel="stylesheet" href="/styles/styles.css" />
@@ -135,7 +135,7 @@
 		</div>
 
 		<% if (config.environment === 'prod') { %>
-			<script src="/scripts/scripts.min.js?_=v<%= config.uniqueVersion() %>"></script>
+			<script src="/scripts/scripts.min.js?v=<%= config.hash('./temp/scripts/scripts.min.js') %>"></script>
 		<% } else { %>
 			<script data-main="/scripts/main.js" src="/scripts/libs/require.js"></script>
 		<% } %>
