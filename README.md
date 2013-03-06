@@ -21,7 +21,7 @@ Simply follow the patterns and you'll get a complete development workflow, inclu
 * Must have [Git](http://git-scm.com/) installed
 * Must have [node.js (at least v0.8.1)](http://nodejs.org/) installed with npm (Node Package Manager)
 * Must have [CoffeeScript](https://npmjs.org/package/coffee-script) node package installed globally.  `npm install -g coffee-script`
-* Must have [Grunt](https://github.com/gruntjs/grunt) node package installed globally.  `npm install -g grunt`
+* Must have [Grunt](https://github.com/gruntjs/grunt) node package installed globally.  `npm install -g grunt-cli`
 
 ## Install Angular Fun
 Enter the following commands in the terminal.

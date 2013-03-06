@@ -1,6 +1,6 @@
 {
 	"name": "AngularFun",
-	"version": "1.0.2",
+	"version": "1.1.0",
 	"author": {
 		"name": "Cary Landholt",
 		"email": "cary@landholt.com",
@@ -20,14 +20,19 @@
 		"url": "https://github.com/CaryLandholt/AngularFun.git"
 	},
 	"dependencies": {
+		"coffee-script": "~1.6.1",
 		"express": "~3.1.0",
-		"grunt": "~0.3.17",
-		"grunt-hustler": "~0.8.0",
-		"grunt-reload": "~0.2.0"
-	},
-	"devDependencies": {
-		"coffee-script": "~1.4.0",
-		"testacular": "~0.5.5"
+		"grunt": "~0.4.0",
+		"grunt-contrib-clean": "~0.4.0",
+		"grunt-contrib-coffee": "~0.5.0",
+		"grunt-contrib-copy": "~0.4.0",
+		"grunt-contrib-imagemin": "~0.1.2",
+		"grunt-contrib-less": "~0.5.0",
+		"grunt-contrib-requirejs": "~0.4.0",
+		"grunt-contrib-watch": "~0.3.1",
+		"grunt-hustler": "0.10.0",
+		"grunt-reload": "~0.2.0",
+		"grunt-testacular": "~0.3.0"
 	},
 	"engines": {
 		"node": "0.8.x",

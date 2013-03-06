@@ -19,6 +19,7 @@ require
 		'bootstrap'                          : deps: ['app']
 		'routes'                             : deps: ['app']
 		'run'                                : deps: ['app']
+		'views'                              : deps: ['app']
 	[
 		'require'
 		'controllers/gitHubController'
@@ -32,5 +33,6 @@ require
 		'responseInterceptors/dispatcher'
 		'routes'
 		'run'
+		'views'
 	], (require) ->
 		require ['bootstrap']
