@@ -7,12 +7,12 @@ AngularFun is an [AngularJS](http://angularjs.org/) large application Reference 
 Simply follow the patterns and you'll get a complete development workflow, including:
 
 * file organization
-* compilation of [CoffeeScript](http://coffeescript.org/) files
-* compilation of [LESS](http://lesscss.org/) files
+* transpilation of [CoffeeScript](http://coffeescript.org/) files
+* transpilation of [LESS](http://lesscss.org/) files
 * three build configurations
 	* **default** - compilation with no optimizations
 	* **dev** - compilation with no optimizations but includes file watching to monitor changes and build changed files on-the-fly
-	* **prod** - compilation with all optimizations, including concatenation and minification of JavaScript, CSS, and HTML
+	* **prod** - compilation with all optimizations, including concatenation and minification of png, JavaScript, CSS, and HTML files.
 * full dependency management (file loading and dependency resolution)
 * an in-browser unit testing strategy
 * a server to run the application
@@ -41,7 +41,7 @@ You have three options.
 1. Compile the app using one of the above three options.
 2. Navigate to the root of the project
 3. `grunt server`
-4. Open the [app](http://localhost:3005/) in your browser to run the app
+4. Open the [app](http://localhost:3005/) in your browser to give it a go
 
 ## Making Changes
 * `grunt dev` will watch for any CoffeeScript (.coffee), Less (.less), or .template file changes.  When changes are detected, the files will be linted, compiled, and ready for you to refresh the browser.

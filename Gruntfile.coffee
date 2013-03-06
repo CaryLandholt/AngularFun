@@ -63,6 +63,17 @@ module.exports = (grunt) ->
 				environment: 'prod'
 
 		# Gathers all views and creates a file to push views directly into the $templateCache
+		# This will produce a file with the following content.
+		#
+		# angular.module('app').run(['$templateCache', function ($templateCache) {
+		# 	$templateCache.put('/views/directives/tab.html', '<div class="tab-pane" ng-class="{active: selected}" ng-transclude></div>');
+		# 	$templateCache.put('/views/directives/tabs.html', '<div class="tabbable"> <ul class="nav nav-tabs"> <li ng-repeat="tab in tabs" ng-class="{active:tab.selected}"> <a href="http://localhost:3005/scripts/views.js" ng-click="select(tab)">{{tab.caption}}</a> </li> </ul> <div class="tab-content" ng-transclude></div> </div>');
+		# 	$templateCache.put('/views/people.html', '<ul ng-hide="!people.length"> <li class="row" ng-repeat="person in people | orderBy:\'name\'"> <a ng-href="#/people/{{person.id}}" ng-bind="person.name"></a> </li> </ul>');
+		# 	$templateCache.put('/views/repos.html', '<ul ng-hide="!repos.length"> <li ng-repeat="repo in repos | orderBy:\'pushed_at\':true"> <a ng-href="{{repo.url}}" ng-bind="repo.name" target="_blank"></a> <div ng-bind="repo.description"></div> </li> </ul>');
+		# 	$templateCache.put('/views/tweets.html', '<ul ng-hide="!tweets.length"> <li class="row" ng-repeat="tweet in tweets"> <div class="span1 thumbnail"> <img ng-src="{{tweet.profile_image_url}}"/> </div> <div class="span6"> <div> <b ng-bind="tweet.from_user_name"></b> <a ng-href="https://twitter.com/{{tweet.from_user}}" ng-bind="tweet.from_user | twitterfy" target="_blank"></a> </div> <div ng-bind="tweet.text"></div> </div> </li> </ul>');
+		# }]);
+		#
+		# This file is then included in the output automatically.  AngularJS will use it instead of going to the file system for the views, saving requests.  Notice that the view content is actually minified.  :)
 		ngTemplateCache:
 			views:
 				files: [
@@ -131,44 +142,36 @@ module.exports = (grunt) ->
 					src: './temp/index.min.html'
 					dest: './dist/index.html'
 				]
-
-
 			# Task is run when a watched script is modified.
 			scripts:
 				files: [
-					cwd: "./temp/scripts/"
-					src: "**"
-					dest: "./dist/scripts/"
+					cwd: './temp/scripts/'
+					src: '**'
+					dest: './dist/scripts/'
 					expand: true
 				]
-
-
 			# Task is run when a watched style is modified.
 			styles:
 				files: [
-					cwd: "./temp/styles/"
-					src: "**"
-					dest: "./dist/styles/"
+					cwd: './temp/styles/'
+					src: '**'
+					dest: './dist/styles/'
 					expand: true
 				]
-
-
 			# Task is run when the watched index.template file is modified.
 			index:
 				files: [
-					cwd: "./temp/"
-					src: "index.html"
-					dest: "./dist/"
+					cwd: './temp/'
+					src: 'index.html'
+					dest: './dist/'
 					expand: true
 				]
-
-
 			# Task is run when a watched view is modified.
 			views:
 				files: [
-					cwd: "./temp/views/"
-					src: "**"
-					dest: "./dist/views/"
+					cwd: './temp/scripts/'
+					src: 'views.js'
+					dest: './dist/scripts/'
 					expand: true
 				]
 
@@ -222,20 +225,38 @@ module.exports = (grunt) ->
 		# Sets up file watchers and runs tasks when watched files are changed.
 		watch:
 			scripts:
-				files: "./src/scripts/**/*.coffee"
-				tasks: "coffee:scripts copy:scripts reload"
-
+				files: './src/scripts/**/*.coffee'
+				tasks: [
+					'coffee'
+					'copy:scripts'
+					'clean:temp'
+					'reload'
+				]
 			styles:
-				files: "./src/styles/**/*.less"
-				tasks: "less copy:styles reload"
-
+				files: './src/styles/**/*.less'
+				tasks: [
+					'less'
+					'copy:styles'
+					'clean:temp'
+					'reload'
+				]
 			index:
-				files: "./src/index.template"
-				tasks: "template:dev copy:index reload"
-
+				files: './src/index.template'
+				tasks: [
+					'template:dev'
+					'copy:index'
+					'clean:temp'
+					'reload'
+				]
 			views:
-				files: "./src/views/**/*.template"
-				tasks: "template:views copy:views reload"
+				files: './src/views/**/*.template'
+				tasks: [
+					'template:views'
+					'ngTemplateCache'
+					'copy:views'
+					'clean:temp'
+					'reload'
+				]
 
 		# Leverages the LiveReload browser plugin to automatically reload the browser when watched files have changed.
 		#

@@ -31,7 +31,7 @@
 		"grunt-contrib-requirejs": "~0.4.0",
 		"grunt-contrib-watch": "~0.3.1",
 		"grunt-hustler": "0.10.0",
-		"grunt-reload": "~0.2.0",
+		"grunt-reload": "git://github.com/webxl/grunt-reload.git",
 		"grunt-testacular": "~0.3.0"
 	},
 	"engines": {
