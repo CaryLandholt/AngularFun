@@ -230,7 +230,6 @@ module.exports = (grunt) ->
 					'coffee'
 					'copy:scripts'
 					'clean:temp'
-					'reload'
 				]
 			styles:
 				files: './src/styles/**/*.less'
@@ -238,7 +237,6 @@ module.exports = (grunt) ->
 					'less'
 					'copy:styles'
 					'clean:temp'
-					'reload'
 				]
 			index:
 				files: './src/index.template'
@@ -246,7 +244,6 @@ module.exports = (grunt) ->
 					'template:dev'
 					'copy:index'
 					'clean:temp'
-					'reload'
 				]
 			views:
 				files: './src/views/**/*.template'
@@ -255,18 +252,7 @@ module.exports = (grunt) ->
 					'ngTemplateCache'
 					'copy:views'
 					'clean:temp'
-					'reload'
 				]
-
-		# Leverages the LiveReload browser plugin to automatically reload the browser when watched files have changed.
-		#
-		# As of this writing, Chrome, Firefox, and Safari are supported.
-		#
-		# Get the plugin:
-		# here http://help.livereload.com/kb/general-use/browser-extensions
-		reload:
-			liveReload: true
-			port: 35729
 
 		# Runs a web server at the specified port.
 		# Can optionally watch for changes to the file referenced in the watch setting.
@@ -307,11 +293,6 @@ module.exports = (grunt) ->
 	# https://github.com/CaryLandholt/grunt-hustler
 	grunt.loadNpmTasks 'grunt-hustler'
 
-	# Register grunt tasks supplied by grunt-reload.
-	# Referenced in package.json.
-	# https://github.com/webxl/grunt-reload
-	grunt.loadNpmTasks 'grunt-reload'
-
 	# Register grunt tasks supplied by grunt-testacular.
 	# Referenced in package.json.
 	# https://github.com/Dignifiedquire/grunt-testacular
@@ -338,7 +319,6 @@ module.exports = (grunt) ->
 	# grunt dev
 	grunt.registerTask 'dev', [
 		'default'
-		'reload'
 		'watch'
 	]
 
