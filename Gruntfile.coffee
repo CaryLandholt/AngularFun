@@ -1,3 +1,5 @@
+path = require 'path'
+
 # Build configurations.
 module.exports = (grunt) ->
 	grunt.initConfig
@@ -254,14 +256,35 @@ module.exports = (grunt) ->
 					'clean:temp'
 				]
 
+		# Start an Express server + live reload.
+		express:
+			livereload:
+				options: 
+					port: 3005
+					bases: path.resolve 'dist'
+					debug: true
+					monitor: {}
+					server: path.resolve './server'
+
+		# Restart server when server sources have changed, notify all browsers on change.
+		regarde:
+			dist:
+				files: './dist/**/*'
+				tasks: [
+					'livereload'
+				]
+			server:
+				files: ['server.coffee', 'routes.coffee']
+				tasks: ['express-restart:livereload']
+
 		# Runs a web server at the specified port.
 		# Can optionally watch for changes to the file referenced in the watch setting.
 		# The web server will automatically restart once the changes have been saved.
-		server:
-			app:
-				src: './server.coffee'
-				port: 3005
-				watch: './routes.coffee'
+		#server:
+		#	app:
+		#		src: './server.coffee'
+		#		port: 3005
+		#		watch: './routes.coffee'
 
 		# Runs unit tests using testacular
 		testacular:
@@ -285,6 +308,7 @@ module.exports = (grunt) ->
 	grunt.loadNpmTasks 'grunt-contrib-copy'
 	grunt.loadNpmTasks 'grunt-contrib-imagemin'
 	grunt.loadNpmTasks 'grunt-contrib-less'
+	grunt.loadNpmTasks 'grunt-contrib-livereload'
 	grunt.loadNpmTasks 'grunt-contrib-requirejs'
 	grunt.loadNpmTasks 'grunt-contrib-watch'
 
@@ -297,6 +321,11 @@ module.exports = (grunt) ->
 	# Referenced in package.json.
 	# https://github.com/Dignifiedquire/grunt-testacular
 	grunt.loadNpmTasks 'grunt-testacular'
+
+	# Express server + LiveReload
+	grunt.loadNpmTasks 'grunt-express'
+	# Recommended watcher for LiveReload + Express.
+	grunt.loadNpmTasks 'grunt-regarde'
 
 	# Compiles the app with non-optimized build settings and places the build artifacts in the dist directory.
 	# Enter the following command at the command line to execute this build task:
@@ -346,4 +375,11 @@ module.exports = (grunt) ->
 	grunt.registerTask 'test', [
 		'default'
 		'testacular'
+	]
+
+	# override server task (from grunt-hustler)
+	grunt.registerTask 'server', [
+		'livereload-start'
+		'express'
+		'regarde'
 	]
