@@ -12,6 +12,11 @@
 			"name": "David Bochenski",
 			"email": "david@bochenski.co.uk",
 			"url": "https://github.com/Bochenski"
+		},
+		{
+			"name": "Jan Philipp",
+			"email": "knallisworld@googlemail.com",
+			"url": "https://github.com/knalli"
 		}
 	],
 	"main": "./server.coffee",
