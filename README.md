@@ -203,6 +203,14 @@ Here are the final index.html script references.  Note that the condition will n
 ### Give and Take
 After many iterations it now feels right.  All [comments and questions](https://github.com/CaryLandholt/AngularFun/issues) and [Pull Requests](https://github.com/CaryLandholt/AngularFun/pulls) are always welcome.  I respond to all.
 
+### Contributing
+In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using grunt.
+
+#### List of contributors
+* [Cary Landholt](https://github.com/CaryLandholt)
+* [David Bochenski](https://github.com/Bochenski)
+* [Jan Philipp](https://github.com/knalli)
+
 ## To-Do
 * Add many more unit tests :(
 * Add more documentation :(
