@@ -1,6 +1,6 @@
 {
 	"name": "AngularFun",
-	"version": "1.1.0",
+	"version": "1.2.0",
 	"author": {
 		"name": "Cary Landholt",
 		"email": "cary@landholt.com",
@@ -24,17 +24,17 @@
 		"express": "~3.1.0",
 		"grunt": "~0.4.0",
 		"grunt-contrib-clean": "~0.4.0",
-		"grunt-contrib-coffee": "~0.5.0",
+		"grunt-contrib-coffee": "~0.6.0",
 		"grunt-contrib-copy": "~0.4.0",
 		"grunt-contrib-imagemin": "~0.1.2",
 		"grunt-contrib-less": "~0.5.0",
+		"grunt-contrib-livereload": "~0.1.2",
 		"grunt-contrib-requirejs": "~0.4.0",
 		"grunt-contrib-watch": "~0.3.1",
-		"grunt-hustler": "0.10.0",
-		"grunt-testacular": "~0.3.0",
-		"grunt-contrib-livereload": "~0.1.2",
+		"grunt-express": "~0.2.1",
+		"grunt-hustler": "0.11.0",
 		"grunt-regarde": "~0.1.1",
-		"grunt-express": "~0.2.0",
+		"grunt-testacular": "~0.3.0",
 		"socket.io": "~0.9.13"
 	},
 	"engines": {

@@ -11,8 +11,8 @@ server = require('http').createServer(app)
 io = require('socket.io').listen(server)
 
 app.configure ->
-    # use livereload middleware
-    app.use require('grunt-contrib-livereload/lib/utils').livereloadSnippet
+	# use livereload middleware
+	app.use require('grunt-contrib-livereload/lib/utils').livereloadSnippet
 	app.use express.logger 'dev'
 	app.use express.bodyParser()
 	app.use express.methodOverride()

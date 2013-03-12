@@ -78,10 +78,8 @@ module.exports = (grunt) ->
 		# This file is then included in the output automatically.  AngularJS will use it instead of going to the file system for the views, saving requests.  Notice that the view content is actually minified.  :)
 		ngTemplateCache:
 			views:
-				files: [
-					src: './temp/views/**/*.html'
-					dest: './temp/scripts/views.js'
-				]
+				files:
+					'./temp/scripts/views.js': './temp/views/**/*.html'
 				options:
 					trim: './temp'
 
@@ -105,6 +103,11 @@ module.exports = (grunt) ->
 					cwd: './src/scripts/libs/'
 					src: '**'
 					dest: './temp/scripts/libs/'
+					expand: true
+				,
+					cwd: './src/img/'
+					src: '**'
+					dest: './temp/img/'
 					expand: true
 				]
 			# Copies the contents of the temp directory, except views, to the dist directory.
@@ -141,8 +144,7 @@ module.exports = (grunt) ->
 					dest: './dist/styles/'
 					expand: true
 				,
-					src: './temp/index.min.html'
-					dest: './dist/index.html'
+					'./dist/index.html': './temp/index.min.html'
 				]
 			# Task is run when a watched script is modified.
 			scripts:
@@ -259,9 +261,9 @@ module.exports = (grunt) ->
 		# Start an Express server + live reload.
 		express:
 			livereload:
-				options: 
+				options:
 					port: 3005
-					bases: path.resolve 'dist'
+					bases: path.resolve './dist'
 					debug: true
 					monitor: {}
 					server: path.resolve './server'
@@ -269,22 +271,11 @@ module.exports = (grunt) ->
 		# Restart server when server sources have changed, notify all browsers on change.
 		regarde:
 			dist:
-				files: './dist/**/*'
-				tasks: [
-					'livereload'
-				]
+				files: './dist/**'
+				tasks: ['livereload']
 			server:
 				files: ['server.coffee', 'routes.coffee']
 				tasks: ['express-restart:livereload']
-
-		# Runs a web server at the specified port.
-		# Can optionally watch for changes to the file referenced in the watch setting.
-		# The web server will automatically restart once the changes have been saved.
-		#server:
-		#	app:
-		#		src: './server.coffee'
-		#		port: 3005
-		#		watch: './routes.coffee'
 
 		# Runs unit tests using testacular
 		testacular:
@@ -312,20 +303,21 @@ module.exports = (grunt) ->
 	grunt.loadNpmTasks 'grunt-contrib-requirejs'
 	grunt.loadNpmTasks 'grunt-contrib-watch'
 
+	# Express server + LiveReload
+	grunt.loadNpmTasks 'grunt-express'
+
 	# Register grunt tasks supplied by grunt-hustler.
 	# Referenced in package.json.
 	# https://github.com/CaryLandholt/grunt-hustler
 	grunt.loadNpmTasks 'grunt-hustler'
 
+	# Recommended watcher for LiveReload + Express.
+	grunt.loadNpmTasks 'grunt-regarde'
+
 	# Register grunt tasks supplied by grunt-testacular.
 	# Referenced in package.json.
 	# https://github.com/Dignifiedquire/grunt-testacular
 	grunt.loadNpmTasks 'grunt-testacular'
-
-	# Express server + LiveReload
-	grunt.loadNpmTasks 'grunt-express'
-	# Recommended watcher for LiveReload + Express.
-	grunt.loadNpmTasks 'grunt-regarde'
 
 	# Compiles the app with non-optimized build settings and places the build artifacts in the dist directory.
 	# Enter the following command at the command line to execute this build task:
@@ -336,7 +328,6 @@ module.exports = (grunt) ->
 		'less'
 		'template:views'
 		'ngTemplateCache'
-		'imagemin'
 		'copy:temp'
 		'template:dev'
 		'copy:dev'
@@ -377,7 +368,9 @@ module.exports = (grunt) ->
 		'testacular'
 	]
 
-	# override server task (from grunt-hustler)
+	# Starts a web server
+	# Enter the following command at the command line to execute this task:
+	# grunt server
 	grunt.registerTask 'server', [
 		'livereload-start'
 		'express'
