@@ -15,7 +15,7 @@
 		<% if (config.environment === 'prod') { %>
 			<link rel="stylesheet" href="/styles/styles.min.css?v=<%= config.hash('./temp/styles/styles.min.css') %>" />
 		<% } else { %>
-			<link rel="stylesheet" href="/styles/styles.css" />
+			<link rel="stylesheet" href="/styles/styles.css?v=<%= config.hash('./temp/styles/styles.css') %>" />
 		<% } %>
 
 		<!-- ClickJacking Defense begin (https://www.owasp.org/index.php/Clickjacking_Defense_Cheat_Sheet) -->
@@ -136,7 +136,7 @@
 		<% if (config.environment === 'prod') { %>
 			<script src="/scripts/scripts.min.js?v=<%= config.hash('./temp/scripts/scripts.min.js') %>"></script>
 		<% } else { %>
-			<script data-main="/scripts/main.js" src="/scripts/libs/require.js"></script>
+			<script data-main="/scripts/main.js" src="/scripts/libs/require.js?v=<%= config.hash('./temp/scripts/libs/require.js') %>"></script>
 		<% } %>
 	</body>
 </html>
