@@ -349,6 +349,14 @@ module.exports = (grunt) ->
 		'regarde'
 	]
 
+	# Compiles all CoffeeScript files in the project to JavaScript then deletes all CoffeeScript files.
+	# Enter the following command at the command line to execute this build task:
+	# grunt jslove
+	grunt.registerTask 'jslove', [
+		'coffee:jslove'
+		'clean:jslove'
+	]
+
 	# Compiles the app with non-optimized build settings and places the build artifacts in the dist directory.
 	# Enter the following command at the command line to execute this build task:
 	# grunt
