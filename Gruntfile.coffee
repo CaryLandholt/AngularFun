@@ -32,6 +32,18 @@ module.exports = (grunt) ->
 					# Don't include a surrounding Immediately-Invoked Function Expression (IIFE) in the compiled output.
 					# For more information on IIFEs, please visit http://benalman.com/news/2010/11/immediately-invoked-function-expression/
 					bare: true
+			jslove:
+				files: [
+					cwd: './'
+					src: [
+						'**/*.coffee'
+						'!**/node_modules/**'
+					]
+					dest: './'
+					expand: true
+					ext: '.js'
+				]
+				options: '<%= coffee.scripts.options %>'
 
 		# Copies directories and files from one location to another.
 		copy:
@@ -333,7 +345,7 @@ module.exports = (grunt) ->
 	# grunt
 	grunt.registerTask 'default', [
 		'clean'
-		'coffee'
+		'coffee:scripts'
 		'less'
 		'template:views'
 		'copy:img'
@@ -355,7 +367,7 @@ module.exports = (grunt) ->
 	# grunt prod
 	grunt.registerTask 'prod', [
 		'clean'
-		'coffee'
+		'coffee:scripts'
 		'less'
 		'template:views'
 		'imagemin'
