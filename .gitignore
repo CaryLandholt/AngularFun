@@ -1,6 +1,6 @@
 .DS_Store
 dist/
 node_modules/
-temp/
+.temp/
 test/scripts/*.js
 test/scripts/**/*.js

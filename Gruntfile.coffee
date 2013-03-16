@@ -10,7 +10,7 @@ module.exports = (grunt) ->
 		# These directories are not committed to source control.
 		clean:
 			dist: './dist/'
-			temp: './temp/'
+			temp: './.temp/'
 
 		# Compile CoffeeScript (.coffee) files to JavaScript (.js).
 		coffee:
@@ -18,7 +18,7 @@ module.exports = (grunt) ->
 				files: [
 					cwd: './src/'
 					src: 'scripts/**/*.coffee'
-					dest: './temp/'
+					dest: './.temp/'
 					expand: true
 					ext: '.js'
 				,
@@ -40,7 +40,7 @@ module.exports = (grunt) ->
 				files: [
 					cwd: './src/'
 					src: 'img/**/*.png'
-					dest: './temp/'
+					dest: './.temp/'
 					expand: true
 				]
 			# Copies libs directory to temp.
@@ -48,14 +48,14 @@ module.exports = (grunt) ->
 				files: [
 					cwd: './src/'
 					src: 'scripts/libs/**/*.js'
-					dest: './temp/'
+					dest: './.temp/'
 					expand: true
 				]
 			# Copies the contents of the temp directory, except views, to the dist directory.
 			# In 'dev' individual files are used.
 			dev:
 				files: [
-					cwd: './temp/'
+					cwd: './.temp/'
 					src: '**'
 					dest: './dist/'
 					expand: true
@@ -65,7 +65,7 @@ module.exports = (grunt) ->
 			# The dist artifacts contain only the files necessary to run the application.
 			prod:
 				files: [
-					cwd: './temp/'
+					cwd: './.temp/'
 					src: [
 						'img/**/*.png'
 						'scripts/libs/html5shiv-printshiv.js'
@@ -76,12 +76,12 @@ module.exports = (grunt) ->
 					dest: './dist/'
 					expand: true
 				,
-					'./dist/index.html': './temp/index.min.html'
+					'./dist/index.html': './.temp/index.min.html'
 				]
 			# Task is run when the watched index.template file is modified.
 			index:
 				files: [
-					cwd: './temp/'
+					cwd: './.temp/'
 					src: 'index.html'
 					dest: './dist/'
 					expand: true
@@ -89,7 +89,7 @@ module.exports = (grunt) ->
 			# Task is run when a watched script is modified.
 			scripts:
 				files: [
-					cwd: './temp/'
+					cwd: './.temp/'
 					src: 'scripts/**'
 					dest: './dist/'
 					expand: true
@@ -97,7 +97,7 @@ module.exports = (grunt) ->
 			# Task is run when a watched style is modified.
 			styles:
 				files: [
-					cwd: './temp/'
+					cwd: './.temp/'
 					src: 'styles/**'
 					dest: './dist/'
 					expand: true
@@ -105,7 +105,7 @@ module.exports = (grunt) ->
 			# Task is run when a watched view is modified.
 			views:
 				files: [
-					cwd: './temp/'
+					cwd: './.temp/'
 					src: 'views/**'
 					dest: './dist/'
 					expand: true
@@ -127,7 +127,7 @@ module.exports = (grunt) ->
 				files: [
 					cwd: './src/'
 					src: 'img/**/*.png'
-					dest: './temp/'
+					dest: './.temp/'
 					expand: true
 				]
 				options:
@@ -137,7 +137,7 @@ module.exports = (grunt) ->
 		less:
 			styles:
 				files:
-					'./temp/styles/styles.css': './src/styles/styles.less'
+					'./.temp/styles/styles.css': './src/styles/styles.less'
 
 		# Minifiy index.html.
 		# Extra white space and comments will be removed.
@@ -147,7 +147,7 @@ module.exports = (grunt) ->
 		minifyHtml:
 			prod:
 				files:
-					'./temp/index.min.html': './temp/index.html'
+					'./.temp/index.min.html': './.temp/index.html'
 
 		# Gathers all views and creates a file to push views directly into the $templateCache
 		# This will produce a file with the following content.
@@ -164,9 +164,9 @@ module.exports = (grunt) ->
 		ngTemplateCache:
 			views:
 				files:
-					'./temp/scripts/views.js': './temp/views/**/*.html'
+					'./.temp/scripts/views.js': './.temp/views/**/*.html'
 				options:
-					trim: './temp'
+					trim: './.temp'
 
 		# Restart server when server sources have changed, notify all browsers on change.
 		regarde:
@@ -189,10 +189,10 @@ module.exports = (grunt) ->
 		requirejs:
 			scripts:
 				options:
-					baseUrl: './temp/scripts/'
+					baseUrl: './.temp/scripts/'
 					findNestedDependencies: true
 					logLevel: 0
-					mainConfigFile: './temp/scripts/main.js'
+					mainConfigFile: './.temp/scripts/main.js'
 					name: 'main'
 					# Exclude main from the final output to avoid the dependency on RequireJS at runtime.
 					onBuildWrite: (moduleName, path, contents) ->
@@ -203,7 +203,7 @@ module.exports = (grunt) ->
 
 						contents
 					optimize: 'uglify'
-					out: './temp/scripts/scripts.min.js'
+					out: './.temp/scripts/scripts.min.js'
 					preserveLicenseComments: false
 					skipModuleInsertion: true
 					uglify:
@@ -211,11 +211,11 @@ module.exports = (grunt) ->
 						no_mangle: false
 			styles:
 				options:
-					baseUrl: './temp/styles/'
-					cssIn: './temp/styles/styles.css'
+					baseUrl: './.temp/styles/'
+					cssIn: './.temp/styles/styles.css'
 					logLevel: 0
 					optimizeCss: 'standard'
-					out: './temp/styles/styles.min.css'
+					out: './.temp/styles/styles.min.css'
 
 		# Compile template files (.template) to HTML (.html).
 		#
@@ -226,17 +226,17 @@ module.exports = (grunt) ->
 		# In environments other than 'prod' the individual files are used and loaded with RequireJS.
 		#
 		# <% if (config.environment === 'prod') { %>
-		# 	<script src="/scripts/scripts.min.js?v=<%= config.hash('./temp/scripts/scripts.min.js') %>"></script>
+		# 	<script src="/scripts/scripts.min.js?v=<%= config.hash('./.temp/scripts/scripts.min.js') %>"></script>
 		# <% } else { %>
 		# 	<script data-main="/scripts/main.js" src="/scripts/libs/require.js"></script>
 		# <% } %>
 		template:
 			views:
 				files:
-					'./temp/views/': './src/views/**/*.template'
+					'./.temp/views/': './src/views/**/*.template'
 			dev:
 				files:
-					'./temp/index.html': './src/index.template'
+					'./.temp/index.html': './src/index.template'
 				environment: 'dev'
 			prod:
 				files: '<%= template.dev.files %>'
