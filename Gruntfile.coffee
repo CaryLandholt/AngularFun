@@ -285,9 +285,10 @@ module.exports = (grunt) ->
 					'copy:index'
 				]
 			scripts:
-				files: './src/scripts/**/*.coffee'
+				files: './src/scripts/**'
 				tasks: [
 					'coffee:scripts'
+					'copy:js'
 					'copy:scripts'
 				]
 			styles:
