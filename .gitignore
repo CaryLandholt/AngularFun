@@ -1,6 +1,5 @@
 .DS_Store
 dist/
+dist_test/
 node_modules/
 .temp/
-test/scripts/*.js
-test/scripts/**/*.js

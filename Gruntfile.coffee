@@ -12,6 +12,7 @@ module.exports = (grunt) ->
 			working:
 				src: [
 					'./dist/'
+					'./dist_test/'
 					'./.temp/'
 				]
 			jslove:
@@ -32,7 +33,7 @@ module.exports = (grunt) ->
 				,
 					cwd: './test/'
 					src: 'scripts/**/*.coffee'
-					dest: './test/'
+					dest: './dist_test/'
 					expand: true
 					ext: '.js'
 				]

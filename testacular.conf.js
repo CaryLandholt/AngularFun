@@ -12,8 +12,8 @@ files = [
 	'./dist/scripts/responseInterceptors/*.js',
 	'./dist/scripts/services/*.js',
 
-	'./test/scripts/filters/*.js',
-	'./test/scripts/services/*.js'
+	'./dist_test/scripts/filters/*.js',
+	'./dist_test/scripts/services/*.js'
 ];
 
 // level of logging
