@@ -279,7 +279,7 @@ module.exports = (grunt) ->
 			scripts:
 				files: './src/scripts/**/*.coffee'
 				tasks: [
-					'coffee'
+					'coffee:scripts'
 					'copy:scripts'
 				]
 			styles:
