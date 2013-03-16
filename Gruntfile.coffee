@@ -55,6 +55,15 @@ module.exports = (grunt) ->
 
 		# Copies directories and files from one location to another.
 		copy:
+			# Copies the contents of the temp directory, except views, to the dist directory.
+			# In 'dev' individual files are used.
+			dev:
+				files: [
+					cwd: './.temp/'
+					src: '**'
+					dest: './dist/'
+					expand: true
+				]
 			# Copies img directory to temp.
 			img:
 				files: [
@@ -63,21 +72,12 @@ module.exports = (grunt) ->
 					dest: './.temp/'
 					expand: true
 				]
-			# Copies libs directory to temp.
-			libs:
+			# Copies js files to the temp directory
+			js:
 				files: [
 					cwd: './src/'
-					src: 'scripts/libs/**/*.js'
+					src: 'scripts/**/*.js'
 					dest: './.temp/'
-					expand: true
-				]
-			# Copies the contents of the temp directory, except views, to the dist directory.
-			# In 'dev' individual files are used.
-			dev:
-				files: [
-					cwd: './.temp/'
-					src: '**'
-					dest: './dist/'
 					expand: true
 				]
 			# Copies select files from the temp directory to the dist directory.
@@ -354,10 +354,10 @@ module.exports = (grunt) ->
 	grunt.registerTask 'default', [
 		'clean:working'
 		'coffee:scripts'
+		'copy:js'
 		'less'
 		'template:views'
 		'copy:img'
-		'copy:libs'
 		'template:dev'
 		'copy:dev'
 	]
@@ -376,10 +376,10 @@ module.exports = (grunt) ->
 	grunt.registerTask 'prod', [
 		'clean:working'
 		'coffee:scripts'
+		'copy:js'
 		'less'
 		'template:views'
 		'imagemin'
-		'copy:libs'
 		'ngTemplateCache'
 		'requirejs'
 		'template:prod'
