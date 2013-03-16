@@ -9,8 +9,16 @@ module.exports = (grunt) ->
 		# These directories should be deleted before subsequent builds.
 		# These directories are not committed to source control.
 		clean:
-			dist: './dist/'
-			temp: './.temp/'
+			working:
+				src: [
+					'./dist/'
+					'./.temp/'
+				]
+			jslove:
+				src: [
+					'**/*.coffee'
+					'!**/node_modules/**'
+				]
 
 		# Compile CoffeeScript (.coffee) files to JavaScript (.js).
 		coffee:
@@ -344,7 +352,7 @@ module.exports = (grunt) ->
 	# Enter the following command at the command line to execute this build task:
 	# grunt
 	grunt.registerTask 'default', [
-		'clean'
+		'clean:working'
 		'coffee:scripts'
 		'less'
 		'template:views'
@@ -366,7 +374,7 @@ module.exports = (grunt) ->
 	# Enter the following command at the command line to execute this build task:
 	# grunt prod
 	grunt.registerTask 'prod', [
-		'clean'
+		'clean:working'
 		'coffee:scripts'
 		'less'
 		'template:views'
