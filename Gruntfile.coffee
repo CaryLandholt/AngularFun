@@ -394,5 +394,4 @@ module.exports = (grunt) ->
 		'template:prod'
 		'minifyHtml'
 		'copy:prod'
-		'clean:temp'
 	]
