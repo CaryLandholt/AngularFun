@@ -80,6 +80,11 @@ module.exports = (grunt) ->
 					src: 'scripts/**/*.js'
 					dest: './.temp/'
 					expand: true
+				,
+					cwd: './src/'
+					src: 'scripts/**/*.js'
+					dest: './dist_test/'
+					expand: true
 				]
 			# Copies select files from the temp directory to the dist directory.
 			# In 'prod' minified files are used along with img and libs.
