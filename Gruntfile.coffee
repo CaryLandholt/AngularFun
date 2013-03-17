@@ -15,6 +15,7 @@ module.exports = (grunt) ->
 					'./dist_test/'
 					'./.temp/'
 				]
+			# Used for those that desire plain old JavaScript.
 			jslove:
 				src: [
 					'**/*.coffee'
@@ -41,6 +42,7 @@ module.exports = (grunt) ->
 					# Don't include a surrounding Immediately-Invoked Function Expression (IIFE) in the compiled output.
 					# For more information on IIFEs, please visit http://benalman.com/news/2010/11/immediately-invoked-function-expression/
 					bare: true
+			# Used for those that desire plain old JavaScript.
 			jslove:
 				files: [
 					cwd: './'
@@ -356,6 +358,7 @@ module.exports = (grunt) ->
 	]
 
 	# Compiles all CoffeeScript files in the project to JavaScript then deletes all CoffeeScript files.
+	# Used for those that desire plain old JavaScript.
 	# Enter the following command at the command line to execute this build task:
 	# grunt jslove
 	grunt.registerTask 'jslove', [
