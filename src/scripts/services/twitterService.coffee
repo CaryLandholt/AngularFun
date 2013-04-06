@@ -1,4 +1,4 @@
-angular.module('app').service 'twitterService', ['$log', '$resource', 'messageService', ($log, $resource, messageService) ->
+angular.module('app').service 'twitterService', ['$log', '$q', '$resource', 'messageService', ($log, $q, $resource, messageService) ->
 	self = @
 
 	activity = $resource 'http://search.twitter.com/search.json',
@@ -6,12 +6,17 @@ angular.module('app').service 'twitterService', ['$log', '$resource', 'messageSe
 			get:
 				method: 'JSONP'
 
-	get = (criteria, success, failure) ->
-		activity.get q: criteria
-		, (tweets, getResponseHeaders) ->
+	get = (criteria) ->
+		defer = $q.defer()
+
+		activity.get q: criteria, (results) ->
 			messageService.publish 'search', source: 'Twitter', criteria: criteria
-			success(tweets.results) if angular.isFunction success
-		, failure
+			defer.resolve results.results
+		, (results) ->
+			$log.error 'twitterService error', results
+			defer.reject results
+
+		defer.promise
 
 	self.get = get
 ]

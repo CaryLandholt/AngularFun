@@ -5,7 +5,7 @@ angular.module('app').controller 'twitterController', ['$log', '$scope', '$rootS
 	$scope.onRouteChange = (routeParams) ->
 		$scope.searchTerm = routeParams.searchTerm
 
-		twitterService.get $scope.searchTerm
-		, (tweets) ->
-			$scope.tweets = tweets
+		twitterService.get($scope.searchTerm).then (results) ->
+			$log.info results
+			$scope.tweets = results
 ]

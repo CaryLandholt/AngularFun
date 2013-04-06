@@ -5,7 +5,6 @@ angular.module('app').controller 'gitHubController', ['$log', '$scope', '$rootSc
 	$scope.onRouteChange = (routeParams) ->
 		$scope.searchTerm = routeParams.searchTerm
 
-		gitHubService.get $scope.searchTerm
-		, (repos) ->
-			$scope.repos = repos
+		gitHubService.get($scope.searchTerm).then (results) ->
+			$scope.repos = results
 ]
