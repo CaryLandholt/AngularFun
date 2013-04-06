@@ -1,25 +1,49 @@
-angular.module('app').service 'personService', ['$log', '$resource', ($log, $resource) ->
+angular.module('app').service 'personService', ['$log', '$q', '$resource', ($log, $q, $resource) ->
 	self = @
 	activity = $resource './people/:id'
 
-	get = (success, failure) ->
-		activity.query {}
-		, (people, getResponseHeaders) ->
-			success(people) if angular.isFunction success
-		, failure
+	get = ->
+		defer = $q.defer()
 
-	getPerson = (id, success, failure) ->
-		activity.get {id: id}
-		, (person, getResponseHeaders) ->
-			success(person) if angular.isFunction success
-		, failure
+		activity.query {}, (results) ->
+			defer.resolve results.data
+		, (results) ->
+			$log.error 'personService.query error', results
+			defer.reject results
 
-	save = (person, success, failure) ->
+		defer.promise
+
+	getPerson = (id) ->
+		defer = $q.defer()
+
+		activity.get {id}, (results) ->
+			defer.resolve results.data
+		, (results) ->
+			$log.error 'personService.get error', results
+			defer.reject results
+
+		defer.promise
+
+	save = (person) ->
+		defer = $q.defer()
 		newPerson = new activity person
 
-		newPerson.$save (newPerson, getResponseHeaders) ->
-			success(newPerson) if angular.isFunction success
-		, failure
+		activity.$save (results) ->
+			defer.resolve results.data
+		, (results) ->
+			$log.error 'personService.save error', results
+			defer.reject results
+
+		defer.promise
+
+
+
+
+		# newPerson = new activity person
+
+		# newPerson.$save (newPerson, getResponseHeaders) ->
+		# 	success(newPerson) if angular.isFunction success
+		# , failure
 
 	self.get = get
 	self.getPerson = getPerson
