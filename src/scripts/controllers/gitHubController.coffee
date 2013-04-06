@@ -1,4 +1,4 @@
-angular.module('app').controller 'gitHubController', ['$log', '$scope', '$rootScope', '$location', 'gitHubService', ($log, $scope, $rootScope, $location, gitHubService) ->
+angular.module('app').controller 'gitHubController', ['$log', '$scope', '$location', 'gitHubService', ($log, $scope, $location, gitHubService) ->
 	$scope.search = (searchTerm) ->
 		$location.path "/github/#{searchTerm}"
 
