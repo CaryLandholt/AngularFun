@@ -1,11 +1,14 @@
-angular.module('app').factory 'messageService', ['$log', '$rootScope', ($log, $rootScope) ->
+angular.module('app').service 'messageService', ['$log', '$rootScope', ($log, $rootScope) ->
+	self = @
+
 	publish = (name, parameters) ->
-		parameters.timeStamp = new Date()
+		parameters.timeStamp = Date.now()
 
 		$rootScope.$broadcast name, parameters
 
 	subscribe = (name, listener) ->
 		$rootScope.$on name, listener
 
-	{publish, subscribe}
+	self.publish = publish
+	self.subscribe = subscribe
 ]

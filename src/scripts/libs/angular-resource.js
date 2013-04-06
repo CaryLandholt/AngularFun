@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.1.3
+ * @license AngularJS v1.1.4
  * (c) 2010-2012 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -24,14 +24,23 @@
  * The returned resource object has action methods which provide high-level behaviors without
  * the need to interact with the low level {@link ng.$http $http} service.
  *
- * @param {string} url A parameterized URL template with parameters prefixed by `:` as in
+ * # Installation
+ * To use $resource make sure you have included the `angular-resource.js` that comes in Angular 
+ * package. You also can find this stuff in {@link http://code.angularjs.org/ code.angularjs.org}.
+ * Finally load the module in your application:
+ *
+ *        angular.module('app', ['ngResource']);
+ *
+ * and you ready to get started!
+ *
+ * @param {string} url A parametrized URL template with parameters prefixed by `:` as in
  *   `/user/:username`. If you are using a URL with a port number (e.g.
  *   `http://example.com:8080/api`), you'll need to escape the colon character before the port
  *   number, like this: `$resource('http://example.com\\:8080/api')`.
  *
  * @param {Object=} paramDefaults Default values for `url` parameters. These can be overridden in
  *   `actions` methods. If any of the parameter value is a function, it will be executed every time
- *   when a param value needs to be obtained for a request (unless the param was overriden).
+ *   when a param value needs to be obtained for a request (unless the param was overridden).
  *
  *   Each key value in the parameter object is first bound to url template if present and then any
  *   excess keys are appended to the url search query after the `?`.
@@ -58,7 +67,9 @@
  *     and `JSONP`.
  *   - **`params`** – {Object=} – Optional set of pre-bound parameters for this action. If any of the
  *     parameter value is a function, it will be executed every time when a param value needs to be
- *     obtained for a request (unless the param was overriden).
+ *     obtained for a request (unless the param was overridden).
+ *   - **`url`** – {string} – action specific `url` override. The url templating is supported just like
+ *     for the resource-level urls.
  *   - **`isArray`** – {boolean=} – If true then the returned object for this action is an array, see
  *     `returns` section.
  *   - **`transformRequest`** – `{function(data, headersGetter)|Array.<function(data, headersGetter)>}` –
@@ -291,7 +302,7 @@ angular.module('ngResource', ['ng']).
 
     /**
      * This method is intended for encoding *key* or *value* parts of query component. We need a custom
-     * method becuase encodeURIComponent is too agressive and encodes stuff that doesn't have to be
+     * method because encodeURIComponent is too aggressive and encodes stuff that doesn't have to be
      * encoded per http://tools.ietf.org/html/rfc3986:
      *    query       = *( pchar / "/" / "?" )
      *    pchar         = unreserved / pct-encoded / sub-delims / ":" / "@"
@@ -306,36 +317,38 @@ angular.module('ngResource', ['ng']).
         replace(/%3A/gi, ':').
         replace(/%24/g, '$').
         replace(/%2C/gi, ',').
-        replace((pctEncodeSpaces ? null : /%20/g), '+');
+        replace(/%20/g, (pctEncodeSpaces ? '%20' : '+'));
     }
 
     function Route(template, defaults) {
       this.template = template = template + '#';
       this.defaults = defaults || {};
-      var urlParams = this.urlParams = {};
-      forEach(template.split(/\W/), function(param){
-        if (param && (new RegExp("(^|[^\\\\]):" + param + "\\W").test(template))) {
-          urlParams[param] = true;
-        }
-      });
-      this.template = template.replace(/\\:/g, ':');
+      this.urlParams = {};
     }
 
     Route.prototype = {
-      setUrlParams: function(config, params) {
+      setUrlParams: function(config, params, actionUrl) {
         var self = this,
-            url = this.template,
+            url = actionUrl || self.template,
             val,
             encodedVal;
 
+        var urlParams = self.urlParams = {};
+        forEach(url.split(/\W/), function(param){
+          if (param && (new RegExp("(^|[^\\\\]):" + param + "(\\W|$)").test(url))) {
+              urlParams[param] = true;
+          }
+        });
+        url = url.replace(/\\:/g, ':');
+
         params = params || {};
-        forEach(this.urlParams, function(_, urlParam){
+        forEach(self.urlParams, function(_, urlParam){
           val = params.hasOwnProperty(urlParam) ? params[urlParam] : self.defaults[urlParam];
           if (angular.isDefined(val) && val !== null) {
             encodedVal = encodeUriSegment(val);
-            url = url.replace(new RegExp(":" + urlParam + "(\\W)", "g"), encodedVal + "$1");
+            url = url.replace(new RegExp(":" + urlParam + "(\\W|$)", "g"), encodedVal + "$1");
           } else {
-            url = url.replace(new RegExp("(\/?):" + urlParam + "(\\W)", "g"), function(match,
+            url = url.replace(new RegExp("(\/?):" + urlParam + "(\\W|$)", "g"), function(match,
                 leadingSlashes, tail) {
               if (tail.charAt(0) == '/') {
                 return tail;
@@ -433,7 +446,7 @@ angular.module('ngResource', ['ng']).
             }
           });
           httpConfig.data = data;
-          route.setUrlParams(httpConfig, extend({}, extractParams(data, action.params || {}), params));
+          route.setUrlParams(httpConfig, extend({}, extractParams(data, action.params || {}), params), action.url);
 
           function markResolved() { value.$resolved = true; }
 
@@ -503,5 +516,6 @@ angular.module('ngResource', ['ng']).
 
     return ResourceFactory;
   }]);
+
 
 })(window, window.angular);

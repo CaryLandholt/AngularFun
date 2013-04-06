@@ -1,4 +1,6 @@
-angular.module('app').factory 'twitterService', ['$log', '$resource', 'messageService', ($log, $resource, messageService) ->
+angular.module('app').service 'twitterService', ['$log', '$resource', 'messageService', ($log, $resource, messageService) ->
+	self = @
+
 	activity = $resource 'http://search.twitter.com/search.json',
 		callback: 'JSON_CALLBACK',
 			get:
@@ -11,5 +13,5 @@ angular.module('app').factory 'twitterService', ['$log', '$resource', 'messageSe
 			success(tweets.results) if angular.isFunction success
 		, failure
 
-	{get}
+	self.get = get
 ]

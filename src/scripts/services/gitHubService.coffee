@@ -1,4 +1,6 @@
-angular.module('app').factory 'gitHubService', ['$log', '$resource', 'messageService', ($log, $resource, messageService) ->
+angular.module('app').service 'gitHubService', ['$log', '$resource', 'messageService', ($log, $resource, messageService) ->
+	self = @
+
 	activity = $resource 'https://api.github.com/users/:user/repos',
 		callback: 'JSON_CALLBACK',
 			get:
@@ -11,5 +13,5 @@ angular.module('app').factory 'gitHubService', ['$log', '$resource', 'messageSer
 			success(repos.data) if angular.isFunction success
 		, failure
 
-	{get}
+	self.get = get
 ]

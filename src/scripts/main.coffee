@@ -35,4 +35,5 @@ require
 		'run'
 		'views'
 	], (require) ->
-		require ['bootstrap']
+		angular.element(document).ready ->
+			require ['bootstrap']

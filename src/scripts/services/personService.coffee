@@ -1,4 +1,5 @@
-angular.module('app').factory 'personService', ['$log', '$resource', ($log, $resource) ->
+angular.module('app').service 'personService', ['$log', '$resource', ($log, $resource) ->
+	self = @
 	activity = $resource './people/:id'
 
 	get = (success, failure) ->
@@ -20,5 +21,7 @@ angular.module('app').factory 'personService', ['$log', '$resource', ($log, $res
 			success(newPerson) if angular.isFunction success
 		, failure
 
-	{get, getPerson, save}
+	self.get = get
+	self.getPerson = getPerson
+	self.save = save
 ]
