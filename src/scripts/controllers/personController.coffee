@@ -6,8 +6,8 @@ angular.module('app').controller 'personController', ['$log', '$scope', '$locati
 			$scope.error = ''
 			$scope.person = {}
 
-			$scope.people.push person
-			$location.path "/people/#{person.id}"
+			$scope.people.push results
+			$location.path "/people/#{results.id}"
 		, (results) ->
 			($scope.error = results.data) if results.status is 403
 

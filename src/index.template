@@ -50,21 +50,6 @@
 			<div class="row">
 				<div class="span8">
 					<app:tabs>
-						<app:tab data-tab-id="twitter" caption="Twitter">
-							<section ng-controller="twitterController">
-								<div class="alert alert-info" ng-show="!searchTerm.length">
-									<h4 class="alert-heading">Heads up!</h4>
-									<span>Enter Twitter search criteria.</span>
-								</div>
-
-								<form class="well form-search" ng-submit="search(searchTerm)">
-									<input type="text" class="input-medium search-query" ng-model="searchTerm" autofocus />
-									<button type="submit" class="btn"><i class="icon-search"></i> Search</button>
-								</form>
-
-								<div ng-include="'/views/tweets.html'"></div>
-							</section>
-						</app:tab>
 						<app:tab data-tab-id="gitHub" caption="GitHub">
 							<section ng-controller="gitHubController">
 								<div class="alert alert-info" ng-show="!searchTerm.length">
@@ -126,7 +111,11 @@
 						</form>
 
 						<ol ng-hide="!searchHistory.length">
-							<li ng-repeat="item in searchHistory | filter:query | orderBy:'timeStamp':true" ng-bind-template="{{item.source}}/{{item.criteria}}"></li>
+							<li ng-animate=" 'wave' " ng-repeat="item in searchHistory | filter:query | orderBy:'timeStamp':true">
+								<div class="floatNone">
+									{{item.source}}/{{item.criteria}}
+								</div>
+							</li>
 						</ol>
 					</section>
 				</div>

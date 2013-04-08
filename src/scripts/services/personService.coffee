@@ -1,11 +1,11 @@
 angular.module('app').service 'personService', ['$log', '$q', '$resource', ($log, $q, $resource) ->
 	self = @
-	activity = $resource './people/:id'
+	Person = $resource './people/:id'
 
 	get = ->
 		defer = $q.defer()
 
-		activity.query {}, (results) ->
+		Person.query {}, (results) ->
 			defer.resolve results
 		, (results) ->
 			$log.error 'personService.query error', results
@@ -16,8 +16,8 @@ angular.module('app').service 'personService', ['$log', '$q', '$resource', ($log
 	getPerson = (id) ->
 		defer = $q.defer()
 
-		activity.get {id}, (results) ->
-			defer.resolve results.data
+		Person.get {id}, (results) ->
+			defer.resolve results
 		, (results) ->
 			$log.error 'personService.get error', results
 			defer.reject results
@@ -26,10 +26,10 @@ angular.module('app').service 'personService', ['$log', '$q', '$resource', ($log
 
 	save = (person) ->
 		defer = $q.defer()
-		newPerson = new activity person
+		newPerson = new Person person
 
 		newPerson.$save (results) ->
-			defer.resolve results.data
+			defer.resolve results
 		, (results) ->
 			$log.error 'personService.save error', results
 			defer.reject results

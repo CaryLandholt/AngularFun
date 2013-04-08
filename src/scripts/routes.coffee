@@ -14,13 +14,6 @@ angular.module('app').config ['$routeProvider', ($routeProvider) ->
 			changeTab: ['$rootScope', ($rootScope) ->
 				$rootScope.$broadcast 'changeTab#people'
 			]
-	.when '/twitter/:searchTerm',
-		controller: 'twitterController'
-		reloadOnSearch: true
-		resolve:
-			changeTab: ['$rootScope', ($rootScope) ->
-				$rootScope.$broadcast 'changeTab#twitter'
-			]
 	.otherwise
-		redirectTo: '/github/CaryLandholt'
+		redirectTo: '/github'
 ]

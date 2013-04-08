@@ -1,7 +1,7 @@
 angular.module('app').service 'gitHubService', ['$log', '$q', '$resource', 'messageService', ($log, $q, $resource, messageService) ->
 	self = @
 
-	activity = $resource 'https://api.github.com/users/:user/repos',
+	Repo = $resource 'https://api.github.com/users/:user/repos',
 		callback: 'JSON_CALLBACK',
 			get:
 				method: 'JSONP'
@@ -9,7 +9,7 @@ angular.module('app').service 'gitHubService', ['$log', '$q', '$resource', 'mess
 	get = (criteria) ->
 		defer = $q.defer()
 
-		activity.get user: criteria, (results) ->
+		Repo.get user: criteria, (results) ->
 			messageService.publish 'search', source: 'GitHub', criteria: criteria
 			defer.resolve results.data
 		, (results) ->
