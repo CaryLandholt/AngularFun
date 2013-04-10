@@ -22,4 +22,4 @@ describe 'person service', ->
 			expect(true).toBe(false)
 
 		personService.get success, failure
-		$httpBackend.flush()
+		# $httpBackend.flush()
