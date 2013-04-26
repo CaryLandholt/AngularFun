@@ -99,6 +99,8 @@ module.exports = (grunt) ->
 						'scripts/libs/html5shiv-printshiv.js'
 						'scripts/libs/json2.js'
 						'scripts/scripts.min.js'
+						'scripts/scripts.min.js.map'
+						'scripts/scripts.min.js.src'
 						'styles/styles.min.css'
 					]
 					dest: './dist/'
@@ -230,9 +232,10 @@ module.exports = (grunt) ->
 						return '' if shouldExcludeModule
 
 						contents
-					optimize: 'uglify'
+					optimize: 'uglify2'
 					out: './.temp/scripts/scripts.min.js'
 					preserveLicenseComments: false
+					generateSourceMaps: true
 					skipModuleInsertion: true
 					uglify:
 						# Let uglifier replace variables to further reduce file size.
