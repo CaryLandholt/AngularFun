@@ -38,6 +38,7 @@
 		"grunt-contrib-watch": "~0.3.1",
 		"grunt-express": "~0.3.2",
 		"grunt-hustler": "0.11.2",
+		"grunt-open": "~0.2.0",
 		"grunt-regarde": "~0.1.1",
 		"grunt-testacular": "~0.3.0",
 		"socket.io": "~0.9.14"
