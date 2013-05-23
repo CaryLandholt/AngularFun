@@ -150,6 +150,11 @@ module.exports = (grunt) ->
 					debug: true
 					monitor: {}
 					server: path.resolve './server'
+		
+		# Open the Express app in the default browser
+		open:
+			server:
+				url: 'http://localhost:3005'
 
 		# Compresses png files
 		imagemin:
@@ -337,6 +342,10 @@ module.exports = (grunt) ->
 
 	# Recommended watcher for LiveReload + Express.
 	grunt.loadNpmTasks 'grunt-regarde'
+	
+	# Open urls and files from a grunt task
+	# https://github.com/onehealth/grunt-open
+	grunt.loadNpmTasks 'grunt-open'
 
 	# Register grunt tasks supplied by grunt-testacular.
 	# Referenced in package.json.
@@ -357,6 +366,7 @@ module.exports = (grunt) ->
 	grunt.registerTask 'server', [
 		'livereload-start'
 		'express'
+		'open'
 		'regarde'
 	]
 
