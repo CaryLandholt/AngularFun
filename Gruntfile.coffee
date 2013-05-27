@@ -56,6 +56,31 @@ module.exports = (grunt) ->
 				]
 				options: '<%= coffee.scripts.options %>'
 
+		connect:
+			livereload:
+				options:
+					base: './dist/'
+					# keepalive: true
+					middleware: (connect, options) ->
+						express = require 'express'
+						routes = require './routes'
+						app = express()
+						server = connect app
+						base = options.base
+
+						app.configure ->
+							app.use require('grunt-contrib-livereload/lib/utils').livereloadSnippet
+							app.use express.logger 'dev'
+							app.use express.bodyParser()
+							app.use express.methodOverride()
+							app.use express.errorHandler()
+							app.use express.static base
+							app.use app.router
+							routes app, base
+
+						server.stack
+					port: 9001
+
 		# Copies directories and files from one location to another.
 		copy:
 			# Copies the contents of the temp directory, except views, to the dist directory.
@@ -141,16 +166,6 @@ module.exports = (grunt) ->
 					expand: true
 				]
 
-		# Start an Express server + live reload.
-		express:
-			livereload:
-				options:
-					port: 3005
-					bases: path.resolve './dist'
-					debug: true
-					monitor: {}
-					server: path.resolve './server'
-
 		# Compresses png files
 		imagemin:
 			img:
@@ -215,19 +230,16 @@ module.exports = (grunt) ->
 		# Open the Express app in the default browser
 		open:
 			server:
-				url: 'http://localhost:<%= express.livereload.options.port %>'
+				url: 'http://localhost:<%= connect.livereload.options.port %>'
 
 		# Restart server when server sources have changed, notify all browsers on change.
 		regarde:
 			dist:
 				files: './dist/**'
 				tasks: 'livereload'
-			server:
-				files: [
-					'server.coffee'
-					'routes.coffee'
-				]
-				tasks: 'express-restart:livereload'
+			# routes:
+			# 	files: 'routes.coffee'
+			# 	tasks: 'livereload'
 
 		# RequireJS optimizer configuration for both scripts and styles.
 		# This configuration is only used in the 'prod' build.
@@ -320,37 +332,12 @@ module.exports = (grunt) ->
 					'copy:views'
 				]
 
-		connect:
-			server:
-				options:
-					base: './dist/'
-					keepalive: true
-					middleware: (connect, options) ->
-						express = require 'express'
-						routes = require './routes'
-						app = express()
-						server = connect app
-						base = options.base
-
-						app.configure ->
-							app.use express.logger 'dev'
-							app.use express.bodyParser()
-							app.use express.methodOverride()
-							app.use express.errorHandler()
-							app.use express.static base
-							app.use app.router
-							routes app, base
-
-						server.stack
-					port: 9001
-
-	grunt.loadNpmTasks 'grunt-contrib-connect'
-
 	# Register grunt tasks supplied by grunt-contrib-*.
 	# Referenced in package.json.
 	# https://github.com/gruntjs/grunt-contrib
 	grunt.loadNpmTasks 'grunt-contrib-clean'
 	grunt.loadNpmTasks 'grunt-contrib-coffee'
+	grunt.loadNpmTasks 'grunt-contrib-connect'
 	grunt.loadNpmTasks 'grunt-contrib-copy'
 	grunt.loadNpmTasks 'grunt-contrib-imagemin'
 	grunt.loadNpmTasks 'grunt-contrib-less'
@@ -391,7 +378,7 @@ module.exports = (grunt) ->
 	# grunt server
 	grunt.registerTask 'server', [
 		'livereload-start'
-		'express'
+		'connect'
 		'open'
 		'regarde'
 	]
