@@ -320,6 +320,32 @@ module.exports = (grunt) ->
 					'copy:views'
 				]
 
+		connect:
+			server:
+				options:
+					base: './dist/'
+					keepalive: true
+					middleware: (connect, options) ->
+						express = require 'express'
+						routes = require './routes'
+						app = express()
+						server = connect app
+						base = options.base
+
+						app.configure ->
+							app.use express.logger 'dev'
+							app.use express.bodyParser()
+							app.use express.methodOverride()
+							app.use express.errorHandler()
+							app.use express.static base
+							app.use app.router
+							routes app, base
+
+						server.stack
+					port: 9001
+
+	grunt.loadNpmTasks 'grunt-contrib-connect'
+
 	# Register grunt tasks supplied by grunt-contrib-*.
 	# Referenced in package.json.
 	# https://github.com/gruntjs/grunt-contrib
@@ -333,7 +359,7 @@ module.exports = (grunt) ->
 	grunt.loadNpmTasks 'grunt-contrib-watch'
 
 	# Express server + LiveReload
-	grunt.loadNpmTasks 'grunt-express'
+	# grunt.loadNpmTasks 'grunt-express'
 
 	# Register grunt tasks supplied by grunt-hustler.
 	# Referenced in package.json.

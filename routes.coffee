@@ -1,16 +1,16 @@
 nextId = 0
 
 people = [
-	{"id": "#{nextId++}", "name": "Saasha", "age": "5"}
-	{"id": "#{nextId++}", "name": "Planet", "age": "7"}
+	{"id": "#{nextId++}", "name": "Saasha", "age": "6"}
+	{"id": "#{nextId++}", "name": "Planet", "age": "8"}
 ]
 
 isUniqueName = (name) ->
 	(name for person in people when person.name is name).length is 0
 
-module.exports = (app, dir) ->
+module.exports = (app, base) ->
 	app.get '/', (req, res) ->
-		res.render "#{dir}/index.html"
+		res.render "#{base}/index.html"
 
 	app.get '/people', (req, res) ->
 		res.json people
