@@ -150,11 +150,6 @@ module.exports = (grunt) ->
 					debug: true
 					monitor: {}
 					server: path.resolve './server'
-		
-		# Open the Express app in the default browser
-		open:
-			server:
-				url: 'http://localhost:3005'
 
 		# Compresses png files
 		imagemin:
@@ -167,6 +162,20 @@ module.exports = (grunt) ->
 				]
 				options:
 					optimizationLevel: 7
+
+		# Runs unit tests using karma
+		karma:
+			unit:
+				options:
+					autoWatch: true
+					browsers: ['Chrome']
+					colors: true
+					configFile: './karma.conf.js'
+					keepalive: true
+					port: 8081
+					reporters: ['progress']
+					runnerPort: 9100
+					singleRun: true
 
 		# Compile LESS (.less) files to CSS (.css).
 		less:
@@ -202,6 +211,11 @@ module.exports = (grunt) ->
 					'./.temp/scripts/views.js': './.temp/views/**/*.html'
 				options:
 					trim: './.temp'
+
+		# Open the Express app in the default browser
+		open:
+			server:
+				url: 'http://localhost:3005'
 
 		# Restart server when server sources have changed, notify all browsers on change.
 		regarde:
@@ -278,20 +292,6 @@ module.exports = (grunt) ->
 				files: '<%= template.dev.files %>'
 				environment: 'prod'
 
-		# Runs unit tests using testacular
-		testacular:
-			unit:
-				options:
-					autoWatch: true
-					browsers: ['Chrome']
-					colors: true
-					configFile: './testacular.conf.js'
-					keepalive: true
-					port: 8081
-					reporters: ['progress']
-					runnerPort: 9100
-					singleRun: true
-
 		# Sets up file watchers and runs tasks when watched files are changed.
 		watch:
 			index:
@@ -340,24 +340,24 @@ module.exports = (grunt) ->
 	# https://github.com/CaryLandholt/grunt-hustler
 	grunt.loadNpmTasks 'grunt-hustler'
 
-	# Recommended watcher for LiveReload + Express.
-	grunt.loadNpmTasks 'grunt-regarde'
-	
+	# Register grunt tasks supplied by grunt-karma.
+	# Referenced in package.json.
+	# https://github.com/karma-runner/grunt-karma
+	grunt.loadNpmTasks 'grunt-karma'
+
 	# Open urls and files from a grunt task
 	# https://github.com/onehealth/grunt-open
 	grunt.loadNpmTasks 'grunt-open'
 
-	# Register grunt tasks supplied by grunt-testacular.
-	# Referenced in package.json.
-	# https://github.com/Dignifiedquire/grunt-testacular
-	grunt.loadNpmTasks 'grunt-testacular'
+	# Recommended watcher for LiveReload + Express.
+	grunt.loadNpmTasks 'grunt-regarde'
 
 	# Compiles the app with non-optimized build settings, places the build artifacts in the dist directory, and runs unit tests.
 	# Enter the following command at the command line to execute this build task:
 	# grunt test
 	grunt.registerTask 'test', [
 		'default'
-		'testacular'
+		'karma'
 	]
 
 	# Starts a web server
