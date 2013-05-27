@@ -1,5 +1,3 @@
-path = require 'path'
-
 # Build configurations.
 module.exports = (grunt) ->
 	grunt.initConfig
