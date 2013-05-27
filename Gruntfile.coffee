@@ -60,13 +60,9 @@ module.exports = (grunt) ->
 			livereload:
 				options:
 					base: './dist/'
-					# keepalive: true
 					middleware: (connect, options) ->
 						express = require 'express'
-						routes = require './routes'
 						app = express()
-						server = connect app
-						base = options.base
 
 						app.configure ->
 							app.use require('grunt-contrib-livereload/lib/utils').livereloadSnippet
@@ -74,12 +70,12 @@ module.exports = (grunt) ->
 							app.use express.bodyParser()
 							app.use express.methodOverride()
 							app.use express.errorHandler()
-							app.use express.static base
+							app.use express.static options.base
 							app.use app.router
-							routes app, base
+							require('./routes')(app, options)
 
-						server.stack
-					port: 9001
+						connect(app).stack
+					port: 3005
 
 		# Copies directories and files from one location to another.
 		copy:

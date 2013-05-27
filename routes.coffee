@@ -8,9 +8,9 @@ people = [
 isUniqueName = (name) ->
 	(name for person in people when person.name is name).length is 0
 
-module.exports = (app, base) ->
+module.exports = (app, options) ->
 	app.get '/', (req, res) ->
-		res.render "#{base}/index.html"
+		res.render "#{options.base}/index.html"
 
 	app.get '/people', (req, res) ->
 		res.json people
