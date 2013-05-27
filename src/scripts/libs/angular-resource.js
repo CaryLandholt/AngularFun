@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.1.4
+ * @license AngularJS v1.1.5
  * (c) 2010-2012 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -25,18 +25,27 @@
  * the need to interact with the low level {@link ng.$http $http} service.
  *
  * # Installation
- * To use $resource make sure you have included the `angular-resource.js` that comes in Angular 
- * package. You also can find this stuff in {@link http://code.angularjs.org/ code.angularjs.org}.
+ * To use $resource make sure you have included the `angular-resource.js` that comes in Angular
+ * package. You can also find this file on Google CDN, bower as well as at
+ * {@link http://code.angularjs.org/ code.angularjs.org}.
+ *
  * Finally load the module in your application:
  *
  *        angular.module('app', ['ngResource']);
  *
- * and you ready to get started!
+ * and you are ready to get started!
  *
  * @param {string} url A parametrized URL template with parameters prefixed by `:` as in
  *   `/user/:username`. If you are using a URL with a port number (e.g.
  *   `http://example.com:8080/api`), you'll need to escape the colon character before the port
  *   number, like this: `$resource('http://example.com\\:8080/api')`.
+ *
+ *   If you are using a url with a suffix, just add the suffix, like this:
+ *   `$resource('http://example.com/resource.json')` or `$resource('http://example.com/:id.json')
+ *   or even `$resource('http://example.com/resource/:resource_id.:format')`
+ *   If the parameter before the suffix is empty, :resource_id in this case, then the `/.` will be
+ *   collapsed down to a single `.`.  If you need this sequence to appear and not collapse then you
+ *   can escape it with `/\.`.
  *
  * @param {Object=} paramDefaults Default values for `url` parameters. These can be overridden in
  *   `actions` methods. If any of the parameter value is a function, it will be executed every time
@@ -61,28 +70,29 @@
  *
  *   Where:
  *
- *   - **`action`** – {string} – The name of action. This name becomes the name of the method on your
+ *   - **`action`** â€“ {string} â€“ The name of action. This name becomes the name of the method on your
  *     resource object.
- *   - **`method`** – {string} – HTTP request method. Valid methods are: `GET`, `POST`, `PUT`, `DELETE`,
+ *   - **`method`** â€“ {string} â€“ HTTP request method. Valid methods are: `GET`, `POST`, `PUT`, `DELETE`,
  *     and `JSONP`.
- *   - **`params`** – {Object=} – Optional set of pre-bound parameters for this action. If any of the
+ *   - **`params`** â€“ {Object=} â€“ Optional set of pre-bound parameters for this action. If any of the
  *     parameter value is a function, it will be executed every time when a param value needs to be
  *     obtained for a request (unless the param was overridden).
- *   - **`url`** – {string} – action specific `url` override. The url templating is supported just like
+ *   - **`url`** â€“ {string} â€“ action specific `url` override. The url templating is supported just like
  *     for the resource-level urls.
- *   - **`isArray`** – {boolean=} – If true then the returned object for this action is an array, see
+ *   - **`isArray`** â€“ {boolean=} â€“ If true then the returned object for this action is an array, see
  *     `returns` section.
- *   - **`transformRequest`** – `{function(data, headersGetter)|Array.<function(data, headersGetter)>}` –
+ *   - **`transformRequest`** â€“ `{function(data, headersGetter)|Array.<function(data, headersGetter)>}` â€“
  *     transform function or an array of such functions. The transform function takes the http
  *     request body and headers and returns its transformed (typically serialized) version.
- *   - **`transformResponse`** – `{function(data, headersGetter)|Array.<function(data, headersGetter)>}` –
+ *   - **`transformResponse`** â€“ `{function(data, headersGetter)|Array.<function(data, headersGetter)>}` â€“
  *     transform function or an array of such functions. The transform function takes the http
  *     response body and headers and returns its transformed (typically deserialized) version.
- *   - **`cache`** – `{boolean|Cache}` – If true, a default $http cache will be used to cache the
+ *   - **`cache`** â€“ `{boolean|Cache}` â€“ If true, a default $http cache will be used to cache the
  *     GET request, otherwise if a cache instance built with
  *     {@link ng.$cacheFactory $cacheFactory}, this cache will be used for
  *     caching.
- *   - **`timeout`** – `{number}` – timeout in milliseconds.
+ *   - **`timeout`** â€“ `{number|Promise}` â€“ timeout in milliseconds, or {@link ng.$q promise} that
+ *     should abort the request when resolved.
  *   - **`withCredentials`** - `{boolean}` - whether to to set the `withCredentials` flag on the
  *     XHR object. See {@link https://developer.mozilla.org/en/http_access_control#section_5
  *     requests with credentials} for more information.
@@ -137,7 +147,7 @@
  *
  *     The success callback is called with a single object which is the {@link ng.$http http response}
  *     object extended with a new property `resource`. This `resource` property is a reference to the
- *     result of the resource action — resource object or array of resources.
+ *     result of the resource action â€” resource object or array of resources.
  *
  *     The error callback is called with the {@link ng.$http http response} object when an http
  *     error occurs.
@@ -321,7 +331,7 @@ angular.module('ngResource', ['ng']).
     }
 
     function Route(template, defaults) {
-      this.template = template = template + '#';
+      this.template = template;
       this.defaults = defaults || {};
       this.urlParams = {};
     }
@@ -359,8 +369,14 @@ angular.module('ngResource', ['ng']).
           }
         });
 
-        // set the url
-        config.url = url.replace(/\/?#$/, '').replace(/\/*$/, '');
+        // strip trailing slashes and set the url
+        url = url.replace(/\/+$/, '');
+        // then replace collapse `/.` if found in the last URL path segment before the query
+        // E.g. `http://url.com/id./format?q=x` becomes `http://url.com/id.format?q=x`
+        url = url.replace(/\/\.(?=\w+($|\?))/, '.');
+        // replace escaped `/\.` with `/.`
+        config.url = url.replace(/\/\\\./, '/.');
+
 
         // set params - delegate param encoding to $http
         forEach(params, function(value, key){
@@ -383,7 +399,7 @@ angular.module('ngResource', ['ng']).
         actionParams = extend({}, paramDefaults, actionParams);
         forEach(actionParams, function(value, key){
           if (isFunction(value)) { value = value(); }
-          ids[key] = value.charAt && value.charAt(0) == '@' ? getter(data, value.substr(1)) : value;
+          ids[key] = value && value.charAt && value.charAt(0) == '@' ? getter(data, value.substr(1)) : value;
         });
         return ids;
       }
