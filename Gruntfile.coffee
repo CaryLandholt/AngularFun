@@ -217,6 +217,31 @@ module.exports = (grunt) ->
 			dist:
 				files: './dist/**'
 				tasks: 'livereload'
+			index:
+				files: './src/index.template'
+				tasks: [
+					'template:dev'
+					'copy:index'
+				]
+			scripts:
+				files: './src/scripts/**'
+				tasks: [
+					'coffee:scripts'
+					'copy:js'
+					'copy:scripts'
+				]
+			styles:
+				files: './src/styles/**/*.less'
+				tasks: [
+					'less'
+					'copy:styles'
+				]
+			views:
+				files: './src/views/**/*.template'
+				tasks: [
+					'template:views'
+					'copy:views'
+				]
 			# routes:
 			# 	files: 'routes.coffee'
 			# 	tasks: 'livereload'
@@ -284,34 +309,6 @@ module.exports = (grunt) ->
 				files: '<%= template.dev.files %>'
 				environment: 'prod'
 
-		# Sets up file watchers and runs tasks when watched files are changed.
-		watch:
-			index:
-				files: './src/index.template'
-				tasks: [
-					'template:dev'
-					'copy:index'
-				]
-			scripts:
-				files: './src/scripts/**'
-				tasks: [
-					'coffee:scripts'
-					'copy:js'
-					'copy:scripts'
-				]
-			styles:
-				files: './src/styles/**/*.less'
-				tasks: [
-					'less'
-					'copy:styles'
-				]
-			views:
-				files: './src/views/**/*.template'
-				tasks: [
-					'template:views'
-					'copy:views'
-				]
-
 	# Register grunt tasks supplied by grunt-contrib-*.
 	# Referenced in package.json.
 	# https://github.com/gruntjs/grunt-contrib
@@ -323,7 +320,6 @@ module.exports = (grunt) ->
 	grunt.loadNpmTasks 'grunt-contrib-less'
 	grunt.loadNpmTasks 'grunt-contrib-livereload'
 	grunt.loadNpmTasks 'grunt-contrib-requirejs'
-	grunt.loadNpmTasks 'grunt-contrib-watch'
 
 	# Express server + LiveReload
 	# grunt.loadNpmTasks 'grunt-express'
@@ -391,7 +387,7 @@ module.exports = (grunt) ->
 	# grunt dev
 	grunt.registerTask 'dev', [
 		'default'
-		'watch'
+		'regarde'
 	]
 
 	# Compiles the app with optimized build settings and places the build artifacts in the dist directory.
