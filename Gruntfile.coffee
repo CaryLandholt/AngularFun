@@ -215,7 +215,7 @@ module.exports = (grunt) ->
 		# Open the Express app in the default browser
 		open:
 			server:
-				url: 'http://localhost:3005'
+				url: 'http://localhost:<%= express.livereload.options.port %>'
 
 		# Restart server when server sources have changed, notify all browsers on change.
 		regarde:
