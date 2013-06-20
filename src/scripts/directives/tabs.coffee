@@ -1,28 +1,36 @@
-angular.module('app').directive 'appTabs', ['$log', ($log) ->
-	controller = ['$scope', '$element', '$rootScope', ($scope, $element, $rootScope) ->
-		$scope.tabs = []
+do (angular) ->
+	'use strict'
 
-		$scope.select = (tab) ->
-			return if tab.selected is true
+	class Tabs
+		constructor: ($log) ->
+			Tabs::controller = ($scope, $element, $rootScope) ->
+				$scope.tabs = []
 
-			angular.forEach $scope.tabs, (tab) ->
-				tab.selected = false
+				$scope.select = (tab) ->
+					tab.transcluded = true
 
-			tab.selected = true
+					return if tab.selected is true
 
-		@addTab = (tab, tabId) ->
-			$scope.select tab if $scope.tabs.length is 0
-			$scope.tabs.push tab
+					angular.forEach $scope.tabs, (tab) ->
+						tab.selected = false
 
-			if tabId
-				$rootScope.$on "changeTab##{tabId}", ->
-					$scope.select tab
-	]
+					tab.selected = true
 
-	controller: controller
-	replace: true
-	restrict: 'E'
-	scope: {}
-	templateUrl: '/views/directives/tabs.html'
-	transclude: true
-]
+				@addTab = (tab, tabId) =>
+					$scope.select tab if $scope.tabs.length is 0
+					$scope.tabs.push tab
+
+					if tabId
+						$rootScope.$on "changeTab##{tabId}", ->
+							$scope.select tab
+
+			return {
+				controller: ['$scope', '$element', '$rootScope', Tabs::controller]
+				replace: true
+				restrict: 'E'
+				scope: {}
+				templateUrl: '/views/directives/tabs.html'
+				transclude: true
+			}
+
+	angular.module('app').directive 'appTabs', ['$log', Tabs]

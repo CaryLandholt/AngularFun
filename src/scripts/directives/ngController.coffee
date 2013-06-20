@@ -1,8 +1,18 @@
-angular.module('app').directive 'ngController', ['$log', '$rootScope', ($log, $rootScope) ->
-	link = (scope, element, attrs, controller) ->
-		$rootScope.$on "#{attrs.ngController}$routeChangeSuccess", (event, currentRoute, priorRoute) ->
-			scope.onRouteChange(currentRoute.params) if scope.onRouteChange
+do (angular) ->
+	'use strict'
 
-	link: link
-	restrict: 'A'
-]
+	class Controller
+		constructor: ($log, $rootScope) ->
+			Controller::link = (scope, element, attrs, controller) ->
+				controllerName = attrs.ngController.split(' ')[0]
+
+				$rootScope.$on "#{controllerName}$routeChangeSuccess", (event, currentRoute, priorRoute) ->
+					controller.onRouteChange(currentRoute.params) if controller.onRouteChange
+
+			return {
+				link: Controller::link
+				require: 'ngController'
+				restrict: 'A'
+			}
+
+	angular.module('app').directive 'ngController', ['$log', '$rootScope', Controller]

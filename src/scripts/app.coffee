@@ -1,1 +1,4 @@
-angular.module 'app', ['ngResource']
+do (angular) ->
+	'use strict'
+
+	angular.module 'app', ['ngResource', 'ngRoute']

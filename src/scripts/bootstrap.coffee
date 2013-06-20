@@ -1,1 +1,4 @@
-angular.bootstrap document, ['app']
+do (angular, window) ->
+	'use strict'
+
+	angular.bootstrap window.document, ['app']

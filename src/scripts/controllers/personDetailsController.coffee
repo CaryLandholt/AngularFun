@@ -1,7 +1,9 @@
-angular.module('app').controller 'personDetailsController', ['$log', '$scope', 'personService', ($log, $scope, personService) ->
-	$scope.onRouteChange = (routeParams) ->
-		id = routeParams.id
+do (angular) ->
+	'use strict'
 
-		personService.getPerson(id).then (results) ->
-			$scope.person = results
-]
+	class PersonDetailsController
+		constructor: ($log, personService) ->
+			@onRouteChange = (routeParams) =>
+				@person = personService.getPerson routeParams.id
+
+	angular.module('app').controller 'personDetailsController', ['$log', 'personService', PersonDetailsController]

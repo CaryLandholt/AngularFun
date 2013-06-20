@@ -1,18 +1,25 @@
-angular.module('app').config ['$httpProvider', ($httpProvider) ->
-	$httpProvider.responseInterceptors.push ['$log', '$rootScope', '$q', ($log, $rootScope, $q) ->
-		success = (response) ->
-			$rootScope.$broadcast "success:#{response.status}", response
+do (angular) ->
+	'use strict'
 
-			response
+	class Dispatcher
+		constructor: ($log, $rootScope, $q) ->
+			Dispatcher::success = (response) ->
+				$rootScope.$broadcast "success:#{response.status}", response
 
-		error = (response) ->
-			deferred = $q.defer()
+				response
 
-			$rootScope.$broadcast "error:#{response.status}", response
+			Dispatcher::error = (response) ->
+				deferred = $q.defer()
 
-			$q.reject response
+				$rootScope.$broadcast "error:#{response.status}", response
 
-		(promise) ->
-			promise.then success, error
-	]
-]
+				$q.reject response
+
+			return (promise) ->
+				promise.then Dispatcher::success, Dispatcher::error
+
+	class ResponseInterceptor
+		constructor: ($httpProvider) ->
+			$httpProvider.responseInterceptors.push ['$log', '$rootScope', '$q', Dispatcher]
+
+	angular.module('app').config ['$httpProvider', ResponseInterceptor]

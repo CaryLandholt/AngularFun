@@ -1,6 +1,11 @@
-angular.module('app').controller 'searchHistoryController', ['$log', '$scope', 'messageService', ($log, $scope, messageService) ->
-	$scope.searchHistory = []
+do (angular) ->
+	'use strict'
 
-	messageService.subscribe 'search', (name, parameters) ->
-		$scope.searchHistory.push parameters
-]
+	class SearchHistoryController
+		constructor: ($log, messageService) ->
+			@searchHistory = []
+
+			messageService.subscribe 'search', (name, parameters) =>
+				@searchHistory.push parameters
+
+	angular.module('app').controller 'searchHistoryController', ['$log', 'messageService', SearchHistoryController]

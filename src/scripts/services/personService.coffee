@@ -1,42 +1,21 @@
-angular.module('app').service 'personService', ['$log', '$q', '$resource', ($log, $q, $resource) ->
-	self = @
-	Person = $resource './people/:id'
+do (angular) ->
+	'use strict'
 
-	get = ->
-		defer = $q.defer()
+	class PersonService
+		constructor: ($log, $resource) ->
+			Person = $resource './people/:id'
 
-		Person.query {}, (results) ->
-			defer.resolve results
-		, (results) ->
-			$log.error 'personService.query error', results
-			defer.reject results
+			PersonService::get = ->
+				Person.query().$promise
 
-		defer.promise
+			PersonService::getPerson = (id) ->
+				Person.get({id}).$promise
 
-	getPerson = (id) ->
-		defer = $q.defer()
+			PersonService::save = (person) ->
+				newPerson = new Person person
 
-		Person.get {id}, (results) ->
-			defer.resolve results
-		, (results) ->
-			$log.error 'personService.get error', results
-			defer.reject results
+				newPerson.$save()
 
-		defer.promise
+	window.PersonService = PersonService
 
-	save = (person) ->
-		defer = $q.defer()
-		newPerson = new Person person
-
-		newPerson.$save (results) ->
-			defer.resolve results
-		, (results) ->
-			$log.error 'personService.save error', results
-			defer.reject results
-
-		defer.promise
-
-	self.get = get
-	self.getPerson = getPerson
-	self.save = save
-]
+	angular.module('app').service 'personService', ['$log', '$resource', PersonService]

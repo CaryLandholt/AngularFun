@@ -1,13 +1,22 @@
-angular.module('app').directive 'appTab', ['$log', ($log) ->
-	link = (scope, element, attrs, controller) ->
-		controller.addTab scope, attrs.tabId
+do (angular) ->
+	'use strict'
 
-	link: link
-	replace: true
-	require: '^appTabs'
-	restrict: 'E'
-	scope:
-		caption: '@'
-	templateUrl: '/views/directives/tab.html'
-	transclude: true
-]
+	class Tab
+		constructor: ($log) ->
+			Tab::link = (scope, element, attrs, controller) ->
+				controller.addTab scope, attrs.tabId
+
+			return {
+				link: Tab::link
+				locals:
+					transcluded: '@'
+				replace: true
+				require: '^appTabs'
+				restrict: 'E'
+				scope:
+					caption: '@'
+				templateUrl: '/views/directives/tab.html'
+				transclude: true
+			}
+
+	angular.module('app').directive 'appTab', ['$log', Tab]

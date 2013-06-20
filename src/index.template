@@ -39,10 +39,9 @@
 		<!-- ClickJacking Defense end -->
 	</head>
 	<body ng-cloak class="ng-cloak">
-		<ng:view></ng:view>
 		<div class="container">
 			<div class="hero-unit">
-				<h1>Playing with <a href="http://angularjs.org" target="_blank">AngularJS</a></h1>
+				<h1>{{'CaryLandholt' | twitterfy}} Playing with <a href="http://angularjs.org" target="_blank">AngularJS</a></h1>
 				<p>and also <a href="http://requirejs.org/" target="_blank">RequireJS</a></p>
 				<p>Dynamically loading dependencies in <b>dev</b>, but minimize the hell out of it for <b>prod</b>.</p>
 				<p>RequireJS is only used for dev and build.</p>
@@ -51,14 +50,28 @@
 				<div class="span8">
 					<app:tabs>
 						<app:tab data-tab-id="gitHub" caption="GitHub">
-							<section ng-controller="gitHubController">
-								<div class="alert alert-info" ng-show="!searchTerm.length">
+							<section ng-controller="gitHubController as controller">
+								<div class="alert alert-info" ng-show="!controller.searchTerm.length">
 									<h4 class="alert-heading">Heads up!</h4>
 									<span>Enter GitHub search criteria.</span>
 								</div>
 
-								<form class="well form-search" ng-submit="search(searchTerm)">
-									<input type="text" class="input-medium search-query" ng-model="searchTerm" />
+								<form class="well form-search" ng-submit="controller.search(controller.searchTerm)">
+									<input type="text" class="input-medium search-query" ng-model="controller.searchTerm" />
+									<button type="submit" class="btn"><i class="icon-search"></i> Search</button>
+								</form>
+
+								<div ng-include="'/views/repos.html'"></div>
+							</section>
+
+							<section ng-controller="gitHubController as controller">
+								<div class="alert alert-info" ng-show="!controller.searchTerm.length">
+									<h4 class="alert-heading">Heads up!</h4>
+									<span>Enter GitHub search criteria.</span>
+								</div>
+
+								<form class="well form-search" ng-submit="controller.search(controller.searchTerm)">
+									<input type="text" class="input-medium search-query" ng-model="controller.searchTerm" />
 									<button type="submit" class="btn"><i class="icon-search"></i> Search</button>
 								</form>
 
@@ -68,20 +81,40 @@
 						<app:tab data-tab-id="people" caption="People">
 							<div class="row">
 								<div class="span6">
-									<section ng-controller="personController">
-										<div class="alert alert-error" ng-show="!!error">
-											<h4 class="alert-heading" ng-bind="error.title"></h4>
-											<span ng-bind="error.message"></span>
+									<section ng-controller="personController as controller">
+										<div class="alert alert-error" ng-show="!!controller.error">
+											<h4 class="alert-heading" ng-bind="controller.error.title"></h4>
+											<span ng-bind="controller.error.message"></span>
 										</div>
 
-										<form class="well form-search" ng-submit="insertPerson(person)">
+										<form class="well form-search" ng-submit="controller.insertPerson(controller.person)">
 											<p>
 												<span class="label label-info">Heads up!</span>
 												<span class="text-info">Try adding a duplicate name.</span>
 											</p>
 
-											<input type="text" class="input-medium" ng-model="person.name" placeholder="Name" />
-											<input type="text" class="input-small" ng-model="person.age" placeholder="Age" />
+											<input type="text" class="input-medium" ng-model="controller.person.name" placeholder="Name" />
+											<input type="text" class="input-small" ng-model="controller.person.age" placeholder="Age" />
+											<button type="submit" class="btn"><i class="icon-plus"></i> Add Person</button>
+										</form>
+
+										<div ng-include="'/views/people.html'"></div>
+									</section>
+
+									<section ng-controller="personController as controller">
+										<div class="alert alert-error" ng-show="!!controller.error">
+											<h4 class="alert-heading" ng-bind="controller.error.title"></h4>
+											<span ng-bind="controller.error.message"></span>
+										</div>
+
+										<form class="well form-search" ng-submit="controller.insertPerson(controller.person)">
+											<p>
+												<span class="label label-info">Heads up!</span>
+												<span class="text-info">Try adding a duplicate name.</span>
+											</p>
+
+											<input type="text" class="input-medium" ng-model="controller.person.name" placeholder="Name" />
+											<input type="text" class="input-small" ng-model="controller.person.age" placeholder="Age" />
 											<button type="submit" class="btn"><i class="icon-plus"></i> Add Person</button>
 										</form>
 
@@ -89,12 +122,21 @@
 									</section>
 								</div>
 								<div class="span2">
-									<section ng-controller="personDetailsController">
+									<section ng-controller="personDetailsController as controller">
 										<dl>
 											<dt>Name</dt>
-											<dd ng-bind="person.name"></dd>
+											<dd ng-bind="controller.person.name"></dd>
 											<dt>Age</dt>
-											<dd ng-bind="person.age"></dd>
+											<dd ng-bind="controller.person.age"></dd>
+										</dl>
+									</section>
+
+									<section ng-controller="personDetailsController as controller">
+										<dl>
+											<dt>Name</dt>
+											<dd ng-bind="controller.person.name"></dd>
+											<dt>Age</dt>
+											<dd ng-bind="controller.person.age"></dd>
 										</dl>
 									</section>
 								</div>
@@ -104,14 +146,14 @@
 				</div>
 				<div class="span4">
 					<h2>Search History</h2>
-					<section ng-controller="searchHistoryController">
+					<section ng-controller="searchHistoryController as controller">
 						<form class="well form-search">
-							<input type="text" class="input-medium search-query" placeholder="Type filter..." ng-model="query" />
-							<label ng-bind-template="Displaying:  {{(searchHistory | filter:query).length}}"></label>
+							<input type="text" class="input-medium search-query" placeholder="Type filter..." ng-model="controller.query" />
+							<label ng-bind-template="Displaying:  {{(controller.searchHistory | filter:controller.query).length}}"></label>
 						</form>
 
-						<ol ng-hide="!searchHistory.length">
-							<li ng-animate=" 'wave' " ng-repeat="item in searchHistory | filter:query | orderBy:'timeStamp':true">
+						<ol ng-hide="!controller.searchHistory.length">
+							<li ng-animate=" 'wave' " ng-repeat="item in controller.searchHistory | filter:controller.query | orderBy:'timeStamp':true">
 								<div class="floatNone">
 									{{item.source}}/{{item.criteria}}
 								</div>
