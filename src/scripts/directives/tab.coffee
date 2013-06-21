@@ -3,11 +3,11 @@ do (angular) ->
 
 	class Tab
 		constructor: ($log) ->
-			Tab::link = (scope, element, attrs, controller) ->
+			link = (scope, element, attrs, controller) ->
 				controller.addTab scope, attrs.tabId
 
 			return {
-				link: Tab::link
+				link
 				locals:
 					transcluded: '@'
 				replace: true

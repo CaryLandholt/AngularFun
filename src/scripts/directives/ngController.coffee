@@ -3,14 +3,14 @@ do (angular) ->
 
 	class Controller
 		constructor: ($log, $rootScope) ->
-			Controller::link = (scope, element, attrs, controller) ->
+			link = (scope, element, attrs, controller) ->
 				controllerName = attrs.ngController.split(' ')[0]
 
 				$rootScope.$on "#{controllerName}$routeChangeSuccess", (event, currentRoute, priorRoute) ->
 					controller.onRouteChange(currentRoute.params) if controller.onRouteChange
 
 			return {
-				link: Controller::link
+				link
 				require: 'ngController'
 				restrict: 'A'
 			}

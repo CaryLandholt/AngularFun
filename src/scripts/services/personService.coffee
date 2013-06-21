@@ -16,6 +16,4 @@ do (angular) ->
 
 				newPerson.$save()
 
-	window.PersonService = PersonService
-
 	angular.module('app').service 'personService', ['$log', '$resource', PersonService]

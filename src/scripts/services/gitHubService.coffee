@@ -1,4 +1,6 @@
 do (angular) ->
+	'use strict'
+
 	class GitHubService
 		constructor: ($log, $resource, messageService) ->
 			Repo = $resource 'https://api.github.com/users/:user/repos',

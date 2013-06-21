@@ -11,9 +11,9 @@ do (require, window) ->
 			'directives/tab'                     : deps: ['app']
 			'directives/tabs'                    : deps: ['app', 'directives/tab']
 			'filters/twitterfy'                  : deps: ['app']
+			'interceptors/dispatcher'            : deps: ['app']
 			'libs/angular-resource'              : deps: ['libs/angular']
 			'libs/angular-route'                 : deps: ['libs/angular']
-			'responseInterceptors/dispatcher'    : deps: ['app']
 			'services/gitHubService'             : deps: ['app', 'services/messageService']
 			'services/messageService'            : deps: ['app']
 			'services/personService'             : deps: ['app']
@@ -31,7 +31,7 @@ do (require, window) ->
 			'directives/ngController'
 			'directives/tabs'
 			'filters/twitterfy'
-			'responseInterceptors/dispatcher'
+			'interceptors/dispatcher'
 			'routes'
 			'run'
 			'views'

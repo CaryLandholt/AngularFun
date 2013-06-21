@@ -1,6 +1,14 @@
 do (angular) ->
 	'use strict'
 
+	class GitHubResolver
+		constructor: ($log, $rootScope) ->
+			$rootScope.$broadcast 'changeTab#gitHub'
+
+	class PersonDetailsResolver
+		constructor: ($log, $rootScope) ->
+			$rootScope.$broadcast 'changeTab#people'
+
 	class Routes
 		constructor: ($routeProvider) ->
 			$routeProvider
@@ -8,16 +16,12 @@ do (angular) ->
 				controller: 'gitHubController'
 				reloadOnSearch: true
 				resolve:
-					changeTab: ['$rootScope', ($rootScope) ->
-						$rootScope.$broadcast 'changeTab#gitHub'
-					]
+					changeTab: ['$log', '$rootScope', GitHubResolver]
 			.when '/people/:id',
 				controller: 'personDetailsController'
 				reloadOnSearch: true
 				resolve:
-					changeTab: ['$rootScope', ($rootScope) ->
-						$rootScope.$broadcast 'changeTab#people'
-					]
+					changeTab: ['$log', '$rootScope', PersonDetailsResolver]
 			.otherwise
 				redirectTo: '/github'
 
