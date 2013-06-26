@@ -4,8 +4,8 @@
 	display: none;
 }
 
-.wave-enter-setup,
-.wave-leave-setup {
+.wave-enter,
+.wave-leave {
 	-webkit-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) .5s;
 	-moz-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
 	-o-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
@@ -15,19 +15,19 @@
 	float: left;
 }
 
-.wave-enter-setup {
+.wave-enter {
 	left: 100%;
 }
 
-.wave-enter-start {
+.wave-enter-active {
 	left: 0;
 }
 
-.wave-leave-setup {
+.wave-leave {
 	left: 0%;
 }
 
-.wave-leave-setup.wave-leave-start {
+.wave-leave.wave-leave-active {
 	left: -100%;
 }
 
