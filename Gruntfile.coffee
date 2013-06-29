@@ -54,6 +54,16 @@ module.exports = (grunt) ->
 				]
 				options: '<%= coffee.scripts.options %>'
 
+		coffeelint:
+			scripts: './src/scripts/**/*.coffee'
+			options:
+				indentation:
+					value: 1
+				max_line_length:
+					level: 'ignore'
+				no_tabs:
+					level: 'ignore'
+
 		connect:
 			livereload:
 				options:
@@ -308,6 +318,8 @@ module.exports = (grunt) ->
 			prod:
 				files: '<%= template.dev.files %>'
 				environment: 'prod'
+
+	grunt.loadNpmTasks 'grunt-coffeelint'
 
 	# Register grunt tasks supplied by grunt-contrib-*.
 	# Referenced in package.json.
