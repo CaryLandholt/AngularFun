@@ -24,7 +24,7 @@ module.exports = (grunt) ->
 		coffee:
 			scripts:
 				files: [
-					cwd: './src/'
+					cwd: './.temp/'
 					src: 'scripts/**/*.coffee'
 					dest: './.temp/'
 					expand: true
@@ -37,9 +37,7 @@ module.exports = (grunt) ->
 					ext: '.js'
 				]
 				options:
-					# Don't include a surrounding Immediately-Invoked Function Expression (IIFE) in the compiled output.
-					# For more information on IIFEs, please visit http://benalman.com/news/2010/11/immediately-invoked-function-expression/
-					bare: true
+					sourceMap: true
 			# Used for those that desire plain old JavaScript.
 			jslove:
 				files: [
@@ -87,6 +85,13 @@ module.exports = (grunt) ->
 				files: [
 					cwd: './src/'
 					src: 'img/**/*.png'
+					dest: './.temp/'
+					expand: true
+				]
+			coffee:
+				files: [
+					cwd: './src/'
+					src: 'scripts/**/*.coffee'
 					dest: './.temp/'
 					expand: true
 				]
@@ -286,6 +291,10 @@ module.exports = (grunt) ->
 					uglify:
 						# Let uglifier replace variables to further reduce file size.
 						no_mangle: false
+					useStrict: true
+					wrap:
+						start: '(function(){\'use strict\';'
+						end: '}).call(this);'
 			styles:
 				options:
 					baseUrl: './.temp/styles/'
@@ -385,6 +394,7 @@ module.exports = (grunt) ->
 	# grunt
 	grunt.registerTask 'default', [
 		'clean:working'
+		'copy:coffee'
 		'coffee:scripts'
 		'copy:js'
 		'less'
