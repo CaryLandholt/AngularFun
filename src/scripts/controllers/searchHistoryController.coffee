@@ -1,11 +1,8 @@
-do (angular) ->
-	'use strict'
+class SearchHistoryController
+	constructor: ($log, messageService) ->
+		@searchHistory = []
 
-	class SearchHistoryController
-		constructor: ($log, messageService) ->
-			@searchHistory = []
+		messageService.subscribe 'search', (name, parameters) =>
+			@searchHistory.push parameters
 
-			messageService.subscribe 'search', (name, parameters) =>
-				@searchHistory.push parameters
-
-	angular.module('app').controller 'searchHistoryController', ['$log', 'messageService', SearchHistoryController]
+angular.module('app').controller 'searchHistoryController', ['$log', 'messageService', SearchHistoryController]

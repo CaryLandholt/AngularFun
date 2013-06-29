@@ -1,14 +1,11 @@
-do (angular) ->
-	'use strict'
+class MessageService
+	constructor: ($log, $rootScope) ->
+		MessageService::publish = (name, parameters) ->
+			parameters.timeStamp = Date.now()
 
-	class MessageService
-		constructor: ($log, $rootScope) ->
-			MessageService::publish = (name, parameters) ->
-				parameters.timeStamp = Date.now()
+			$rootScope.$broadcast name, parameters
 
-				$rootScope.$broadcast name, parameters
+		MessageService::subscribe = (name, listener) ->
+			$rootScope.$on name, listener
 
-			MessageService::subscribe = (name, listener) ->
-				$rootScope.$on name, listener
-
-	angular.module('app').service 'messageService', ['$log', '$rootScope', MessageService]
+angular.module('app').service 'messageService', ['$log', '$rootScope', MessageService]

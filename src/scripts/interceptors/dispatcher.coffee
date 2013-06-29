@@ -1,21 +1,18 @@
-do (angular) ->
-	'use strict'
+class Dispatcher
+	constructor: ($log, $rootScope, $q) ->
+		return {
+			response: (response) ->
+				$rootScope.$broadcast "success:#{response.status}", response
 
-	class Dispatcher
-		constructor: ($log, $rootScope, $q) ->
-			return {
-				response: (response) ->
-					$rootScope.$broadcast "success:#{response.status}", response
+				response
+			responseError: (response) ->
+				$rootScope.$broadcast "error:#{response.status}", response
 
-					response
-				responseError: (response) ->
-					$rootScope.$broadcast "error:#{response.status}", response
+				$q.reject response
+		}
 
-					$q.reject response
-			}
+class Interceptor
+	constructor: ($httpProvider) ->
+		$httpProvider.interceptors.push ['$log', '$rootScope', '$q', Dispatcher]
 
-	class Interceptor
-		constructor: ($httpProvider) ->
-			$httpProvider.interceptors.push ['$log', '$rootScope', '$q', Dispatcher]
-
-	angular.module('app').config ['$httpProvider', Interceptor]
+angular.module('app').config ['$httpProvider', Interceptor]
