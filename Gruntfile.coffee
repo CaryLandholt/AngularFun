@@ -1,57 +1,17 @@
 # Build configurations.
 module.exports = (grunt) ->
+	grunt.registerTask 'reset', [
+		'coffeelint'
+		'clean'
+		'copy:app'
+		'coffee'
+		'less'
+		'template'
+		'copy:dev'
+		'server'
+	]
+
 	grunt.initConfig
-		# Deletes dist and temp directories.
-		# The temp directory is used during the build process.
-		# The dist directory contains the artifacts of the build.
-		# These directories should be deleted before subsequent builds.
-		# These directories are not committed to source control.
-		clean:
-			working:
-				src: [
-					'./dist/'
-					'./dist_test/'
-					'./.temp/'
-				]
-			# Used for those that desire plain old JavaScript.
-			jslove:
-				src: [
-					'**/*.coffee'
-					'!**/node_modules/**'
-				]
-
-		# Compile CoffeeScript (.coffee) files to JavaScript (.js).
-		coffee:
-			scripts:
-				files: [
-					cwd: './.temp/'
-					src: 'scripts/**/*.coffee'
-					dest: './.temp/'
-					expand: true
-					ext: '.js'
-				,
-					cwd: './test/'
-					src: 'scripts/**/*.coffee'
-					dest: './dist_test/'
-					expand: true
-					ext: '.js'
-				]
-				options:
-					sourceMap: true
-			# Used for those that desire plain old JavaScript.
-			jslove:
-				files: [
-					cwd: './'
-					src: [
-						'**/*.coffee'
-						'!**/node_modules/**'
-					]
-					dest: './'
-					expand: true
-					ext: '.js'
-				]
-				options: '<%= coffee.scripts.options %>'
-
 		coffeelint:
 			scripts: './src/scripts/**/*.coffee'
 			options:
@@ -62,6 +22,95 @@ module.exports = (grunt) ->
 				no_tabs:
 					level: 'ignore'
 
+		clean:
+			app: [
+				'./.temp/'
+				'./dist/'
+			]
+
+		copy:
+			app:
+				cwd: './src/'
+				src: '**'
+				dest: './.temp/'
+				expand: true
+			dev:
+				cwd: './.temp/'
+				src: '**'
+				dest: './dist/'
+				expand: true
+
+		coffee:
+			app:
+				cwd: './.temp/'
+				src: '**/*.coffee'
+				dest: './.temp/'
+				expand: true
+				ext: '.js'
+				options:
+					sourceMap: true
+
+		less:
+			app:
+				files:
+					'./.temp/styles/styles.css': './.temp/styles/styles.less'
+
+		template:
+			app:
+				files:
+					'./.temp/index.html': './.temp/index.template'
+
+		# Deletes dist and temp directories.
+		# The temp directory is used during the build process.
+		# The dist directory contains the artifacts of the build.
+		# These directories should be deleted before subsequent builds.
+		# These directories are not committed to source control.
+		# clean:
+		# 	working:
+		# 		src: [
+		# 			'./dist/'
+		# 			'./dist_test/'
+		# 			'./.temp/'
+		# 		]
+		# 	# Used for those that desire plain old JavaScript.
+		# 	jslove:
+		# 		src: [
+		# 			'**/*.coffee'
+		# 			'!**/node_modules/**'
+		# 		]
+
+		# Compile CoffeeScript (.coffee) files to JavaScript (.js).
+		# coffee:
+		# 	scripts:
+		# 		files: [
+		# 			cwd: './.temp/'
+		# 			src: 'scripts/**/*.coffee'
+		# 			dest: './.temp/'
+		# 			expand: true
+		# 			ext: '.js'
+		# 		,
+		# 			cwd: './test/'
+		# 			src: 'scripts/**/*.coffee'
+		# 			dest: './dist_test/'
+		# 			expand: true
+		# 			ext: '.js'
+		# 		]
+		# 		options:
+		# 			sourceMap: true
+		# 	# Used for those that desire plain old JavaScript.
+		# 	jslove:
+		# 		files: [
+		# 			cwd: './'
+		# 			src: [
+		# 				'**/*.coffee'
+		# 				'!**/node_modules/**'
+		# 			]
+		# 			dest: './'
+		# 			expand: true
+		# 			ext: '.js'
+		# 		]
+		# 		options: '<%= coffee.scripts.options %>'
+
 		connect:
 			livereload:
 				options:
@@ -69,97 +118,97 @@ module.exports = (grunt) ->
 					middleware: require './middleware'
 					port: 0
 
-		# Copies directories and files from one location to another.
-		copy:
-			# Copies the contents of the temp directory, except views, to the dist directory.
-			# In 'dev' individual files are used.
-			dev:
-				files: [
-					cwd: './.temp/'
-					src: '**'
-					dest: './dist/'
-					expand: true
-				]
-			# Copies img directory to temp.
-			img:
-				files: [
-					cwd: './src/'
-					src: 'img/**/*.png'
-					dest: './.temp/'
-					expand: true
-				]
-			coffee:
-				files: [
-					cwd: './src/'
-					src: 'scripts/**/*.coffee'
-					dest: './.temp/'
-					expand: true
-				]
-			# Copies js files to the temp directory
-			js:
-				files: [
-					cwd: './src/'
-					src: 'scripts/**/*.js'
-					dest: './.temp/'
-					expand: true
-				,
-					cwd: './src/'
-					src: 'scripts/**/*.js'
-					dest: './dist_test/'
-					expand: true
-				]
-			# Copies select files from the temp directory to the dist directory.
-			# In 'prod' minified files are used along with img and libs.
-			# The dist artifacts contain only the files necessary to run the application.
-			prod:
-				files: [
-					cwd: './.temp/'
-					src: [
-						'img/**/*.png'
-						'scripts/libs/html5shiv-printshiv.js'
-						'scripts/libs/json2.js'
-						'scripts/scripts.min.js'
-						'scripts/scripts.min.js.map'
-						'scripts/scripts.min.js.src'
-						'styles/styles.min.css'
-					]
-					dest: './dist/'
-					expand: true
-				,
-					'./dist/index.html': './.temp/index.min.html'
-				]
-			# Task is run when the watched index.template file is modified.
-			index:
-				files: [
-					cwd: './.temp/'
-					src: 'index.html'
-					dest: './dist/'
-					expand: true
-				]
-			# Task is run when a watched script is modified.
-			scripts:
-				files: [
-					cwd: './.temp/'
-					src: 'scripts/**'
-					dest: './dist/'
-					expand: true
-				]
-			# Task is run when a watched style is modified.
-			styles:
-				files: [
-					cwd: './.temp/'
-					src: 'styles/**'
-					dest: './dist/'
-					expand: true
-				]
-			# Task is run when a watched view is modified.
-			views:
-				files: [
-					cwd: './.temp/'
-					src: 'views/**'
-					dest: './dist/'
-					expand: true
-				]
+		# # Copies directories and files from one location to another.
+		# copy:
+		# 	# Copies the contents of the temp directory, except views, to the dist directory.
+		# 	# In 'dev' individual files are used.
+		# 	dev:
+		# 		files: [
+		# 			cwd: './.temp/'
+		# 			src: '**'
+		# 			dest: './dist/'
+		# 			expand: true
+		# 		]
+		# 	# Copies img directory to temp.
+		# 	img:
+		# 		files: [
+		# 			cwd: './src/'
+		# 			src: 'img/**/*.png'
+		# 			dest: './.temp/'
+		# 			expand: true
+		# 		]
+		# 	coffee:
+		# 		files: [
+		# 			cwd: './src/'
+		# 			src: 'scripts/**/*.coffee'
+		# 			dest: './.temp/'
+		# 			expand: true
+		# 		]
+		# 	# Copies js files to the temp directory
+		# 	js:
+		# 		files: [
+		# 			cwd: './src/'
+		# 			src: 'scripts/**/*.js'
+		# 			dest: './.temp/'
+		# 			expand: true
+		# 		,
+		# 			cwd: './src/'
+		# 			src: 'scripts/**/*.js'
+		# 			dest: './dist_test/'
+		# 			expand: true
+		# 		]
+		# 	# Copies select files from the temp directory to the dist directory.
+		# 	# In 'prod' minified files are used along with img and libs.
+		# 	# The dist artifacts contain only the files necessary to run the application.
+		# 	prod:
+		# 		files: [
+		# 			cwd: './.temp/'
+		# 			src: [
+		# 				'img/**/*.png'
+		# 				'scripts/libs/html5shiv-printshiv.js'
+		# 				'scripts/libs/json2.js'
+		# 				'scripts/scripts.min.js'
+		# 				'scripts/scripts.min.js.map'
+		# 				'scripts/scripts.min.js.src'
+		# 				'styles/styles.min.css'
+		# 			]
+		# 			dest: './dist/'
+		# 			expand: true
+		# 		,
+		# 			'./dist/index.html': './.temp/index.min.html'
+		# 		]
+		# 	# Task is run when the watched index.template file is modified.
+		# 	index:
+		# 		files: [
+		# 			cwd: './.temp/'
+		# 			src: 'index.html'
+		# 			dest: './dist/'
+		# 			expand: true
+		# 		]
+		# 	# Task is run when a watched script is modified.
+		# 	scripts:
+		# 		files: [
+		# 			cwd: './.temp/'
+		# 			src: 'scripts/**'
+		# 			dest: './dist/'
+		# 			expand: true
+		# 		]
+		# 	# Task is run when a watched style is modified.
+		# 	styles:
+		# 		files: [
+		# 			cwd: './.temp/'
+		# 			src: 'styles/**'
+		# 			dest: './dist/'
+		# 			expand: true
+		# 		]
+		# 	# Task is run when a watched view is modified.
+		# 	views:
+		# 		files: [
+		# 			cwd: './.temp/'
+		# 			src: 'views/**'
+		# 			dest: './dist/'
+		# 			expand: true
+		# 		]
 
 		# Compresses png files
 		imagemin:
@@ -188,10 +237,10 @@ module.exports = (grunt) ->
 					singleRun: true
 
 		# Compile LESS (.less) files to CSS (.css).
-		less:
-			styles:
-				files:
-					'./.temp/styles/styles.css': './src/styles/styles.less'
+		# less:
+		# 	styles:
+		# 		files:
+		# 			'./.temp/styles/styles.css': './src/styles/styles.less'
 
 		# Minifiy index.html.
 		# Extra white space and comments will be removed.
@@ -316,17 +365,17 @@ module.exports = (grunt) ->
 		# <% } else { %>
 		# 	<script data-main="/scripts/main.js" src="/scripts/libs/require.js"></script>
 		# <% } %>
-		template:
-			views:
-				files:
-					'./.temp/views/': './src/views/**/*.template'
-			dev:
-				files:
-					'./.temp/index.html': './src/index.template'
-				environment: 'dev'
-			prod:
-				files: '<%= template.dev.files %>'
-				environment: 'prod'
+		# template:
+		# 	views:
+		# 		files:
+		# 			'./.temp/views/': './src/views/**/*.template'
+		# 	dev:
+		# 		files:
+		# 			'./.temp/index.html': './src/index.template'
+		# 		environment: 'dev'
+		# 	prod:
+		# 		files: '<%= template.dev.files %>'
+		# 		environment: 'prod'
 
 	grunt.loadNpmTasks 'grunt-coffeelint'
 
@@ -365,10 +414,10 @@ module.exports = (grunt) ->
 	# Compiles the app with non-optimized build settings, places the build artifacts in the dist directory, and runs unit tests.
 	# Enter the following command at the command line to execute this build task:
 	# grunt test
-	grunt.registerTask 'test', [
-		'default'
-		'karma'
-	]
+	# grunt.registerTask 'test', [
+	# 	'default'
+	# 	'karma'
+	# ]
 
 	# Starts a web server
 	# Enter the following command at the command line to execute this task:
@@ -384,47 +433,50 @@ module.exports = (grunt) ->
 	# Used for those that desire plain old JavaScript.
 	# Enter the following command at the command line to execute this build task:
 	# grunt jslove
-	grunt.registerTask 'jslove', [
-		'coffee:jslove'
-		'clean:jslove'
-	]
+	# grunt.registerTask 'jslove', [
+	# 	'coffee:jslove'
+	# 	'clean:jslove'
+	# ]
 
 	# Compiles the app with non-optimized build settings and places the build artifacts in the dist directory.
 	# Enter the following command at the command line to execute this build task:
 	# grunt
+	# grunt.registerTask 'default', [
+	# 	'clean:working'
+	# 	'copy:coffee'
+	# 	'coffee:scripts'
+	# 	'copy:js'
+	# 	'less'
+	# 	'template:views'
+	# 	'copy:img'
+	# 	'template:dev'
+	# 	'copy:dev'
+	# ]
 	grunt.registerTask 'default', [
-		'clean:working'
-		'copy:coffee'
-		'coffee:scripts'
-		'copy:js'
-		'less'
-		'template:views'
-		'copy:img'
-		'template:dev'
-		'copy:dev'
+		'clean'
 	]
 
 	# Compiles the app with non-optimized build settings, places the build artifacts in the dist directory, and watches for file changes.
 	# Enter the following command at the command line to execute this build task:
 	# grunt dev
-	grunt.registerTask 'dev', [
-		'default'
-		'regarde'
-	]
+	# grunt.registerTask 'dev', [
+	# 	'default'
+	# 	'regarde'
+	# ]
 
 	# Compiles the app with optimized build settings and places the build artifacts in the dist directory.
 	# Enter the following command at the command line to execute this build task:
 	# grunt prod
-	grunt.registerTask 'prod', [
-		'clean:working'
-		'coffee:scripts'
-		'copy:js'
-		'less'
-		'template:views'
-		'imagemin'
-		'ngTemplateCache'
-		'requirejs'
-		'template:prod'
-		'minifyHtml'
-		'copy:prod'
-	]
+	# grunt.registerTask 'prod', [
+	# 	'clean:working'
+	# 	'coffee:scripts'
+	# 	'copy:js'
+	# 	'less'
+	# 	'template:views'
+	# 	'imagemin'
+	# 	'ngTemplateCache'
+	# 	'requirejs'
+	# 	'template:prod'
+	# 	'minifyHtml'
+	# 	'copy:prod'
+	# ]

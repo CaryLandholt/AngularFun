@@ -10,7 +10,7 @@
 		<meta name="description" content="AngularJS Reference Architecture" />
 		<meta name="viewport" content="width=device-width" />
 
-		<!--[if lte IE 8]> <script src="/scripts/libs/json3.js?v=<%= config.hash('./src/scripts/libs/json3.js') %>"></script> <script src="/scripts/libs/html5shiv-printshiv.js?v=<%= config.hash('./src/scripts/libs/html5shiv-printshiv.js') %>"></script> <![endif]-->
+		<!--[if lte IE 8]> <script src="/scripts/libs/json3.js?v=<%= config.hash('./.temp/scripts/libs/json3.js') %>"></script> <script src="/scripts/libs/html5shiv-printshiv.js?v=<%= config.hash('./.temp/scripts/libs/html5shiv-printshiv.js') %>"></script> <![endif]-->
 
 		<% if (config.environment === 'prod') { %>
 			<link rel="stylesheet" href="/styles/styles.min.css?v=<%= config.hash('./.temp/styles/styles.min.css') %>" />
