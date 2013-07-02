@@ -8,7 +8,9 @@ module.exports = (grunt) ->
 		'less'
 		'template'
 		'copy:dev'
-		'server'
+		'connect'
+		'open'
+		'watch'
 	]
 
 	grunt.initConfig
@@ -38,6 +40,13 @@ module.exports = (grunt) ->
 				no_tabs:
 					level: 'ignore'
 
+		connect:
+			app:
+				options:
+					base: './dist/'
+					middleware: require './middleware'
+					port: 0
+
 		copy:
 			app:
 				cwd: './src/'
@@ -49,18 +58,97 @@ module.exports = (grunt) ->
 				src: '**'
 				dest: './dist/'
 				expand: true
+			img:
+				cwd: './src/img/'
+				src: '**'
+				dest: './.temp/img/'
+				expand: true
+			imgToDist:
+				cwd: './.temp/img/'
+				src: '**'
+				dest: './dist/img/'
+				expand: true
+			scripts:
+				cwd: './src/scripts/'
+				src: '**'
+				dest: './.temp/scripts/'
+				expand: true
+			scriptsToDist:
+				cwd: './.temp/scripts/'
+				src: '**'
+				dest: './dist/scripts/'
+				expand: true
+			styles:
+				cwd: './src/styles/'
+				src: '**'
+				dest: './.temp/styles/'
+				expand: true
+			stylesToDist:
+				cwd: './.temp/styles/'
+				src: '**'
+				dest: './dist/styles/'
+				expand: true
+			views:
+				cwd: './src/views/'
+				src: '**'
+				dest: './.temp/views/'
+				expand: true
+			viewsToDist:
+				cwd: './.temp/views/'
+				src: '**'
+				dest: './dist/views/'
+				expand: true
 
 		less:
 			app:
 				files:
 					'./.temp/styles/styles.css': './.temp/styles/styles.less'
 
+		open:
+			server:
+				url: 'http://localhost:<%= connect.app.options.port %>'
+
 		template:
 			app:
 				files:
 					'./.temp/index.html': './.temp/index.template'
 
-
+		watch:
+			img:
+				files: './src/img/**'
+				tasks: [
+					'copy:img'
+					'copy:imgToDist'
+				]
+				options:
+					livereload: true
+			scripts:
+				files: './src/scripts/**'
+				tasks: [
+					'coffeelint'
+					'copy:scripts'
+					'coffee'
+					'copy:scriptsToDist'
+				]
+				options:
+					livereload: true
+			styles:
+				files: './src/styles/**'
+				tasks: [
+					'copy:styles'
+					'less'
+					'copy:stylesToDist'
+				]
+				options:
+					livereload: true
+			views:
+				files: './src/views/**'
+				tasks: [
+					'copy:views'
+					'copy:viewsToDist'
+				]
+				options:
+					livereload: true
 
 
 
@@ -117,12 +205,7 @@ module.exports = (grunt) ->
 		# 		]
 		# 		options: '<%= coffee.scripts.options %>'
 
-		connect:
-			livereload:
-				options:
-					base: './dist/'
-					middleware: require './middleware'
-					port: 0
+
 
 		# # Copies directories and files from one location to another.
 		# copy:
@@ -278,43 +361,41 @@ module.exports = (grunt) ->
 					trim: './.temp'
 
 		# Open the Express app in the default browser
-		open:
-			server:
-				url: 'http://localhost:<%= connect.livereload.options.port %>'
+
 
 		# Restart server when server sources have changed, notify all browsers on change.
-		regarde:
-			dist:
-				files: './dist/**'
-				tasks: 'livereload'
-			index:
-				files: './src/index.template'
-				tasks: [
-					'template:dev'
-					'copy:index'
-				]
-			scripts:
-				files: './src/scripts/**'
-				tasks: [
-					'coffee:scripts'
-					'copy:js'
-					'copy:scripts'
-				]
-			styles:
-				files: './src/styles/**/*.less'
-				tasks: [
-					'less'
-					'copy:styles'
-				]
-			views:
-				files: './src/views/**/*.template'
-				tasks: [
-					'template:views'
-					'copy:views'
-				]
-			# routes:
-			# 	files: 'routes.coffee'
-			# 	tasks: 'livereload'
+		# regarde:
+		# 	dist:
+		# 		files: './dist/**'
+		# 		tasks: 'livereload'
+		# 	index:
+		# 		files: './src/index.template'
+		# 		tasks: [
+		# 			'template:dev'
+		# 			'copy:index'
+		# 		]
+		# 	scripts:
+		# 		files: './src/scripts/**'
+		# 		tasks: [
+		# 			'coffee:scripts'
+		# 			'copy:js'
+		# 			'copy:scripts'
+		# 		]
+		# 	styles:
+		# 		files: './src/styles/**/*.less'
+		# 		tasks: [
+		# 			'less'
+		# 			'copy:styles'
+		# 		]
+		# 	views:
+		# 		files: './src/views/**/*.template'
+		# 		tasks: [
+		# 			'template:views'
+		# 			'copy:views'
+		# 		]
+		# 	# routes:
+		# 	# 	files: 'routes.coffee'
+		# 	# 	tasks: 'livereload'
 
 		# RequireJS optimizer configuration for both scripts and styles.
 		# This configuration is only used in the 'prod' build.
@@ -396,6 +477,7 @@ module.exports = (grunt) ->
 	grunt.loadNpmTasks 'grunt-contrib-less'
 	grunt.loadNpmTasks 'grunt-contrib-livereload'
 	grunt.loadNpmTasks 'grunt-contrib-requirejs'
+	grunt.loadNpmTasks 'grunt-contrib-watch'
 
 	# Express server + LiveReload
 	# grunt.loadNpmTasks 'grunt-express'
@@ -415,7 +497,7 @@ module.exports = (grunt) ->
 	grunt.loadNpmTasks 'grunt-open'
 
 	# Recommended watcher for LiveReload + Express.
-	grunt.loadNpmTasks 'grunt-regarde'
+	# grunt.loadNpmTasks 'grunt-regarde'
 
 	# Compiles the app with non-optimized build settings, places the build artifacts in the dist directory, and runs unit tests.
 	# Enter the following command at the command line to execute this build task:
@@ -432,7 +514,7 @@ module.exports = (grunt) ->
 		'livereload-start'
 		'connect'
 		'open'
-		'regarde'
+		# 'regarde'
 	]
 
 	# Compiles all CoffeeScript files in the project to JavaScript then deletes all CoffeeScript files.
