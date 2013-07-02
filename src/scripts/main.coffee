@@ -1,4 +1,8 @@
 require
+	paths:
+		'libs/angular'                       : 'libs/angular.min'
+		'libs/angular-resource'              : 'libs/angular-resource.min'
+		'libs/angular-route'                 : 'libs/angular-route.min'
 	shim:
 		'controllers/gitHubController'       : deps: ['app', 'services/gitHubService']
 		'controllers/personController'       : deps: ['app', 'services/personService']

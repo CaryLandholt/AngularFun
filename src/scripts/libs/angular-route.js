@@ -1,10 +1,9 @@
 /**
- * @license AngularJS v1.1.6-cd3dd13
+ * @license AngularJS v1.1.6-52c538c
  * (c) 2010-2012 Google, Inc. http://angularjs.org
  * License: MIT
  */
-(function(window, angular, undefined) {
-'use strict';
+(function(window, angular, undefined) {'use strict';
 
 var copy = angular.copy,
     equals = angular.equals,

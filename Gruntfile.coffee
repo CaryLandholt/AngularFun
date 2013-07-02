@@ -1,6 +1,6 @@
 # Build configurations.
 module.exports = (grunt) ->
-	grunt.registerTask 'reset', [
+	grunt.registerTask 'default', [
 		'coffeelint'
 		'clean'
 		'copy:app'
@@ -12,6 +12,22 @@ module.exports = (grunt) ->
 	]
 
 	grunt.initConfig
+		clean:
+			app: [
+				'./.temp/'
+				'./dist/'
+			]
+
+		coffee:
+			app:
+				cwd: './.temp/'
+				src: '**/*.coffee'
+				dest: './.temp/'
+				expand: true
+				ext: '.js'
+				options:
+					sourceMap: true
+
 		coffeelint:
 			scripts: './src/scripts/**/*.coffee'
 			options:
@@ -21,12 +37,6 @@ module.exports = (grunt) ->
 					level: 'ignore'
 				no_tabs:
 					level: 'ignore'
-
-		clean:
-			app: [
-				'./.temp/'
-				'./dist/'
-			]
 
 		copy:
 			app:
@@ -40,16 +50,6 @@ module.exports = (grunt) ->
 				dest: './dist/'
 				expand: true
 
-		coffee:
-			app:
-				cwd: './.temp/'
-				src: '**/*.coffee'
-				dest: './.temp/'
-				expand: true
-				ext: '.js'
-				options:
-					sourceMap: true
-
 		less:
 			app:
 				files:
@@ -59,6 +59,12 @@ module.exports = (grunt) ->
 			app:
 				files:
 					'./.temp/index.html': './.temp/index.template'
+
+
+
+
+
+
 
 		# Deletes dist and temp directories.
 		# The temp directory is used during the build process.
@@ -452,9 +458,9 @@ module.exports = (grunt) ->
 	# 	'template:dev'
 	# 	'copy:dev'
 	# ]
-	grunt.registerTask 'default', [
-		'clean'
-	]
+	# grunt.registerTask 'default', [
+	# 	'clean'
+	# ]
 
 	# Compiles the app with non-optimized build settings, places the build artifacts in the dist directory, and watches for file changes.
 	# Enter the following command at the command line to execute this build task:
