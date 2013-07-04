@@ -319,9 +319,13 @@ module.exports = (grunt) ->
 					browsers: ['Chrome']
 					colors: true
 					configFile: './karma.conf.js'
-					keepalive: true
+					junitReporter:
+						outputFile: './.results/results.xml'
+					keepalive: false
 					port: 8081
-					reporters: ['progress']
+					preprocessors:
+						'**/*.coffee': 'coffee'
+					reporters: ['dots', 'junit', 'progress']
 					runnerPort: 9100
 					singleRun: true
 

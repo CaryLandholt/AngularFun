@@ -1,5 +1,4 @@
-.DS_Store
-dist/
-dist_test/
-node_modules/
+.results/
 .temp/
+dist/
+node_modules/
