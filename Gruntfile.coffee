@@ -183,7 +183,7 @@ module.exports = (grunt) ->
 				expand: true
 			template:
 				cwd: './src/'
-				src: 'index.template'
+				src: 'index.html'
 				dest: './.temp/'
 				expand: true
 			templateToDist:
@@ -345,12 +345,12 @@ module.exports = (grunt) ->
 		template:
 			dev:
 				files:
-					'./.temp/index.html': './.temp/index.template'
+					'./.temp/index.html': './.temp/index.html'
 					'./.temp/styles/variables.less': './.temp/styles/variables.less'
 				environment: 'dev'
 			index:
 				files:
-					'./.temp/index.html': './.temp/index.template'
+					'./.temp/index.html': './.temp/index.html'
 				environment: 'prod'
 			styles:
 				files:
@@ -361,7 +361,10 @@ module.exports = (grunt) ->
 		uglify:
 			scripts:
 				files:
-					'./.temp/scripts/ie.min.js': ['./.temp/scripts/libs/json3.js', './.temp/scripts/libs/html5shiv-printshiv.js']
+					'./.temp/scripts/ie.min.js': [
+						'./.temp/scripts/libs/json3.js'
+						'./.temp/scripts/libs/html5shiv-printshiv.js'
+					]
 
 		# Run tasks when monitored files change
 		watch:
@@ -393,7 +396,7 @@ module.exports = (grunt) ->
 				options:
 					livereload: true
 			template:
-				files: './src/index.template'
+				files: './src/index.html'
 				tasks: [
 					'copy:template'
 					'template:dev'
