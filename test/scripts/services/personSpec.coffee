@@ -1,25 +1,60 @@
-beforeEach module 'app'
+describe "personService", ->
+	beforeEach module 'app'
 
-beforeEach ->
-	this.addMatchers { toEqualData: (expected) ->
-		angular.equals this.actual, expected }
+	beforeEach ->
+		@addMatchers {
+			toEqualData: (expected) ->
+				angular.equals @actual, expected
+		}
 
-describe 'person service', ->
-	personService = {}
-	$httpBackend = {}
-	beforeEach inject (_$httpBackend_, $injector) ->
-		$httpBackend = _$httpBackend_
-		$httpBackend.expectGET('./people')
-		.respond [{name: 'Bob'}]
+	it 'should get people', inject ['$httpBackend', 'personService', ($httpBackend, personService) ->
+		expected = [{name: 'foo'}]
+		notExpected = [{name: 'bar'}]
 
-		personService = $injector.get('personService')
+		$httpBackend
+			.expectGET('./people')
+			.respond(expected)
 
-	it 'should query for people at /people and receive an array', ->
-		success = (result) ->
-			expect(result).toEqualData [{name: 'Bob'}]
-		failure = ->
-			#we should not get a failure in this test:
-			expect(true).toBe(false)
+		positiveTestSuccess = (results) ->
+			expect(results).toEqualData expected
 
-		personService.get success, failure
-		# $httpBackend.flush()
+			results
+
+		negativeTestSuccess = (results) ->
+			expect(results).not.toEqualData notExpected
+
+			results
+
+		personService.get()
+			.then(positiveTestSuccess)
+			.then(negativeTestSuccess)
+
+
+		$httpBackend.flush()
+	]
+
+	it 'should get person', inject ['$httpBackend', 'personService', ($httpBackend, personService) ->
+		expected = {name: 'foo'}
+		notExpected = {name: 'bar'}
+
+		$httpBackend
+			.expectGET('./people/1')
+			.respond(expected)
+
+		positiveTestSuccess = (results) ->
+			expect(results).toEqualData expected
+
+			results
+
+		negativeTestSuccess = (results) ->
+			expect(results).not.toEqualData notExpected
+
+			results
+
+		personService.getPerson(1)
+			.then(positiveTestSuccess)
+			.then(negativeTestSuccess)
+
+
+		$httpBackend.flush()
+	]

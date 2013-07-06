@@ -151,8 +151,13 @@
 
 // Sprite icons path
 // -------------------------
-@iconSpritePath:          "../img/glyphicons-halflings.png";
-@iconWhiteSpritePath:     "../img/glyphicons-halflings-white.png";
+<% if (config.environment === 'prod') { %>
+	@iconSpritePath:          "<%= config.getHashedFile('./.temp/images/glyphicons-halflings.png', {trim: './.temp'}) %>";
+	@iconWhiteSpritePath:     "<%= config.getHashedFile('./.temp/images/glyphicons-halflings-white.png', {trim: './.temp'}) %>";
+<% } else { %>
+	@iconSpritePath:          "../images/glyphicons-halflings.png";
+	@iconWhiteSpritePath:     "../images/glyphicons-halflings-white.png";
+<% } %>
 
 
 // Input placeholder text color

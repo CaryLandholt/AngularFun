@@ -10,12 +10,14 @@
 		<meta name="description" content="AngularJS Reference Architecture" />
 		<meta name="viewport" content="width=device-width" />
 
-		<!--[if lte IE 8]> <script src="/scripts/libs/json3.js?v=<%= config.hash('./.temp/scripts/libs/json3.js') %>"></script> <script src="/scripts/libs/html5shiv-printshiv.js?v=<%= config.hash('./.temp/scripts/libs/html5shiv-printshiv.js') %>"></script> <![endif]-->
-
 		<% if (config.environment === 'prod') { %>
-			<link rel="stylesheet" href="/styles/styles.min.css?v=<%= config.hash('./.temp/styles/styles.min.css') %>" />
+			<!--[if lte IE 8]> <script src="<%= config.getHashedFile('./.temp/scripts/ie.min.js', {trim: './.temp'}) %>"></script> <![endif]-->
+
+			<link rel="stylesheet" href="<%= config.getHashedFile('./.temp/styles/styles.min.css', {trim: './.temp'}) %>" />
 		<% } else { %>
-			<link rel="stylesheet" href="/styles/styles.css?v=<%= config.hash('./.temp/styles/styles.css') %>" />
+			<!--[if lte IE 8]> <script src="/scripts/libs/json3.js></script> <script src="/scripts/libs/html5shiv-printshiv.js"></script> <![endif]-->
+
+			<link rel="stylesheet" href="/styles/styles.css" />
 		<% } %>
 
 		<!-- ClickJacking Defense begin (https://www.owasp.org/index.php/Clickjacking_Defense_Cheat_Sheet) -->
@@ -122,9 +124,9 @@
 		</div>
 
 		<% if (config.environment === 'prod') { %>
-			<script src="/scripts/scripts.min.js?v=<%= config.hash('./.temp/scripts/scripts.min.js') %>"></script>
+			<script src="<%= config.getHashedFile('./.temp/scripts/scripts.min.js', {trim: './.temp'}) %>"></script>
 		<% } else { %>
-			<script data-main="/scripts/main.js" src="/scripts/libs/require.js?v=<%= config.hash('./.temp/scripts/libs/require.js') %>"></script>
+			<script data-main="/scripts/main.js" src="/scripts/libs/require.js"></script>
 		<% } %>
 	</body>
 </html>

@@ -3,6 +3,7 @@
 files = [
 	JASMINE,
 	JASMINE_ADAPTER,
+
 	'./src/scripts/libs/angular.js',
 	'./src/scripts/libs/angular-route.js',
 	'./src/scripts/libs/angular-resource.js',
