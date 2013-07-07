@@ -1,95 +1,78 @@
-# Build configurations.
+# Build configurations
 module.exports = (grunt) ->
-	grunt.registerTask 'build', [
-		'coffeelint'
-		'clean'
-		'copy:app'
-		'coffee'
-		'template:dev'
-		'less'
-		'jade'
-		'copy:dev'
-	]
-
-	# Compiles the app with non-optimized build settings, places the build artifacts in the dist directory, and opens the app in the default browser.
+	# Compiles all CoffeeScript files in the project to JavaScript then deletes all CoffeeScript files.
+	# Used for those that desire plain old JavaScript.
 	# Enter the following command at the command line to execute this build task:
-	# grunt
-	grunt.registerTask 'default', [
-		'build'
-		'connect'
-		'open'
-		'watch'
-	]
+	# grunt jslove
+	# grunt.registerTask 'jslove', [
+	# 	'coffee:jslove'
+	# 	'clean:jslove'
+	# ]
 
-	# Compiles the app with non-optimized build settings, places the build artifacts in the dist directory, and watches for file changes.
-	# Enter the following command at the command line to execute this build task:
-	# grunt dev
-	grunt.registerTask 'dev', [
-		'default'
-	]
+	# Deletes dist and temp directories.
+	# The temp directory is used during the build process.
+	# The dist directory contains the artifacts of the build.
+	# These directories should be deleted before subsequent builds.
+	# These directories are not committed to source control.
+	# clean:
+	# 	working:
+	# 		src: [
+	# 			'./dist/'
+	# 			'./dist_test/'
+	# 			'./.temp/'
+	# 		]
+	# 	# Used for those that desire plain old JavaScript.
+	# 	jslove:
+	# 		src: [
+	# 			'**/*.coffee'
+	# 			'!**/node_modules/**'
+	# 		]
 
-	# Compiles the app with optimized build settings and places the build artifacts in the dist directory.
-	# Enter the following command at the command line to execute this build task:
-	# grunt prod
-	grunt.registerTask 'prod', [
-		'coffeelint'
-		'clean'
-		'copy:app'
-		'coffee'
-		'imagemin'
-		'hash:images'
-		'template:styles'
-		'less'
-		'jade'
-		'ngTemplateCache'
-		'requirejs'
-		'uglify'
-		'hash:scripts'
-		'hash:styles'
-		'template:index'
-		'minifyHtml'
-		'copy:prod'
-	]
-
-	# Starts a web server
-	# Enter the following command at the command line to execute this task:
-	# grunt server
-	grunt.registerTask 'server', [
-		'connect'
-		'open'
-		'watch:none'
-	]
-
-	# Compiles the app with non-optimized build settings, places the build artifacts in the dist directory, and runs unit tests.
-	# Enter the following command at the command line to execute this build task:
-	# grunt test
-	grunt.registerTask 'test', [
-		'build'
-		'karma'
-	]
+	# Compile CoffeeScript (.coffee) files to JavaScript (.js).
+	# coffee:
+	# 	scripts:
+	# 		files: [
+	# 			cwd: './.temp/'
+	# 			src: 'scripts/**/*.coffee'
+	# 			dest: './.temp/'
+	# 			expand: true
+	# 			ext: '.js'
+	# 		,
+	# 			cwd: './test/'
+	# 			src: 'scripts/**/*.coffee'
+	# 			dest: './dist_test/'
+	# 			expand: true
+	# 			ext: '.js'
+	# 		]
+	# 		options:
+	# 			sourceMap: true
+	# 	# Used for those that desire plain old JavaScript.
+	# 	jslove:
+	# 		files: [
+	# 			cwd: './'
+	# 			src: [
+	# 				'**/*.coffee'
+	# 				'!**/node_modules/**'
+	# 			]
+	# 			dest: './'
+	# 			expand: true
+	# 			ext: '.js'
+	# 		]
+	# 		options: '<%= coffee.scripts.options %>'
 
 	grunt.initConfig
-		hash:
-			images: './.temp/images/**/*'
-			scripts:
-				src: [
-					'./.temp/scripts/ie.min.js'
-					'./.temp/scripts/scripts.min.js'
-				]
-			styles: './.temp/styles/styles.min.css'
-
-		# Deletes dist and temp directories.
-		# The temp directory is used during the build process.
-		# The dist directory contains the artifacts of the build.
-		# These directories should be deleted before subsequent builds.
-		# These directories are not committed to source control.
+		# Deletes dist and .temp directories
+		# The .temp directory is used during the build process
+		# The dist directory contains the artifacts of the build
+		# These directories should be deleted before subsequent builds
+		# These directories are not committed to source control
 		clean:
-			app: [
+			working: [
 				'./.temp/'
 				'./dist/'
 			]
 
-		# Compile CoffeeScript (.coffee) files to JavaScript (.js).
+		# Compiles CoffeeScript (.coffee) files to JavaScript (.js)
 		coffee:
 			app:
 				cwd: './.temp/'
@@ -100,6 +83,7 @@ module.exports = (grunt) ->
 				options:
 					sourceMap: true
 
+		# Lints CoffeeScript files
 		coffeelint:
 			scripts: './src/scripts/**/*.coffee'
 			options:
@@ -110,6 +94,7 @@ module.exports = (grunt) ->
 				no_tabs:
 					level: 'ignore'
 
+		# Sets up a web server
 		connect:
 			app:
 				options:
@@ -117,7 +102,7 @@ module.exports = (grunt) ->
 					middleware: require './middleware'
 					port: 0
 
-		# Copies directories and files from one location to another.
+		# Copies directories and files from one location to another
 		copy:
 			app:
 				cwd: './src/'
@@ -201,6 +186,21 @@ module.exports = (grunt) ->
 				dest: './dist/views/'
 				expand: true
 
+		# Renames files based on their hashed content
+		# When the files contents change, the hash value changes
+		# Used as a cache buster, ensuring browsers load the correct static resources
+		#
+		# glyphicons-halflings.png -> glyphicons-halflings.6c8829cc6f.png
+		# scripts.min.js -> scripts.min.6c355e03ee.js
+		hash:
+			images: './.temp/images/**/*'
+			scripts:
+				src: [
+					'./.temp/scripts/ie.min.js'
+					'./.temp/scripts/scripts.min.js'
+				]
+			styles: './.temp/styles/styles.min.css'
+
 		# Compresses png files
 		imagemin:
 			images:
@@ -213,6 +213,7 @@ module.exports = (grunt) ->
 				options:
 					optimizationLevel: 7
 
+		# Compiles jade templates
 		jade:
 			views:
 				cwd: './.temp/'
@@ -247,24 +248,24 @@ module.exports = (grunt) ->
 					runnerPort: 9100
 					singleRun: true
 
-		# Compile LESS (.less) files to CSS (.css).
+		# Compile LESS (.less) files to CSS (.css)
 		less:
 			app:
 				files:
 					'./.temp/styles/styles.css': './.temp/styles/styles.less'
 
-		# Minifiy index.html.
-		# Extra white space and comments will be removed.
-		# Content within <pre /> tags will be left unchanged.
-		# IE conditional comments will be left unchanged.
-		# As of this writing, the output is reduced by over 14%.
+		# Minifies index.html
+		# Extra white space and comments will be removed
+		# Content within <pre /> tags will be left unchanged
+		# IE conditional comments will be left unchanged
+		# Reduces file size by over 14%
 		minifyHtml:
 			prod:
 				files:
 					'./.temp/index.min.html': './.temp/index.html'
 
-		# Gathers all views and creates a file to push views directly into the $templateCache
-		# This will produce a file with the following content.
+		# Creates a file to push views directly into the $templateCache
+		# This will produce a file with the following content
 		#
 		# angular.module('app').run(['$templateCache', function ($templateCache) {
 		# 	$templateCache.put('/views/directives/tab.html', '<div class="tab-pane" ng-class="{active: selected}" ng-transclude></div>');
@@ -274,7 +275,9 @@ module.exports = (grunt) ->
 		# 	$templateCache.put('/views/tweets.html', '<ul ng-hide="!tweets.length"> <li class="row" ng-repeat="tweet in tweets"> <div class="span1 thumbnail"> <img ng-src="{{tweet.profile_image_url}}"/> </div> <div class="span6"> <div> <b ng-bind="tweet.from_user_name"></b> <a ng-href="https://twitter.com/{{tweet.from_user}}" ng-bind="tweet.from_user | twitterfy" target="_blank"></a> </div> <div ng-bind="tweet.text"></div> </div> </li> </ul>');
 		# }]);
 		#
-		# This file is then included in the output automatically.  AngularJS will use it instead of going to the file system for the views, saving requests.  Notice that the view content is actually minified.  :)
+		# This file is then included in the output automatically
+		# AngularJS will use it instead of going to the file system for the views, saving requests
+		# Notice that the view content is actually minified.  :)
 		ngTemplateCache:
 			views:
 				files:
@@ -282,17 +285,17 @@ module.exports = (grunt) ->
 				options:
 					trim: './.temp'
 
-		# Open the app in the default browser
+		# Opens the app in the default browser
 		open:
 			server:
 				url: 'http://localhost:<%= connect.app.options.port %>'
 
-		# RequireJS optimizer configuration for both scripts and styles.
-		# This configuration is only used in the 'prod' build.
-		# The optimizer will scan the main file, walk the dependency tree, and write the output in dependent sequence to a single file.
-		# Since RequireJS is not being used outside of the main file or for dependency resolution (this is handled by AngularJS), RequireJS is not needed for final output and is excluded.
-		# RequireJS is still used for the 'dev' build.
-		# The main file is used only to establish the proper loading sequence.
+		# RequireJS optimizer configuration for both scripts and styles
+		# This configuration is only used in the 'prod' build
+		# The optimizer will scan the main file, walk the dependency tree, and write the output in dependent sequence to a single file
+		# Since RequireJS is not being used outside of the main file or for dependency resolution (this is handled by AngularJS), RequireJS is not needed for final output and is excluded
+		# RequireJS is still used for the 'dev' build
+		# The main file is used only to establish the proper loading sequence
 		requirejs:
 			scripts:
 				options:
@@ -301,7 +304,7 @@ module.exports = (grunt) ->
 					logLevel: 0
 					mainConfigFile: './.temp/scripts/main.js'
 					name: 'main'
-					# Exclude main from the final output to avoid the dependency on RequireJS at runtime.
+					# Exclude main from the final output to avoid the dependency on RequireJS at runtime
 					onBuildWrite: (moduleName, path, contents) ->
 						modulesToExclude = ['main']
 						shouldExcludeModule = modulesToExclude.indexOf(moduleName) >= 0
@@ -314,7 +317,7 @@ module.exports = (grunt) ->
 					preserveLicenseComments: false
 					skipModuleInsertion: true
 					uglify:
-						# Let uglifier replace variables to further reduce file size.
+						# Let uglifier replace variables to further reduce file size
 						no_mangle: false
 					useStrict: true
 					wrap:
@@ -329,16 +332,14 @@ module.exports = (grunt) ->
 					out: './.temp/styles/styles.min.css'
 
 
-		# Compile template files (.template) to HTML (.html).
+		# Compiles underscore expressions
 		#
-		# .template files are essentially html; however, you can take advantage of features provided by grunt such as underscore templating.
-		#
-		# The example below demonstrates the use of the environment configuration setting.
-		# In 'prod' the concatenated and minified scripts are used along with a QueryString parameter of the hash of the file contents to address browser caching.
-		# In environments other than 'prod' the individual files are used and loaded with RequireJS.
+		# The example below demonstrates the use of the environment configuration setting
+		# In 'prod' build the hashed file of the concatenated and minified scripts is referened
+		# In environments other than 'prod' the individual files are used and loaded with RequireJS
 		#
 		# <% if (config.environment === 'prod') { %>
-		# 	<script src="<%= config.getHashedFile('./.temp/scripts/scripts.min.js', {trim: '.temp'}) %>"></script>
+		# 	<script src="<%= config.getHashedFile('./.temp/scripts/scripts.min.js', {trim: './.temp'}) %>"></script>
 		# <% } else { %>
 		# 	<script data-main="/scripts/main.js" src="/scripts/libs/require.js"></script>
 		# <% } %>
@@ -413,61 +414,11 @@ module.exports = (grunt) ->
 				]
 				options:
 					livereload: true
+			# Used to keep the web server alive
 			none:
 				files: 'none'
 				options:
 					livereload: true
-
-		# Deletes dist and temp directories.
-		# The temp directory is used during the build process.
-		# The dist directory contains the artifacts of the build.
-		# These directories should be deleted before subsequent builds.
-		# These directories are not committed to source control.
-		# clean:
-		# 	working:
-		# 		src: [
-		# 			'./dist/'
-		# 			'./dist_test/'
-		# 			'./.temp/'
-		# 		]
-		# 	# Used for those that desire plain old JavaScript.
-		# 	jslove:
-		# 		src: [
-		# 			'**/*.coffee'
-		# 			'!**/node_modules/**'
-		# 		]
-
-		# Compile CoffeeScript (.coffee) files to JavaScript (.js).
-		# coffee:
-		# 	scripts:
-		# 		files: [
-		# 			cwd: './.temp/'
-		# 			src: 'scripts/**/*.coffee'
-		# 			dest: './.temp/'
-		# 			expand: true
-		# 			ext: '.js'
-		# 		,
-		# 			cwd: './test/'
-		# 			src: 'scripts/**/*.coffee'
-		# 			dest: './dist_test/'
-		# 			expand: true
-		# 			ext: '.js'
-		# 		]
-		# 		options:
-		# 			sourceMap: true
-		# 	# Used for those that desire plain old JavaScript.
-		# 	jslove:
-		# 		files: [
-		# 			cwd: './'
-		# 			src: [
-		# 				'**/*.coffee'
-		# 				'!**/node_modules/**'
-		# 			]
-		# 			dest: './'
-		# 			expand: true
-		# 			ext: '.js'
-		# 		]
-		# 		options: '<%= coffee.scripts.options %>'
 
 	# Register grunt tasks supplied by grunt-coffeelint.
 	# Referenced in package.json.
@@ -504,11 +455,85 @@ module.exports = (grunt) ->
 	# https://github.com/onehealth/grunt-open
 	grunt.loadNpmTasks 'grunt-open'
 
-	# Compiles all CoffeeScript files in the project to JavaScript then deletes all CoffeeScript files.
-	# Used for those that desire plain old JavaScript.
+	# Compiles the app with non-optimized build settings
+	# Places the build artifacts in the dist directory
 	# Enter the following command at the command line to execute this build task:
-	# grunt jslove
-	# grunt.registerTask 'jslove', [
-	# 	'coffee:jslove'
-	# 	'clean:jslove'
-	# ]
+	# grunt build
+	grunt.registerTask 'build', [
+		'coffeelint'
+		'clean'
+		'copy:app'
+		'coffee'
+		'template:dev'
+		'less'
+		'jade'
+		'copy:dev'
+	]
+
+	# Compiles the app with non-optimized build settings
+	# Places the build artifacts in the dist directory
+	# Opens the app in the default browser
+	# Watches for file changes, and compiles and reloads the web browser upon change
+	# Enter the following command at the command line to execute this build task:
+	# grunt or grunt default
+	grunt.registerTask 'default', [
+		'build'
+		'connect'
+		'open'
+		'watch'
+	]
+
+	# Identical to the default build task
+	# Compiles the app with non-optimized build settings
+	# Places the build artifacts in the dist directory
+	# Opens the app in the default browser
+	# Watches for file changes, and compiles and reloads the web browser upon change
+	# Enter the following command at the command line to execute this build task:
+	# grunt dev
+	grunt.registerTask 'dev', [
+		'default'
+	]
+
+	# Compiles the app with optimized build settings
+	# Places the build artifacts in the dist directory
+	# Enter the following command at the command line to execute this build task:
+	# grunt prod
+	grunt.registerTask 'prod', [
+		'coffeelint'
+		'clean'
+		'copy:app'
+		'coffee'
+		'imagemin'
+		'hash:images'
+		'template:styles'
+		'less'
+		'jade'
+		'ngTemplateCache'
+		'requirejs'
+		'uglify'
+		'hash:scripts'
+		'hash:styles'
+		'template:index'
+		'minifyHtml'
+		'copy:prod'
+	]
+
+	# Opens the app in the default browser
+	# Build artifacts must be in the dist directory via a prior grunt build, grunt, grunt dev, or grunt prod
+	# Enter the following command at the command line to execute this build task:
+	# grunt server
+	grunt.registerTask 'server', [
+		'connect'
+		'open'
+		'watch:none'
+	]
+
+	# Compiles the app with non-optimized build settings
+	# Places the build artifacts in the dist directory
+	# Runs unit tests via karma
+	# Enter the following command at the command line to execute this build task:
+	# grunt test
+	grunt.registerTask 'test', [
+		'build'
+		'karma'
+	]
