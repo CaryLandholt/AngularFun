@@ -71,6 +71,11 @@ module.exports = (grunt) ->
 				'./.temp/'
 				'./dist/'
 			]
+			# Used for those that desire plain old JavaScript
+			jslove: [
+				'**/*.coffee'
+				'!**/node_modules/**'
+			]
 
 		# Compiles CoffeeScript (.coffee) files to JavaScript (.js)
 		coffee:
@@ -82,6 +87,18 @@ module.exports = (grunt) ->
 				ext: '.js'
 				options:
 					sourceMap: true
+			# Used for those that desire plain old JavaScript
+			jslove:
+				files: [
+					cwd: './'
+					src: [
+						'**/*.coffee'
+						'!**/node_modules/**'
+					]
+					dest: './'
+					expand: true
+					ext: '.js'
+				]
 
 		# Lints CoffeeScript files
 		coffeelint:
@@ -461,9 +478,9 @@ module.exports = (grunt) ->
 	# grunt build
 	grunt.registerTask 'build', [
 		'coffeelint'
-		'clean'
+		'clean:working'
 		'copy:app'
-		'coffee'
+		'coffee:app'
 		'template:dev'
 		'less'
 		'jade'
@@ -500,9 +517,9 @@ module.exports = (grunt) ->
 	# grunt prod
 	grunt.registerTask 'prod', [
 		'coffeelint'
-		'clean'
+		'clean:working'
 		'copy:app'
-		'coffee'
+		'coffee:app'
 		'imagemin'
 		'hash:images'
 		'template:styles'
