@@ -1,65 +1,5 @@
 # Build configurations
 module.exports = (grunt) ->
-	# Compiles all CoffeeScript files in the project to JavaScript then deletes all CoffeeScript files.
-	# Used for those that desire plain old JavaScript.
-	# Enter the following command at the command line to execute this build task:
-	# grunt jslove
-	# grunt.registerTask 'jslove', [
-	# 	'coffee:jslove'
-	# 	'clean:jslove'
-	# ]
-
-	# Deletes dist and temp directories.
-	# The temp directory is used during the build process.
-	# The dist directory contains the artifacts of the build.
-	# These directories should be deleted before subsequent builds.
-	# These directories are not committed to source control.
-	# clean:
-	# 	working:
-	# 		src: [
-	# 			'./dist/'
-	# 			'./dist_test/'
-	# 			'./.temp/'
-	# 		]
-	# 	# Used for those that desire plain old JavaScript.
-	# 	jslove:
-	# 		src: [
-	# 			'**/*.coffee'
-	# 			'!**/node_modules/**'
-	# 		]
-
-	# Compile CoffeeScript (.coffee) files to JavaScript (.js).
-	# coffee:
-	# 	scripts:
-	# 		files: [
-	# 			cwd: './.temp/'
-	# 			src: 'scripts/**/*.coffee'
-	# 			dest: './.temp/'
-	# 			expand: true
-	# 			ext: '.js'
-	# 		,
-	# 			cwd: './test/'
-	# 			src: 'scripts/**/*.coffee'
-	# 			dest: './dist_test/'
-	# 			expand: true
-	# 			ext: '.js'
-	# 		]
-	# 		options:
-	# 			sourceMap: true
-	# 	# Used for those that desire plain old JavaScript.
-	# 	jslove:
-	# 		files: [
-	# 			cwd: './'
-	# 			src: [
-	# 				'**/*.coffee'
-	# 				'!**/node_modules/**'
-	# 			]
-	# 			dest: './'
-	# 			expand: true
-	# 			ext: '.js'
-	# 		]
-	# 		options: '<%= coffee.scripts.options %>'
-
 	grunt.initConfig
 		# Deletes dist and .temp directories
 		# The .temp directory is used during the build process
@@ -553,4 +493,13 @@ module.exports = (grunt) ->
 	grunt.registerTask 'test', [
 		'build'
 		'karma'
+	]
+
+	# Compiles all CoffeeScript files in the project to JavaScript then deletes all CoffeeScript files
+	# Used for those that desire plain old JavaScript
+	# Enter the following command at the command line to execute this build task:
+	# grunt jslove
+	grunt.registerTask 'jslove', [
+		'coffee:jslove'
+		'clean:jslove'
 	]
