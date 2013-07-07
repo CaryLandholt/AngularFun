@@ -10,18 +10,18 @@ files = [
 
 	'./test/scripts/libs/angular-mocks.js',
 
-	'./src/scripts/app.coffee',
-	'./src/scripts/routes.coffee',
-	'./src/scripts/run.coffee',
-	'./src/scripts/views.coffee',
+	'./src/scripts/app.{coffee,js}',
+	'./src/scripts/routes.{coffee,js}',
+	'./src/scripts/run.{coffee,js}',
+	'./src/scripts/views.{coffee,js}',
 
-	'./src/scripts/controllers/**/*.coffee',
-	'./src/scripts/directives/**/*.coffee',
-	'./src/scripts/filters/**/*.coffee',
-	'./src/scripts/interceptors/**/*.coffee',
-	'./src/scripts/services/**/*.coffee',
+	'./src/scripts/controllers/**/*.{coffee,js}',
+	'./src/scripts/directives/**/*.{coffee,js}',
+	'./src/scripts/filters/**/*.{coffee,js}',
+	'./src/scripts/interceptors/**/*.{coffee,js}',
+	'./src/scripts/services/**/*.{coffee,js}',
 
-	'./test/scripts/**/*.coffee'
+	'./test/scripts/**/*.{coffee,js}'
 ];
 
 // level of logging
