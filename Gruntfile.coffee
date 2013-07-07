@@ -252,7 +252,7 @@ module.exports = (grunt) ->
 					colors: true
 					configFile: './karma.conf.js'
 					junitReporter:
-						outputFile: './.results/results.xml'
+						outputFile: './test-results.xml'
 					keepalive: false
 					port: 8081
 					preprocessors:
