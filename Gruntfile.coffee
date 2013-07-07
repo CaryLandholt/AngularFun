@@ -339,7 +339,7 @@ module.exports = (grunt) ->
 				tasks: [
 					'coffeelint'
 					'copy:scripts'
-					'coffee'
+					'coffee:app'
 					'copy:scriptsToDist'
 				]
 				options:
