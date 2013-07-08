@@ -10,7 +10,7 @@
 		<meta name="description" content="AngularJS Reference Architecture" />
 		<meta name="viewport" content="width=device-width" />
 
-		<% if (config.environment === 'prod') { %>
+		<% if (config.environment && config.environment === 'prod') { %>
 			<!--[if lte IE 8]> <script src="<%= config.getHashedFile('./.temp/scripts/ie.min.js', {trim: './.temp'}) %>"></script> <![endif]-->
 
 			<link rel="stylesheet" href="<%= config.getHashedFile('./.temp/styles/styles.min.css', {trim: './.temp'}) %>" />
@@ -51,7 +51,7 @@
 			<div class="row">
 				<div class="span8">
 					<app:tabs>
-						<app:tab data-tab-id="gitHub" caption="GitHub">
+						<app:tab caption="GitHub">
 							<section ng-controller="gitHubController as controller">
 								<div class="alert alert-info" ng-show="!controller.searchTerm.length">
 									<h4 class="alert-heading">Heads up!</h4>
@@ -66,7 +66,7 @@
 								<div ng-include="'/views/repos.html'"></div>
 							</section>
 						</app:tab>
-						<app:tab data-tab-id="people" caption="People">
+						<app:tab caption="People">
 							<div class="row">
 								<div class="span6">
 									<section ng-controller="personController as controller">
@@ -123,7 +123,7 @@
 			</div>
 		</div>
 
-		<% if (config.environment === 'prod') { %>
+		<% if (config.environment && config.environment === 'prod') { %>
 			<script src="<%= config.getHashedFile('./.temp/scripts/scripts.min.js', {trim: './.temp'}) %>"></script>
 		<% } else { %>
 			<script data-main="/scripts/main.js" src="/scripts/libs/require.js"></script>

@@ -1,10 +1,10 @@
 class GitHubResolver
 	constructor: ($log, $rootScope) ->
-		$rootScope.$broadcast 'changeTab#gitHub'
+		$rootScope.tab = 'GitHub'
 
 class PersonDetailsResolver
 	constructor: ($log, $rootScope) ->
-		$rootScope.$broadcast 'changeTab#people'
+		$rootScope.tab = 'People'
 
 class Routes
 	constructor: ($routeProvider) ->

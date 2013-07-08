@@ -8,7 +8,6 @@ require
 		'controllers/personController'       : deps: ['libs/angular', 'app', 'services/personService']
 		'controllers/personDetailsController': deps: ['libs/angular', 'app', 'services/personService']
 		'controllers/searchHistoryController': deps: ['libs/angular', 'app', 'services/messageService']
-		'directives/ngController'            : deps: ['libs/angular', 'app']
 		'directives/tab'                     : deps: ['libs/angular', 'app']
 		'directives/tabs'                    : deps: ['libs/angular', 'app', 'directives/tab']
 		'filters/twitterfy'                  : deps: ['libs/angular', 'app']
@@ -29,7 +28,6 @@ require
 		'controllers/personController'
 		'controllers/personDetailsController'
 		'controllers/searchHistoryController'
-		'directives/ngController'
 		'directives/tabs'
 		'filters/twitterfy'
 		'interceptors/dispatcher'

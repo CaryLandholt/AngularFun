@@ -12,6 +12,7 @@ class Tab
 			restrict: 'E'
 			scope:
 				caption: '@'
+				selected: '@'
 			templateUrl: '/views/directives/tab.html'
 			transclude: true
 		}

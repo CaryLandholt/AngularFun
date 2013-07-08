@@ -103,6 +103,16 @@ module.exports = (grunt) ->
 				src: '**'
 				dest: './dist/images/'
 				expand: true
+			index:
+				cwd: './src/'
+				src: 'index.html'
+				dest: './.temp/'
+				expand: true
+			indexToDist:
+				cwd: './.temp/'
+				src: 'index.html'
+				dest: './dist/'
+				expand: true
 			scripts:
 				cwd: './src/scripts/'
 				src: '**'
@@ -123,15 +133,6 @@ module.exports = (grunt) ->
 				src: '**'
 				dest: './dist/styles/'
 				expand: true
-			template:
-				cwd: './src/'
-				src: 'index.html'
-				dest: './.temp/'
-				expand: true
-			templateToDist:
-				cwd: './.temp/'
-				src: 'index.html'
-				dest: './dist/'
 			views:
 				cwd: './src/views/'
 				src: '**'
@@ -353,12 +354,12 @@ module.exports = (grunt) ->
 				]
 				options:
 					livereload: true
-			template:
+			index:
 				files: './src/index.html'
 				tasks: [
-					'copy:template'
+					'copy:index'
 					'template:dev'
-					'copy:templateToDist'
+					'copy:indexToDist'
 				]
 				options:
 					livereload: true
