@@ -191,7 +191,7 @@ module.exports = (grunt) ->
 						'Chrome'
 					]
 					colors: true
-					configFile: './karma.conf.coffee'
+					configFile: './karma.coffee'
 					junitReporter:
 						outputFile: './test-results.xml'
 					keepalive: false
