@@ -28,13 +28,13 @@
 		</style>
 
 		<script>
-			(function (win) {
-				if (win.top === win.self) {
-					var antiClickjack = win.document.getElementById('antiClickjack');
+			(function (w) {
+				if (w.top === w.self) {
+					var a = w.document.getElementById('antiClickjack');
 
-					antiClickjack.parentNode.removeChild(antiClickjack);
+					a.parentNode.removeChild(a);
 				} else {
-					win.top.location = win.self.location;
+					w.top.location = w.self.location;
 				}
 			}(window));
 		</script>
