@@ -302,18 +302,15 @@ module.exports = (grunt) ->
 		# 	<script data-main="/scripts/main.js" src="/scripts/libs/require.js"></script>
 		# <% } %>
 		template:
-			dev:
-				files:
-					'./.temp/index.html': './.temp/index.html'
-					'./.temp/styles/variables.less': './.temp/styles/variables.less'
-				environment: 'dev'
+			indexDev:
+				files: './.temp/index.html': './.temp/index.html'
+			stylesDev:
+				files: './.temp/styles/variables.less': './.temp/styles/variables.less'
 			index:
-				files:
-					'./.temp/index.html': './.temp/index.html'
+				files: '<%= template.indexDev.files %>'
 				environment: 'prod'
 			styles:
-				files:
-					'./.temp/styles/variables.less': './.temp/styles/variables.less'
+				files: '<%= template.stylesDev.files %>'
 				environment: 'prod'
 
 		# Concatenates and minifies JavaScript files
@@ -349,6 +346,7 @@ module.exports = (grunt) ->
 				files: './src/styles/**'
 				tasks: [
 					'copy:styles'
+					'template:stylesDev'
 					'less'
 					'copy:stylesToDist'
 				]
@@ -358,7 +356,7 @@ module.exports = (grunt) ->
 				files: './src/index.html'
 				tasks: [
 					'copy:index'
-					'template:dev'
+					'template:indexDev'
 					'copy:indexToDist'
 				]
 				options:
@@ -422,7 +420,8 @@ module.exports = (grunt) ->
 		'clean:working'
 		'copy:app'
 		'coffee:app'
-		'template:dev'
+		'template:indexDev'
+		'template:stylesDev'
 		'less'
 		'jade'
 		'copy:dev'
