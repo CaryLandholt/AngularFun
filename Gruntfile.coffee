@@ -190,6 +190,7 @@ module.exports = (grunt) ->
 					browsers: [
 						'Chrome'
 					]
+					captureTimeout: 5000
 					colors: true
 					configFile: './karma.coffee'
 					junitReporter:
