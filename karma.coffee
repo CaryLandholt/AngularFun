@@ -22,7 +22,3 @@ files = [
 
 	'./test/scripts/**/*.{coffee,js}'
 ]
-
-# level of logging
-# possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
-logLevel = LOG_DEBUG
