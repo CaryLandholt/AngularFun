@@ -1,3 +1,5 @@
+[![build status](https://secure.travis-ci.org/CaryLandholt/AngularFun.png)](http://travis-ci.org/CaryLandholt/AngularFun)
+[![dependency status](https://david-dm.org/CaryLandholt/AngularFun.png)](https://david-dm.org/CaryLandholt/AngularFun)
 # AngularFun
 *By [@CaryLandholt](https://twitter.com/carylandholt)*
 
