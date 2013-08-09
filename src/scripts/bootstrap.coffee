@@ -1,1 +1,1 @@
-angular.bootstrap window.document, ['app']
+angular.bootstrap @.document, ['app']
