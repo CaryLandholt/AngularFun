@@ -276,6 +276,7 @@ module.exports = (grunt) ->
 			scripts:
 				angular: './.temp/scripts/libs/angular.min.js'
 				modules: [
+					'./.temp/scripts/libs/angular-animate.min.js'
 					'./.temp/scripts/libs/angular-resource.min.js'
 					'./.temp/scripts/libs/angular-route.min.js'
 				]

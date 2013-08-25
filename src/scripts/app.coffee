@@ -1,1 +1,1 @@
-angular.module 'app', ['ngResource', 'ngRoute']
+angular.module 'app', ['ngAnimate', 'ngResource', 'ngRoute']

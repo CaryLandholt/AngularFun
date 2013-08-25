@@ -125,7 +125,7 @@
 						</form>
 
 						<ol ng-hide="!controller.searchHistory.length">
-							<li ng-animate=" 'wave' " ng-repeat="item in controller.searchHistory | filter:controller.query | orderBy:'timeStamp':true">
+							<li class="slide" ng-repeat="item in controller.searchHistory | filter:controller.query | orderBy:'timeStamp':true">
 								<div class="floatNone">
 									{{item.source}}/{{item.criteria}}
 								</div>
