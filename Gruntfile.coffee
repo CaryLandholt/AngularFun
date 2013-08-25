@@ -88,6 +88,16 @@ module.exports = (grunt) ->
 					dest: './.temp/scripts/libs/'
 					expand: true
 				,
+					cwd: './bower_components/bootstrap/less/'
+					src: '*'
+					dest: './.temp/styles/'
+					expand: true
+				,
+					cwd: './bower_components/bootstrap/fonts/'
+					src: '*'
+					dest: './.temp/fonts/'
+					expand: true
+				,
 					cwd: './bower_components/html5shiv/dist/'
 					src: 'html5shiv-printshiv.js'
 					dest: './.temp/scripts/libs/'

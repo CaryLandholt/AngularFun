@@ -5,10 +5,10 @@
 <!--[if gt IE 8]><!--> <html class="no-js" xmlns:ng="http://angularjs.org" xmlns:app="ignored"> <!--<![endif]-->
 	<head>
 		<meta charset="utf-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<title>Angular Fun</title>
 		<meta name="description" content="AngularJS Reference Architecture" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 		<% if (config.environment && config.environment === 'prod') { %>
 			<!--[if lte IE 8]> <script src="<%= config.getHashedFile('./.temp/scripts/ie.min.js', {trim: './.temp'}) %>"></script> <![endif]-->
@@ -41,15 +41,19 @@
 		<!-- ClickJacking Defense end -->
 	</head>
 	<body ng-cloak class="ng-cloak">
-		<div class="container">
-			<div class="hero-unit">
+		<div class="jumbotron">
+			<div class="container">
 				<h1>Playing with <a href="http://angularjs.org" target="_blank">AngularJS</a></h1>
 				<p>and also <a href="http://requirejs.org/" target="_blank">RequireJS</a></p>
 				<p>Dynamically loading dependencies in <b>dev</b>, but minimize the hell out of it for <b>prod</b>.</p>
 				<p>RequireJS is only used for dev and build.</p>
 			</div>
+		</div>
+
+
+		<div class="container">
 			<div class="row">
-				<div class="span8">
+				<div class="col-lg-8">
 					<app:tabs>
 						<app:tab caption="GitHub">
 							<section ng-controller="gitHubController as controller">
@@ -63,12 +67,17 @@
 									<button type="submit" class="btn"><i class="icon-search"></i> Search</button>
 								</form>
 
-								<div ng-include="'/views/repos.html'"></div>
+								<ul ng-hide="!controller.repos.data.length">
+									<li ng-repeat="repo in controller.repos.data track by repo.id | orderBy:'pushed_at':true">
+										<a ng-href="{{repo.url}}" ng-bind="repo.name" target="_blank"></a>
+										<div ng-bind="repo.description"></div>
+									</li>
+								</ul>
 							</section>
 						</app:tab>
 						<app:tab caption="People">
 							<div class="row">
-								<div class="span6">
+								<div class="col-lg-6">
 									<section ng-controller="personController as controller">
 										<div class="alert alert-error" ng-show="!!controller.error">
 											<h4 class="alert-heading" ng-bind="controller.error.title"></h4>
@@ -86,10 +95,14 @@
 											<button type="submit" class="btn"><i class="icon-plus"></i> Add Person</button>
 										</form>
 
-										<div ng-include="'/views/people.html'"></div>
+										<ul ng-hide="!controller.people.length">
+											<li class="row" ng-repeat="person in controller.people track by person.id | orderBy:'name'">
+												<a ng-href="#/people/{{person.id}}" ng-bind="person.name"></a>
+											</li>
+										</ul>
 									</section>
 								</div>
-								<div class="span2">
+								<div class="col-lg-2">
 									<section ng-controller="personDetailsController as controller">
 										<dl>
 											<dt>Name</dt>
@@ -103,7 +116,7 @@
 						</app:tab>
 					</app:tabs>
 				</div>
-				<div class="span4">
+				<div class="col-lg-4">
 					<h2>Search History</h2>
 					<section ng-controller="searchHistoryController as controller">
 						<form class="well form-search">
