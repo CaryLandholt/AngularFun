@@ -62,10 +62,47 @@ module.exports = (grunt) ->
 		# Copies directories and files from one location to another
 		copy:
 			app:
-				cwd: './src/'
-				src: '**'
-				dest: './.temp/'
-				expand: true
+				files: [
+					cwd: './src/'
+					src: '**'
+					dest: './.temp/'
+					expand: true
+				,
+					cwd: './bower_components/angular/'
+					src: 'angular.*'
+					dest: './.temp/scripts/libs/'
+					expand: true
+				,
+					cwd: './bower_components/angular-animate/'
+					src: 'angular-animate.*'
+					dest: './.temp/scripts/libs/'
+					expand: true
+				,
+					cwd: './bower_components/angular-resource/'
+					src: 'angular-resource.*'
+					dest: './.temp/scripts/libs/'
+					expand: true
+				,
+					cwd: './bower_components/angular-route/'
+					src: 'angular-route.*'
+					dest: './.temp/scripts/libs/'
+					expand: true
+				,
+					cwd: './bower_components/html5shiv/dist/'
+					src: 'html5shiv-printshiv.js'
+					dest: './.temp/scripts/libs/'
+					expand: true
+				,
+					cwd: './bower_components/json3/lib/'
+					src: 'json3.min.js'
+					dest: './.temp/scripts/libs/'
+					expand: true
+				,
+					cwd: './bower_components/requirejs/'
+					src: 'require.js'
+					dest: './.temp/scripts/libs/'
+					expand: true
+				]
 			dev:
 				cwd: './.temp/'
 				src: '**'
