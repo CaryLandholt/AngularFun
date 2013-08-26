@@ -11,12 +11,13 @@ Simply follow the patterns and you'll get a complete development workflow, inclu
 * file organization
 * transpilation of [CoffeeScript](http://coffeescript.org/) files (_if you prefer plain JavaScript, see [JS Love](#js-love)_)
 * transpilation of [LESS](http://lesscss.org/) files
+* transpilation of [Jade](http://jade-lang.com/) files
 * three build configurations
-	* **default** - compilation with no optimizations
-	* **dev** - compilation with no optimizations but includes file watching to monitor changes and build changed files on-the-fly
+	* **build** - compilation with no optimizations
+	* **default** or **dev** - compilation with no optimizations but includes file watching to monitor changes and build changed files on-the-fly
 	* **prod** - compilation with all optimizations, including concatenation and minification of png, JavaScript, CSS, and HTML files.
 * full dependency management (file loading and dependency resolution)
-* an in-browser unit testing strategy
+* a unit testing strategy
 * a server to run the application
 
 ## Prerequisites
@@ -34,30 +35,26 @@ Enter the following commands in the terminal.
 4. `bower install`
 
 ## Compile Angular Fun
-You have three options.
+You have options.
 
-1. `grunt` - will compile the app preserving individual files (when run, files will be loaded on-demand)
-2. `grunt dev` - same as `grunt` but will watch for file changes and recompile on-the-fly
+1. `grunt build` - will compile the app preserving individual files (when run, files will be loaded on-demand)
+2. `grunt` or `grunt dev` - same as `grunt` but will watch for file changes and recompile on-the-fly
 3. `grunt prod` - will compile using optimizations.  This will create one JavaScript file and one CSS file to demonstrate the power of [r.js](http://requirejs.org/docs/optimization.html), the build optimization tool for RequireJS.  And take a look at the index.html file.  Yep - it's minified too.
+4. `grunt test` - will compile the app and run all unit tests
 
 ## JS Love
 Some of you prefer working with plain old JavaScript.  We've got ya covered.  Simply run the following grunt task.
 `grunt jslove` - will transpile all of the CoffeeScript files to JavaScript and throw out the Coffee.
 
 ## Run It
-1. Compile the app using one of the above three options.
-2. Navigate to the root of the project
-3. `grunt server`
-4. Open the [app](http://localhost:3005/) in your browser to give it a go
+1. Compile the app using one of the above three options.  `grunt` and `grunt dev` will run the web server and open the app in your default browser automatically.
+2. `grunt server` - will run the web server and open the app in your default browser.
 
 ## Making Changes
-* `grunt dev` will watch for any CoffeeScript (.coffee), Less (.less), or .template file changes.  When changes are detected, the files will be linted, compiled, and ready for you to refresh the browser.
+* `grunt` and `grunt dev` will watch for any CoffeeScript (.coffee), Less (.less), or .template file changes.  When changes are detected, the files will be linted, compiled, and ready for you to refresh the browser.
 
 ## Running Tests
-You have two options.
-
-1. [Jasmine](http://pivotal.github.com/jasmine/) HTML runner -  run `grunt` - Then open /test/runner.html in your browser to run the unit tests using Jasmine.
-2. [Testacular](http://vojtajina.github.com/testacular/) - `grunt test` -  Defaults to running the tests in chrome, but you can easily change this in testacular.conf.js browsers section as required.
+`grunt test` - Runs unit tests using the [Karma](http://karma-runner.github.io/) Test Runner
 
 ## Commentary
 AngularFun is a by-product of my learning AngularJS and became the reference architecture to my day job project, a very large internally and externally-facing application with extensive user interactions.
@@ -206,6 +203,13 @@ Here are the final index.html script references.  Note that the condition will n
 	<script data-main="/scripts/main.js" src="/scripts/libs/require.js"></script>
 <% } %>
 ```
+
+### Take 4
+Inspired by [tardyp](https://github.com/tardyp) and his [grunt-requiregen](https://github.com/tardyp/grunt-requiregen) plugin - what if we didn't have to do anything?
+
+So that's actually where we are.  The shim file from [Take 3](#take-3) is built for you.
+
+Whew!
 
 ### Give and Take
 After many iterations it now feels right.  All [comments and questions](https://github.com/CaryLandholt/AngularFun/issues) and [Pull Requests](https://github.com/CaryLandholt/AngularFun/pulls) are always welcome.  I respond to all.
