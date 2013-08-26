@@ -120,6 +120,11 @@ module.exports = (grunt) ->
 				expand: true
 			prod:
 				files: [
+					cwd: './.temp/fonts/'
+					src: '**'
+					dest: './dist/fonts/'
+					expand: true
+				,
 					cwd: './.temp/images/'
 					src: '**'
 					dest: './dist/images/'
@@ -369,9 +374,6 @@ module.exports = (grunt) ->
 			index:
 				files: '<%= template.indexDev.files %>'
 				environment: 'prod'
-			styles:
-				files: '<%= template.stylesDev.files %>'
-				environment: 'prod'
 
 		# Concatenates and minifies JavaScript files
 		uglify:
@@ -484,6 +486,7 @@ module.exports = (grunt) ->
 		'less'
 		'jade'
 		'template:indexDev'
+		'copy:dev'
 	]
 
 	# Compiles the app with non-optimized build settings
@@ -494,7 +497,6 @@ module.exports = (grunt) ->
 	# grunt or grunt default
 	grunt.registerTask 'default', [
 		'build'
-		'copy:dev'
 		'connect'
 		'open'
 		'watch'
@@ -516,14 +518,13 @@ module.exports = (grunt) ->
 	# Enter the following command at the command line to execute this build task:
 	# grunt prod
 	grunt.registerTask 'prod', [
-		'coffeelint'
 		'clean:working'
+		'coffeelint'
 		'copy:app'
-		'coffee:app'
 		'ngShim'
+		'coffee:app'
 		'imagemin'
 		'hash:images'
-		'template:styles'
 		'less'
 		'jade'
 		'ngTemplateCache'
