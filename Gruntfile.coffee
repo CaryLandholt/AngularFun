@@ -14,6 +14,7 @@ module.exports = (grunt) ->
 			# Used for those that desire plain old JavaScript
 			jslove: [
 				'**/*.coffee'
+				'!**/bower_components/**'
 				'!**/node_modules/**'
 			]
 
@@ -33,6 +34,7 @@ module.exports = (grunt) ->
 					cwd: './'
 					src: [
 						'**/*.coffee'
+						'!**/bower_components/**'
 						'!**/node_modules/**'
 					]
 					dest: './'
