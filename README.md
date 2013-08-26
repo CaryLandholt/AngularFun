@@ -9,7 +9,7 @@ AngularFun is an [AngularJS](http://angularjs.org/) large application Reference 
 Simply follow the patterns and you'll get a complete development workflow, including:
 
 * file organization
-* transpilation of [CoffeeScript](http://coffeescript.org/) files (_if you prefer plain JavaScript, see [JS Love](#js-love)_)
+* transpilation of [CoffeeScript](http://coffeescript.org/) files (*if you prefer plain JavaScript, see [JS Love](#js-love)*)
 * transpilation of [LESS](http://lesscss.org/) files
 * transpilation of [Jade](http://jade-lang.com/) files
 * three build configurations
