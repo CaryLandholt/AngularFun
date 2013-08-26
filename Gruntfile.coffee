@@ -145,63 +145,6 @@ module.exports = (grunt) ->
 				,
 					'./dist/index.html': './.temp/index.min.html'
 				]
-			# test:
-			# 	files: [
-			# 		cwd: './bower_components/angular-mocks/'
-			# 		src: 'angular-mocks.*'
-			# 		dest: './test/scripts/libs/'
-			# 		expand: true
-			# 	]
-			# images:
-			# 	cwd: './src/images/'
-			# 	src: '**'
-			# 	dest: './.temp/images/'
-			# 	expand: true
-			# imagesToDist:
-			# 	cwd: './.temp/images/'
-			# 	src: '**'
-			# 	dest: './dist/images/'
-			# 	expand: true
-			# index:
-			# 	cwd: './src/'
-			# 	src: 'index.html'
-			# 	dest: './.temp/'
-			# 	expand: true
-			# indexToDist:
-			# 	cwd: './.temp/'
-			# 	src: 'index.html'
-			# 	dest: './dist/'
-			# 	expand: true
-			# scripts:
-			# 	cwd: './src/scripts/'
-			# 	src: '**'
-			# 	dest: './.temp/scripts/'
-			# 	expand: true
-			# scriptsToDist:
-			# 	cwd: './.temp/scripts/'
-			# 	src: '**'
-			# 	dest: './dist/scripts/'
-			# 	expand: true
-			# styles:
-			# 	cwd: './src/styles/'
-			# 	src: '**'
-			# 	dest: './.temp/styles/'
-			# 	expand: true
-			# stylesToDist:
-			# 	cwd: './.temp/styles/'
-			# 	src: '**'
-			# 	dest: './dist/styles/'
-			# 	expand: true
-			# views:
-			# 	cwd: './src/views/'
-			# 	src: '**'
-			# 	dest: './.temp/views/'
-			# 	expand: true
-			# viewsToDist:
-			# 	cwd: './.temp/views/'
-			# 	src: '**'
-			# 	dest: './dist/views/'
-			# 	expand: true
 
 		# Renames files based on their hashed content
 		# When the files contents change, the hash value changes
@@ -412,49 +355,18 @@ module.exports = (grunt) ->
 
 		# Run tasks when monitored files change
 		watch:
-			images:
-				files: './src/images/**'
-				tasks: [
-					'copy:images'
-					'copy:imagesToDist'
+			dev:
+				files: [
+					'./src/index.html'
+					'./src/fonts/**'
+					'./src/images/**'
+					'./src/scripts/**'
+					'./src/styles/**'
+					'./src/views/**'
 				]
-				options:
-					livereload: true
-			scripts:
-				files: './src/scripts/**'
 				tasks: [
-					'coffeelint'
-					'copy:scripts'
-					'coffee:app'
-					'copy:scriptsToDist'
-				]
-				options:
-					livereload: true
-			styles:
-				files: './src/styles/**'
-				tasks: [
-					'copy:styles'
-					'template:stylesDev'
-					'less'
-					'copy:stylesToDist'
-				]
-				options:
-					livereload: true
-			index:
-				files: './src/index.html'
-				tasks: [
-					'copy:index'
-					'template:indexDev'
-					'copy:indexToDist'
-				]
-				options:
-					livereload: true
-			views:
-				files: './src/views/**'
-				tasks: [
-					'copy:views'
-					'jade'
-					'copy:viewsToDist'
+					'build'
+					'karma'
 				]
 				options:
 					livereload: true

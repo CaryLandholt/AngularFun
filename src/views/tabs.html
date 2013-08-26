@@ -1,0 +1,64 @@
+<app:tabs>
+
+	<app:tab caption="GitHub">
+		<section ng-controller="gitHubController as controller">
+			<div class="alert alert-info" ng-show="!controller.searchTerm.length">
+				<h4 class="alert-heading">Heads up!</h4>
+				<span>Enter GitHub search criteria.</span>
+			</div>
+
+			<form class="well form-search" ng-submit="controller.search(controller.searchTerm)">
+				<input type="text" class="input-medium search-query" ng-model="controller.searchTerm" />
+				<button type="submit" class="btn"><i class="glyphicon glyphicon-search"></i> Search</button>
+			</form>
+
+			<ul ng-hide="!controller.repos.data.length">
+				<li ng-repeat="repo in controller.repos.data track by repo.id | orderBy:'pushed_at':true">
+					<a ng-href="{{repo.clone_url}}" ng-bind="repo.name" target="_blank"></a>
+					<div ng-bind="repo.description"></div>
+				</li>
+			</ul>
+		</section>
+	</app:tab>
+
+	<app:tab caption="People">
+		<div class="row">
+			<div class="col-lg-6">
+				<section ng-controller="personController as controller">
+					<div class="alert alert-danger" ng-show="!!controller.error">
+						<h4 class="alert-heading" ng-bind="controller.error.title"></h4>
+						<span ng-bind="controller.error.message"></span>
+					</div>
+
+					<form class="well form-search" ng-submit="controller.insertPerson(controller.person)">
+						<p>
+							<span class="label label-info">Heads up!</span>
+							<span class="text-info">Try adding a duplicate name.</span>
+						</p>
+
+						<input type="text" class="input-medium" ng-model="controller.person.name" placeholder="Name" />
+						<input type="text" class="input-small" ng-model="controller.person.age" placeholder="Age" />
+						<button type="submit" class="btn"><i class="glyphicon glyphicon-plus"></i> Add Person</button>
+					</form>
+
+					<ul ng-hide="!controller.people.length">
+						<li class="row" ng-repeat="person in controller.people track by person.id | orderBy:'name'">
+							<a ng-href="#/people/{{person.id}}" ng-bind="person.name"></a>
+						</li>
+					</ul>
+				</section>
+			</div>
+			<div class="col-lg-2">
+				<section ng-controller="personDetailsController as controller">
+					<dl>
+						<dt>Name</dt>
+						<dd ng-bind="controller.person.name"></dd>
+						<dt>Age</dt>
+						<dd ng-bind="controller.person.age"></dd>
+					</dl>
+				</section>
+			</div>
+		</div>
+	</app:tab>
+
+</app:tabs>

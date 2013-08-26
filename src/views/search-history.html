@@ -1,0 +1,16 @@
+<h2>Search History</h2>
+
+<section ng-controller="searchHistoryController as controller">
+	<form class="well form-search">
+		<input type="text" class="input-medium search-query" placeholder="Type filter..." ng-model="controller.query" />
+		<label ng-bind-template="Displaying:  {{(controller.searchHistory | filter:controller.query).length}}"></label>
+	</form>
+
+	<ol ng-hide="!controller.searchHistory.length">
+		<li class="slide" ng-repeat="item in controller.searchHistory | filter:controller.query | orderBy:'timeStamp':true">
+			<div class="floatNone">
+				{{item.source}}/{{item.criteria}}
+			</div>
+		</li>
+	</ol>
+</section>
