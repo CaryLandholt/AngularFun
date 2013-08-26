@@ -145,56 +145,63 @@ module.exports = (grunt) ->
 				,
 					'./dist/index.html': './.temp/index.min.html'
 				]
-			images:
-				cwd: './src/images/'
-				src: '**'
-				dest: './.temp/images/'
-				expand: true
-			imagesToDist:
-				cwd: './.temp/images/'
-				src: '**'
-				dest: './dist/images/'
-				expand: true
-			index:
-				cwd: './src/'
-				src: 'index.html'
-				dest: './.temp/'
-				expand: true
-			indexToDist:
-				cwd: './.temp/'
-				src: 'index.html'
-				dest: './dist/'
-				expand: true
-			scripts:
-				cwd: './src/scripts/'
-				src: '**'
-				dest: './.temp/scripts/'
-				expand: true
-			scriptsToDist:
-				cwd: './.temp/scripts/'
-				src: '**'
-				dest: './dist/scripts/'
-				expand: true
-			styles:
-				cwd: './src/styles/'
-				src: '**'
-				dest: './.temp/styles/'
-				expand: true
-			stylesToDist:
-				cwd: './.temp/styles/'
-				src: '**'
-				dest: './dist/styles/'
-				expand: true
-			views:
-				cwd: './src/views/'
-				src: '**'
-				dest: './.temp/views/'
-				expand: true
-			viewsToDist:
-				cwd: './.temp/views/'
-				src: '**'
-				dest: './dist/views/'
-				expand: true
+			# test:
+			# 	files: [
+			# 		cwd: './bower_components/angular-mocks/'
+			# 		src: 'angular-mocks.*'
+			# 		dest: './test/scripts/libs/'
+			# 		expand: true
+			# 	]
+			# images:
+			# 	cwd: './src/images/'
+			# 	src: '**'
+			# 	dest: './.temp/images/'
+			# 	expand: true
+			# imagesToDist:
+			# 	cwd: './.temp/images/'
+			# 	src: '**'
+			# 	dest: './dist/images/'
+			# 	expand: true
+			# index:
+			# 	cwd: './src/'
+			# 	src: 'index.html'
+			# 	dest: './.temp/'
+			# 	expand: true
+			# indexToDist:
+			# 	cwd: './.temp/'
+			# 	src: 'index.html'
+			# 	dest: './dist/'
+			# 	expand: true
+			# scripts:
+			# 	cwd: './src/scripts/'
+			# 	src: '**'
+			# 	dest: './.temp/scripts/'
+			# 	expand: true
+			# scriptsToDist:
+			# 	cwd: './.temp/scripts/'
+			# 	src: '**'
+			# 	dest: './dist/scripts/'
+			# 	expand: true
+			# styles:
+			# 	cwd: './src/styles/'
+			# 	src: '**'
+			# 	dest: './.temp/styles/'
+			# 	expand: true
+			# stylesToDist:
+			# 	cwd: './.temp/styles/'
+			# 	src: '**'
+			# 	dest: './dist/styles/'
+			# 	expand: true
+			# views:
+			# 	cwd: './src/views/'
+			# 	src: '**'
+			# 	dest: './.temp/views/'
+			# 	expand: true
+			# viewsToDist:
+			# 	cwd: './.temp/views/'
+			# 	src: '**'
+			# 	dest: './dist/views/'
+			# 	expand: true
 
 		# Renames files based on their hashed content
 		# When the files contents change, the hash value changes
@@ -240,11 +247,34 @@ module.exports = (grunt) ->
 				options:
 					autoWatch: true
 					browsers: [
-						'Chrome'
+						'PhantomJS'
 					]
 					captureTimeout: 5000
 					colors: true
-					configFile: './karma.coffee'
+					files: [
+						'./dist/scripts/libs/angular.js'
+						'./dist/scripts/libs/angular-animate.js'
+						'./dist/scripts/libs/angular-route.js'
+						'./dist/scripts/libs/angular-resource.js'
+
+						'./bower_components/angular-mocks/angular-mocks.js'
+
+						'./dist/scripts/app.js'
+						'./dist/scripts/routes.js'
+						'./dist/scripts/run.js'
+						'./dist/scripts/views.js'
+
+						'./dist/scripts/controllers/**/*.js'
+						'./dist/scripts/directives/**/*.js'
+						'./dist/scripts/filters/**/*.js'
+						'./dist/scripts/interceptors/**/*.js'
+						'./dist/scripts/services/**/*.js'
+
+						'./test/scripts/**/*.{coffee,js}'
+					]
+					frameworks: [
+						'jasmine'
+					]
 					junitReporter:
 						outputFile: './test-results.xml'
 					keepalive: false
@@ -254,7 +284,6 @@ module.exports = (grunt) ->
 						'**/*.coffee': 'coffee'
 					reporters: [
 						'dots'
-						'junit'
 						'progress'
 					]
 					runnerPort: 9100

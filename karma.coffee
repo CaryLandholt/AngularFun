@@ -1,24 +1,23 @@
-# list of files / patterns to load in the browser
-files = [
-	JASMINE
-	JASMINE_ADAPTER
+module.exports = (config) ->
+	config.set
+		files: [
+			'./dist/scripts/libs/angular.js'
+			'./dist/scripts/libs/angular-animate.js'
+			'./dist/scripts/libs/angular-route.js'
+			'./dist/scripts/libs/angular-resource.js'
 
-	'./src/scripts/libs/angular.js'
-	'./src/scripts/libs/angular-route.js'
-	'./src/scripts/libs/angular-resource.js'
+			'./bower_components/angular-mocks/angular-mocks.js'
 
-	'./test/scripts/libs/angular-mocks.js'
+			'./dist/scripts/app.js'
+			'./dist/scripts/routes.js'
+			'./dist/scripts/run.js'
+			'./dist/scripts/views.js'
 
-	'./src/scripts/app.{coffee,js}'
-	'./src/scripts/routes.{coffee,js}'
-	'./src/scripts/run.{coffee,js}'
-	'./src/scripts/views.{coffee,js}'
+			'./dist/scripts/controllers/**/*.js'
+			'./dist/scripts/directives/**/*.js'
+			'./dist/scripts/filters/**/*.js'
+			'./dist/scripts/interceptors/**/*.js'
+			'./dist/scripts/services/**/*.js'
 
-	'./src/scripts/controllers/**/*.{coffee,js}'
-	'./src/scripts/directives/**/*.{coffee,js}'
-	'./src/scripts/filters/**/*.{coffee,js}'
-	'./src/scripts/interceptors/**/*.{coffee,js}'
-	'./src/scripts/services/**/*.{coffee,js}'
-
-	'./test/scripts/**/*.{coffee,js}'
-]
+			'./test/scripts/**/*.{coffee,js}'
+		]
