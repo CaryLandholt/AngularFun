@@ -22,7 +22,8 @@ Simply follow the patterns and you'll get a complete development workflow, inclu
 ## Prerequisites
 * Must have [Git](http://git-scm.com/) installed
 * Must have [node.js (at least v0.8.1)](http://nodejs.org/) installed with npm (Node Package Manager)
-* Must have [Grunt](https://github.com/gruntjs/grunt) node package installed globally.  `npm install -g grunt-cli`
+* Must have [Grunt](http://gruntjs.com/) node package installed globally.  `npm install -g grunt-cli`
+* Must have [Bower](http://bower.io/) node package installed globally.  `npm install -g bower`
 
 ## Install Angular Fun
 Enter the following commands in the terminal.
@@ -30,6 +31,7 @@ Enter the following commands in the terminal.
 1. `git clone git://github.com/CaryLandholt/AngularFun.git`
 2. `cd AngularFun`
 3. `npm install`
+4. `bower install`
 
 ## Compile Angular Fun
 You have three options.

@@ -366,8 +366,6 @@ module.exports = (grunt) ->
 		template:
 			indexDev:
 				files: './.temp/index.html': './.temp/index.html'
-			stylesDev:
-				files: './.temp/styles/variables.less': './.temp/styles/variables.less'
 			index:
 				files: '<%= template.indexDev.files %>'
 				environment: 'prod'
@@ -478,16 +476,14 @@ module.exports = (grunt) ->
 	# Enter the following command at the command line to execute this build task:
 	# grunt build
 	grunt.registerTask 'build', [
-		'coffeelint'
 		'clean:working'
+		'coffeelint'
 		'copy:app'
 		'ngShim'
 		'coffee:app'
-		'template:indexDev'
-		'template:stylesDev'
 		'less'
 		'jade'
-		'copy:dev'
+		'template:indexDev'
 	]
 
 	# Compiles the app with non-optimized build settings
@@ -498,6 +494,7 @@ module.exports = (grunt) ->
 	# grunt or grunt default
 	grunt.registerTask 'default', [
 		'build'
+		'copy:dev'
 		'connect'
 		'open'
 		'watch'
