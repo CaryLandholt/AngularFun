@@ -274,19 +274,15 @@ module.exports = (grunt) ->
 		# Creates main file for RequireJS
 		ngShim:
 			scripts:
-				angular: './.temp/scripts/libs/angular.min.js'
+				cwd: './.temp/scripts/'
+				angular: 'libs/angular.min.js'
 				modules: [
-					'./.temp/scripts/libs/angular-animate.min.js'
-					'./.temp/scripts/libs/angular-resource.min.js'
-					'./.temp/scripts/libs/angular-route.min.js'
+					'ngAnimate': 'libs/angular-animate.min.js'
+					'ngResource': 'libs/angular-resource.min.js'
+					'ngRoute': 'libs/angular-route.min.js'
 				]
-				app: './.temp/scripts/app.coffee'
-				bootstrap: './.temp/scripts/bootstrap.coffee'
-				src: './.temp/scripts/**/*.coffee'
-				dest: './.temp/scripts/main.coffee'
-				expand: true
-				options:
-					trim: './.temp/scripts/'
+				src: '**/*.coffee'
+				dest: 'main.coffee'
 
 		# Creates a file to push views directly into the $templateCache
 		# This will produce a file with the following content
