@@ -204,7 +204,6 @@ module.exports = (grunt) ->
 						'./bower_components/angular-mocks/angular-mocks.js'
 						'./dist/scripts/app.js'
 						'./dist/scripts/routes.js'
-						'./dist/scripts/run.js'
 						'./dist/scripts/views.js'
 						'./dist/scripts/controllers/**/*.js'
 						'./dist/scripts/directives/**/*.js'

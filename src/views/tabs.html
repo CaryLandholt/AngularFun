@@ -1,6 +1,6 @@
 <app:tabs>
 
-	<app:tab caption="GitHub">
+	<app:tab caption="GitHub" selected="true">
 		<section ng-controller="gitHubController as controller">
 			<div class="alert alert-info" ng-show="!controller.searchTerm.length">
 				<h4 class="alert-heading">Heads up!</h4>
@@ -48,7 +48,7 @@
 					</ul>
 				</section>
 			</div>
-			<div class="col-lg-2">
+			<!-- <div class="col-lg-2">
 				<section ng-controller="personDetailsController as controller">
 					<dl>
 						<dt>Name</dt>
@@ -57,7 +57,7 @@
 						<dd ng-bind="controller.person.age"></dd>
 					</dl>
 				</section>
-			</div>
+			</div> -->
 		</div>
 	</app:tab>
 
