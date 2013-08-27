@@ -24,7 +24,6 @@ Simply follow the patterns and you'll get a complete development workflow, inclu
 * Must have [Git](http://git-scm.com/) installed
 * Must have [node.js (at least v0.8.1)](http://nodejs.org/) installed with npm (Node Package Manager)
 * Must have [Grunt](http://gruntjs.com/) node package installed globally.  `npm install -g grunt-cli`
-* Must have [Bower](http://bower.io/) node package installed globally.  `npm install -g bower`
 
 ## Install Angular Fun
 Enter the following commands in the terminal.
@@ -32,7 +31,6 @@ Enter the following commands in the terminal.
 1. `git clone git://github.com/CaryLandholt/AngularFun.git`
 2. `cd AngularFun`
 3. `npm install`
-4. `bower install`
 
 ## Compile Angular Fun
 You have options.
@@ -51,7 +49,7 @@ Some of you prefer working with plain old JavaScript.  We've got ya covered.  Si
 2. `grunt server` - will run the web server and open the app in your default browser.
 
 ## Making Changes
-* `grunt` and `grunt dev` will watch for any CoffeeScript (.coffee), Less (.less), or .template file changes.  When changes are detected, the files will be linted, compiled, and ready for you to refresh the browser.
+* `grunt` and `grunt dev` will watch for any .coffee, .less, .jade, or .html file changes.  When changes are detected, the files will be linted, compiled, and ready for you to refresh the browser.
 
 ## Running Tests
 `grunt test` - Runs unit tests using the [Karma](http://karma-runner.github.io/) Test Runner
