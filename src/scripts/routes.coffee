@@ -1,7 +1,7 @@
 class Routes
 	constructor: ($routeProvider) ->
 		$routeProvider
-		.when '/github/',
+		.when '/github/:id',
 			controller: 'gitHubController'
 		.otherwise
 			redirectTo: '/github'
