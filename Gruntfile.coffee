@@ -349,21 +349,67 @@ module.exports = (grunt) ->
 
 		# Run tasks when monitored files change
 		watch:
-			dev:
-				files: [
-					'./src/index.html'
-					'./src/fonts/**'
-					'./src/images/**'
-					'./src/scripts/**'
-					'./src/styles/**'
-					'./src/views/**'
-				]
+			spa:
+				files: './src/index.html'
 				tasks: [
-					'build'
+					'copy:app'
+					'template:indexDev'
+					'copy:dev'
 					'karma'
 				]
 				options:
 					livereload: true
+					nospawn: true
+			fonts:
+				files: './src/fonts/**'
+				tasks: [
+					'copy:app'
+					'copy:dev'
+				]
+				options:
+					livereload: true
+					nospawn: true
+			images:
+				files: './src/images/**'
+				tasks: [
+					'copy:app'
+					'copy:dev'
+				]
+				options:
+					livereload: true
+					nospawn: true
+			scripts:
+				files: './src/scripts/**'
+				tasks: [
+					'copy:app'
+					'coffee:app'
+					'copy:dev'
+					'karma'
+				]
+				options:
+					livereload: true
+					nospawn: true
+			styles:
+				files: './src/styles/**'
+				tasks: [
+					'copy:app'
+					'less'
+					'copy:dev'
+				]
+				options:
+					livereload: true
+					nospawn: true
+			views:
+				files: './src/views/**'
+				tasks: [
+					'copy:app'
+					'jade'
+					'copy:dev'
+					'karma'
+				]
+				options:
+					livereload: true
+					nospawn: true
 			test:
 				files: './test/**/*.*'
 				tasks: [
@@ -374,6 +420,120 @@ module.exports = (grunt) ->
 				files: 'none'
 				options:
 					livereload: true
+
+	grunt.event.on 'watch', (action, filepath, key) ->
+		path = require 'path'
+
+		file = filepath.substr(4) # don't like what I'm doing here, need a better way of handling paths
+		dirname = path.dirname file
+		ext = path.extname file
+		basename = path.basename file, ext
+
+		if key is 'spa'
+			grunt.config ['copy', 'app'], files: [
+				cwd: './src/'
+				src: file
+				dest: './.temp/'
+				expand: true
+			]
+
+			grunt.config ['template', 'indexDev'],
+				files: './.temp/index.html': './.temp/index.html'
+
+			grunt.config ['copy', 'dev'],
+				cwd: './.temp/'
+				src: path.join(dirname, "#{basename}.{jade,html}")
+				dest: './dist/'
+				expand: true
+
+		if key is 'fonts' or 'images'
+			grunt.config ['copy', 'app'], files: [
+				cwd: './src/'
+				src: file
+				dest: './.temp/'
+				expand: true
+			]
+
+			grunt.config ['copy', 'dev'], files: [
+				cwd: './.temp/'
+				src: file
+				dest: './dist/'
+				expand: true
+			]
+
+		if key is 'scripts'
+			grunt.config ['copy', 'app'], files: [
+				cwd: './src/'
+				src: file
+				dest: './.temp/'
+				expand: true
+			]
+
+			grunt.config ['coffee', 'app'],
+				cwd: './.temp/'
+				src: file
+				dest: './.temp/'
+				expand: true
+				ext: '.js'
+				options:
+					sourceMap: true
+
+			grunt.config ['copy', 'dev'], files: [
+				cwd: './.temp/'
+				src: path.join(dirname, "#{basename}.{coffee,js,js.map}")
+				dest: './dist/'
+				expand: true
+			]
+
+		if key is 'styles'
+			grunt.config ['copy', 'app'], files: [
+				cwd: './src/'
+				src: file
+				dest: './.temp/'
+				expand: true
+			]
+
+			grunt.config ['copy', 'dev'], files: [
+				cwd: './.temp/'
+				src: [
+					path.join(dirname, "#{basename}.{less,css}")
+					path.join(dirname, 'styles.css')
+				]
+				dest: './dist/'
+				expand: true
+			]
+
+		if key is 'views'
+			grunt.config ['copy', 'app'], files: [
+				cwd: './src/'
+				src: file
+				dest: './.temp/'
+				expand: true
+			]
+
+			grunt.config ['jade'],
+				views:
+					cwd: './.temp/'
+					src: file
+					dest: './.temp/'
+					expand: true
+					ext: '.html'
+					options:
+						pretty: true
+
+			grunt.config ['copy', 'dev'], files: [
+				cwd: './.temp/'
+				src: path.join(dirname, "#{basename}.{jade,html}")
+				dest: './dist/'
+				expand: true
+			]
+
+
+		# grunt.config ['clean', 'working'], []
+		# grunt.config ['coffeelint'], {}
+		# grunt.config ['copy', 'app'], files: [cwd: './src/', src: file, dest: './.temp/', expand: true]
+		# grunt.config ['ngshim'], {}
+		# grunt.config ['coffee', 'app'], cwd: './.temp/'
 
 	# Register grunt tasks supplied by grunt-coffeelint.
 	# Referenced in package.json.
