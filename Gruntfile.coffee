@@ -364,6 +364,11 @@ module.exports = (grunt) ->
 				]
 				options:
 					livereload: true
+			test:
+				files: './test/**/*.*'
+				tasks: [
+					'karma'
+				]
 			# Used to keep the web server alive
 			none:
 				files: 'none'
