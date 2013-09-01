@@ -1,0 +1,57 @@
+!!! 5
+// if lt IE 7
+	html.no-js.lt-ie9.lt-ie8.lt-ie7(xmlns:ng="http://angularjs.org", xmlns:app="ignored")
+// if IE 7
+	html.no-js.lt-ie9.lt-ie8(xmlns:ng="http://angularjs.org", xmlns:app="ignored")
+// if IE 8
+	html.no-js.lt-ie9(xmlns:ng="http://angularjs.org", xmlns:app="ignored")
+// [if gt IE 8] <!
+html.no-js(xmlns:ng="http://angularjs.org", xmlns:app="ignored")
+	// <![endif]
+	head
+		meta(charset="utf-8")
+		meta(http-equiv="X-UA-Compatible", content="IE=edge")
+		title Angular Fun
+		meta(name="description", content="AngularJS Reference Architecture")
+		meta(name="viewport", content="width=device-width, initial-scale=1")
+
+	<% if (config.environment && config.environment === 'prod') { %>
+		// if lte IE 8
+			script(src="<%= config.getHashedFile('./.temp/scripts/ie.min.js', {trim: './.temp'}) %>")
+
+		link(rel="stylesheet", href="<%= config.getHashedFile('./.temp/styles/styles.min.css', {trim: './.temp'}) %>")
+	<% } else { %>
+		// if lte IE 8
+			script(src="/scripts/libs/json3.js")
+			script(src="/scripts/libs/html5shiv-printshiv.js")
+
+		link(rel="stylesheet", href="/styles/styles.css")
+	<% } %>
+
+		// ClickJacking Defense begin (https://www.owasp.org/index.php/Clickjacking_Defense_Cheat_Sheet)
+		style#antiClickjack.
+			body {
+				display: none !important;
+			}
+
+		script.
+			(function (w) {
+				if (w.top === w.self) {
+					var a = w.document.getElementById('antiClickjack');
+
+					a.parentNode.removeChild(a);
+				} else {
+					w.top.location = w.self.location;
+				}
+			}(window));
+		// ClickJacking Defense end
+
+	body.ng-cloak(ng-cloak="ng-cloak")
+		ng:view
+		ng:include(src="'/views/site.html'")
+
+	<% if (config.environment && config.environment === 'prod') { %>
+		script(src="<%= config.getHashedFile('./.temp/scripts/scripts.min.js', {trim: './.temp'}) %>")
+	<% } else { %>
+		script(data-main="/scripts/main.js", src="/scripts/libs/require.js")
+	<% } %>

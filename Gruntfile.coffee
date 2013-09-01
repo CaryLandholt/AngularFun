@@ -190,7 +190,6 @@ module.exports = (grunt) ->
 		karma:
 			unit:
 				options:
-					autoWatch: true
 					browsers: [
 						'PhantomJS'
 					]
@@ -333,7 +332,9 @@ module.exports = (grunt) ->
 		# <% } %>
 		template:
 			indexDev:
-				files: './.temp/index.html': './.temp/index.html'
+				files:
+					'./.temp/index.html': './.temp/index.html'
+					'./.temp/index.jade': './.temp/index.jade'
 			index:
 				files: '<%= template.indexDev.files %>'
 				environment: 'prod'
@@ -349,7 +350,42 @@ module.exports = (grunt) ->
 
 		# Run tasks when monitored files change
 		watch:
-			spa:
+			basic:
+				files: [
+					'./src/fonts/**'
+					'./src/images/**'
+					'./src/styles/**/*.css'
+				]
+				tasks: [
+					'copy:app'
+					'copy:dev'
+				]
+				options:
+					livereload: true
+					nospawn: true
+			coffee:
+				files: './src/scripts/**/*.coffee'
+				tasks: [
+					'coffeelint'
+					'copy:app'
+					'coffee:app'
+					'copy:dev'
+					'karma'
+				]
+				options:
+					livereload: true
+					nospawn: true
+			html:
+				files: './src/views/**/*.html'
+				tasks: [
+					'copy:app'
+					'copy:dev'
+					'karma'
+				]
+				options:
+					livereload: true
+					nospawn: true
+			indexHtml:
 				files: './src/index.html'
 				tasks: [
 					'copy:app'
@@ -360,52 +396,35 @@ module.exports = (grunt) ->
 				options:
 					livereload: true
 					nospawn: true
-			fonts:
-				files: './src/fonts/**'
+			indexJade:
+				files: './src/index.jade'
 				tasks: [
 					'copy:app'
-					'copy:dev'
-				]
-				options:
-					livereload: true
-					nospawn: true
-			images:
-				files: './src/images/**'
-				tasks: [
-					'copy:app'
-					'copy:dev'
-				]
-				options:
-					livereload: true
-					nospawn: true
-			scripts:
-				files: './src/scripts/**'
-				tasks: [
-					'copy:app'
-					'coffee:app'
+					'template:indexDev'
+					'jade'
 					'copy:dev'
 					'karma'
 				]
 				options:
 					livereload: true
 					nospawn: true
-			styles:
-				files: './src/styles/**'
-				tasks: [
-					'copy:app'
-					'less'
-					'copy:dev'
-				]
-				options:
-					livereload: true
-					nospawn: true
-			views:
-				files: './src/views/**'
+			jade:
+				files: './src/views/**/*.jade'
 				tasks: [
 					'copy:app'
 					'jade'
 					'copy:dev'
 					'karma'
+				]
+				options:
+					livereload: true
+					nospawn: true
+			less:
+				files: './src/styles/**/*.less'
+				tasks: [
+					'copy:app'
+					'less'
+					'copy:dev'
 				]
 				options:
 					livereload: true
@@ -421,119 +440,52 @@ module.exports = (grunt) ->
 				options:
 					livereload: true
 
+	# ensure only tasks are executed for the changed file
+	# without this, the tasks for all files matching the original pattern are executed
 	grunt.event.on 'watch', (action, filepath, key) ->
 		path = require 'path'
 
-		file = filepath.substr(4) # don't like what I'm doing here, need a better way of handling paths
+		file = filepath.substr(4) # trim "src/" from the beginning.  I don't like what I'm doing here, need a better way of handling paths.
 		dirname = path.dirname file
 		ext = path.extname file
 		basename = path.basename file, ext
 
-		if key is 'spa'
-			grunt.config ['copy', 'app'], files: [
-				cwd: './src/'
-				src: file
-				dest: './.temp/'
-				expand: true
+		grunt.config ['copy', 'app'],
+			cwd: './src/'
+			src: file
+			dest: './.temp/'
+			expand: true
+
+		copyDevConfig = grunt.config ['copy', 'dev']
+		copyDevConfig.src = file
+
+		if key is 'coffee'
+			copyDevConfig.src = path.join(dirname, "#{basename}.{coffee,js,js.map}")
+			coffeeConfig = grunt.config ['coffee', 'app']
+			coffeeConfig.src = file
+			coffeeLintConfig = grunt.config ['coffeelint', 'files']
+			coffeeLintConfig = filepath
+
+			grunt.config ['coffee', 'app'], coffeeConfig
+			grunt.config ['coffeelint', 'files'], coffeeLintConfig
+
+		if key is 'indexJade'
+			copyDevConfig.src = path.join(dirname, "#{basename}.{jade,html}")
+
+		if key is 'jade'
+			copyDevConfig.src = path.join(dirname, "#{basename}.{jade,html}")
+			jadeConfig = grunt.config ['jade', 'views']
+			jadeConfig.src = file
+
+			grunt.config ['jade', 'views'], jadeConfig
+
+		if key is 'less'
+			copyDevConfig.src = [
+				path.join(dirname, "#{basename}.{less,css}")
+				path.join(dirname, 'styles.css')
 			]
 
-			grunt.config ['template', 'indexDev'],
-				files: './.temp/index.html': './.temp/index.html'
-
-			grunt.config ['copy', 'dev'],
-				cwd: './.temp/'
-				src: path.join(dirname, "#{basename}.{jade,html}")
-				dest: './dist/'
-				expand: true
-
-		if key is 'fonts' or 'images'
-			grunt.config ['copy', 'app'], files: [
-				cwd: './src/'
-				src: file
-				dest: './.temp/'
-				expand: true
-			]
-
-			grunt.config ['copy', 'dev'], files: [
-				cwd: './.temp/'
-				src: file
-				dest: './dist/'
-				expand: true
-			]
-
-		if key is 'scripts'
-			grunt.config ['copy', 'app'], files: [
-				cwd: './src/'
-				src: file
-				dest: './.temp/'
-				expand: true
-			]
-
-			grunt.config ['coffee', 'app'],
-				cwd: './.temp/'
-				src: file
-				dest: './.temp/'
-				expand: true
-				ext: '.js'
-				options:
-					sourceMap: true
-
-			grunt.config ['copy', 'dev'], files: [
-				cwd: './.temp/'
-				src: path.join(dirname, "#{basename}.{coffee,js,js.map}")
-				dest: './dist/'
-				expand: true
-			]
-
-		if key is 'styles'
-			grunt.config ['copy', 'app'], files: [
-				cwd: './src/'
-				src: file
-				dest: './.temp/'
-				expand: true
-			]
-
-			grunt.config ['copy', 'dev'], files: [
-				cwd: './.temp/'
-				src: [
-					path.join(dirname, "#{basename}.{less,css}")
-					path.join(dirname, 'styles.css')
-				]
-				dest: './dist/'
-				expand: true
-			]
-
-		if key is 'views'
-			grunt.config ['copy', 'app'], files: [
-				cwd: './src/'
-				src: file
-				dest: './.temp/'
-				expand: true
-			]
-
-			grunt.config ['jade'],
-				views:
-					cwd: './.temp/'
-					src: file
-					dest: './.temp/'
-					expand: true
-					ext: '.html'
-					options:
-						pretty: true
-
-			grunt.config ['copy', 'dev'], files: [
-				cwd: './.temp/'
-				src: path.join(dirname, "#{basename}.{jade,html}")
-				dest: './dist/'
-				expand: true
-			]
-
-
-		# grunt.config ['clean', 'working'], []
-		# grunt.config ['coffeelint'], {}
-		# grunt.config ['copy', 'app'], files: [cwd: './src/', src: file, dest: './.temp/', expand: true]
-		# grunt.config ['ngshim'], {}
-		# grunt.config ['coffee', 'app'], cwd: './.temp/'
+		grunt.config ['copy', 'dev'], copyDevConfig
 
 	# Register grunt tasks supplied by grunt-coffeelint.
 	# Referenced in package.json.
@@ -581,8 +533,8 @@ module.exports = (grunt) ->
 		'ngShim'
 		'coffee:app'
 		'less'
-		'jade'
 		'template:indexDev'
+		'jade'
 		'copy:dev'
 	]
 
