@@ -179,7 +179,15 @@ module.exports = (grunt) ->
 		jade:
 			views:
 				cwd: './.temp/'
-				src: '**/*.jade'
+				src: '**/views/*.jade'
+				dest: './.temp/'
+				expand: true
+				ext: '.html'
+				options:
+					pretty: true
+			spa:
+				cwd: './.temp/'
+				src: 'index.jade'
 				dest: './.temp/'
 				expand: true
 				ext: '.html'
@@ -385,34 +393,11 @@ module.exports = (grunt) ->
 				options:
 					livereload: true
 					nospawn: true
-			indexHtml:
-				files: './src/index.html'
-				tasks: [
-					'copy:app'
-					'template:indexDev'
-					'copy:dev'
-					'karma'
-				]
-				options:
-					livereload: true
-					nospawn: true
-			indexJade:
-				files: './src/index.jade'
-				tasks: [
-					'copy:app'
-					'template:indexDev'
-					'jade'
-					'copy:dev'
-					'karma'
-				]
-				options:
-					livereload: true
-					nospawn: true
 			jade:
 				files: './src/views/**/*.jade'
 				tasks: [
 					'copy:app'
-					'jade'
+					'jade:views'
 					'copy:dev'
 					'karma'
 				]
@@ -425,6 +410,29 @@ module.exports = (grunt) ->
 					'copy:app'
 					'less'
 					'copy:dev'
+				]
+				options:
+					livereload: true
+					nospawn: true
+			spaHtml:
+				files: './src/index.html'
+				tasks: [
+					'copy:app'
+					'template:indexDev'
+					'copy:dev'
+					'karma'
+				]
+				options:
+					livereload: true
+					nospawn: true
+			spaJade:
+				files: './src/index.jade'
+				tasks: [
+					'copy:app'
+					'template:indexDev'
+					'jade:spa'
+					'copy:dev'
+					'karma'
 				]
 				options:
 					livereload: true
@@ -469,7 +477,7 @@ module.exports = (grunt) ->
 			grunt.config ['coffee', 'app'], coffeeConfig
 			grunt.config ['coffeelint', 'files'], coffeeLintConfig
 
-		if key is 'indexJade'
+		if key is 'spaJade'
 			copyDevConfig.src = path.join(dirname, "#{basename}.{jade,html}")
 
 		if key is 'jade'
@@ -575,13 +583,14 @@ module.exports = (grunt) ->
 		'imagemin'
 		'hash:images'
 		'less'
-		'jade'
+		'jade:views'
 		'ngTemplateCache'
 		'requirejs'
 		'uglify'
 		'hash:scripts'
 		'hash:styles'
 		'template:index'
+		'jade:spa'
 		'minifyHtml'
 		'copy:prod'
 	]
