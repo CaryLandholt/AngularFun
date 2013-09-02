@@ -122,14 +122,14 @@ module.exports = (grunt) ->
 				expand: true
 			prod:
 				files: [
-					cwd: './.temp/fonts/'
-					src: '**'
-					dest: './dist/fonts/'
+					cwd: './.temp/'
+					src: 'fonts/**'
+					dest: './dist/'
 					expand: true
 				,
-					cwd: './.temp/images/'
-					src: '**'
-					dest: './dist/images/'
+					cwd: './.temp/'
+					src: 'images/**'
+					dest: './dist/'
 					expand: true
 				,
 					cwd: './.temp/'
@@ -157,10 +157,12 @@ module.exports = (grunt) ->
 		hash:
 			images: './.temp/images/**/*'
 			scripts:
+				cwd: './.temp/scripts/'
 				src: [
-					'./.temp/scripts/ie.min.js'
-					'./.temp/scripts/scripts.min.js'
+					'ie.min.js'
+					'scripts.min.js'
 				]
+				expand: true
 			styles: './.temp/styles/styles.min.css'
 
 		# Compresses png files
@@ -243,8 +245,9 @@ module.exports = (grunt) ->
 		# Reduces file size by over 14%
 		minifyHtml:
 			prod:
-				files:
-					'./.temp/index.min.html': './.temp/index.html'
+				src: './.temp/index.html'
+				ext: '.min.html'
+				expand: true
 
 		# Creates main file for RequireJS
 		ngShim:
