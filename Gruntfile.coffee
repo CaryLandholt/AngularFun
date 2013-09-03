@@ -58,6 +58,7 @@ module.exports = (grunt) ->
 			app:
 				options:
 					base: './dist/'
+					livereload: true
 					middleware: require './middleware'
 					port: 0
 
@@ -513,7 +514,6 @@ module.exports = (grunt) ->
 	grunt.loadNpmTasks 'grunt-contrib-imagemin'
 	grunt.loadNpmTasks 'grunt-contrib-jade'
 	grunt.loadNpmTasks 'grunt-contrib-less'
-	grunt.loadNpmTasks 'grunt-contrib-livereload'
 	grunt.loadNpmTasks 'grunt-contrib-requirejs'
 	grunt.loadNpmTasks 'grunt-contrib-uglify'
 	grunt.loadNpmTasks 'grunt-contrib-watch'
