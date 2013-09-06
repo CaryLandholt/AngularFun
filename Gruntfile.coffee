@@ -594,7 +594,6 @@ module.exports = (grunt) ->
 	# grunt server
 	grunt.registerTask 'server', [
 		'connect'
-		'open'
 		'watch:none'
 	]
 
