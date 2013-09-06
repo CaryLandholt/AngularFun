@@ -261,7 +261,16 @@ module.exports = (grunt) ->
 					'ngResource': 'libs/angular-resource.min.js'
 					'ngRoute': 'libs/angular-route.min.js'
 				]
-				src: '**/*.coffee'
+				src: [
+					'**/*.{coffee,js}'
+					'!libs/angular.{coffee,js}'
+					'!libs/angular-animate.{coffee,js}'
+					'!libs/angular-resource.{coffee,js}'
+					'!libs/angular-route.{coffee,js}'
+					'!libs/html5shiv-printshiv.{coffee,js}'
+					'!libs/json3.min.{coffee,js}'
+					'!libs/require.{coffee,js}'
+				]
 				dest: 'main.coffee'
 
 		# Creates a file to push views directly into the $templateCache
