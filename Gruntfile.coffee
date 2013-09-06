@@ -44,7 +44,7 @@ module.exports = (grunt) ->
 
 		# Lints CoffeeScript files
 		coffeelint:
-			scripts: './src/scripts/**/*.coffee'
+			files: './src/scripts/**/*.coffee'
 			options:
 				indentation:
 					value: 1
