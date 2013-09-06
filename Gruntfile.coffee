@@ -60,6 +60,7 @@ module.exports = (grunt) ->
 					base: './dist/'
 					livereload: true
 					middleware: require './middleware'
+					open: true
 					port: 0
 
 		# Copies directories and files from one location to another
@@ -283,11 +284,6 @@ module.exports = (grunt) ->
 					'./.temp/scripts/views.js': './.temp/views/**/*.html'
 				options:
 					trim: './.temp'
-
-		# Opens the app in the default browser
-		open:
-			server:
-				url: 'http://localhost:<%= connect.app.options.port %>'
 
 		# RequireJS optimizer configuration for both scripts and styles
 		# This configuration is only used in the 'prod' build
@@ -528,11 +524,6 @@ module.exports = (grunt) ->
 	# https://github.com/karma-runner/grunt-karma
 	grunt.loadNpmTasks 'grunt-karma'
 
-	# Register grunt tasks supplied by grunt-open.
-	# Referenced in package.json.
-	# https://github.com/onehealth/grunt-open
-	grunt.loadNpmTasks 'grunt-open'
-
 	# Compiles the app with non-optimized build settings
 	# Places the build artifacts in the dist directory
 	# Enter the following command at the command line to execute this build task:
@@ -558,7 +549,6 @@ module.exports = (grunt) ->
 	grunt.registerTask 'default', [
 		'build'
 		'connect'
-		'open'
 		'watch'
 	]
 
