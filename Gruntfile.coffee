@@ -371,11 +371,14 @@ module.exports = (grunt) ->
 				files: [
 					'./src/fonts/**'
 					'./src/images/**'
+					'./src/scripts/**/*.js'
 					'./src/styles/**/*.css'
+					'./src/views/**/*.html'
 				]
 				tasks: [
 					'copy:app'
 					'copy:dev'
+					'karma'
 				]
 				options:
 					livereload: true
@@ -386,16 +389,6 @@ module.exports = (grunt) ->
 					'coffeelint'
 					'copy:app'
 					'coffee:app'
-					'copy:dev'
-					'karma'
-				]
-				options:
-					livereload: true
-					nospawn: true
-			html:
-				files: './src/views/**/*.html'
-				tasks: [
-					'copy:app'
 					'copy:dev'
 					'karma'
 				]
