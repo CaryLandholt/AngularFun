@@ -251,28 +251,6 @@ module.exports = (grunt) ->
 				ext: '.min.html'
 				expand: true
 
-		# Creates main file for RequireJS
-		ngShim:
-			scripts:
-				cwd: './.temp/scripts/'
-				angular: 'libs/angular.min.js'
-				modules: [
-					'ngAnimate': 'libs/angular-animate.min.js'
-					'ngResource': 'libs/angular-resource.min.js'
-					'ngRoute': 'libs/angular-route.min.js'
-				]
-				src: [
-					'**/*.{coffee,js}'
-					'!libs/angular.{coffee,js}'
-					'!libs/angular-animate.{coffee,js}'
-					'!libs/angular-resource.{coffee,js}'
-					'!libs/angular-route.{coffee,js}'
-					'!libs/html5shiv-printshiv.{coffee,js}'
-					'!libs/json3.min.{coffee,js}'
-					'!libs/require.{coffee,js}'
-				]
-				dest: 'main.coffee'
-
 		# Creates a file to push views directly into the $templateCache
 		# This will produce a file with the following content
 		#
@@ -335,6 +313,29 @@ module.exports = (grunt) ->
 					optimizeCss: 'standard'
 					out: './.temp/styles/styles.min.css'
 
+		# Creates main file for RequireJS
+		shimmer:
+			scripts:
+				cwd: './.temp/scripts/'
+				src: [
+					'**/*.{coffee,js}'
+					'!libs/angular.{coffee,js}'
+					'!libs/angular-animate.{coffee,js}'
+					'!libs/angular-resource.{coffee,js}'
+					'!libs/angular-route.{coffee,js}'
+					'!libs/html5shiv-printshiv.{coffee,js}'
+					'!libs/json3.min.{coffee,js}'
+					'!libs/require.{coffee,js}'
+				]
+				order: [
+					'libs/angular.min.js'
+					'NGMODULES':
+						'ngAnimate': 'libs/angular-animate.min.js'
+						'ngResource': 'libs/angular-resource.min.js'
+						'ngRoute': 'libs/angular-route.min.js'
+					'NGAPP'
+				]
+				require: 'NGBOOTSTRAP'
 
 		# Compiles underscore expressions
 		#
@@ -534,7 +535,7 @@ module.exports = (grunt) ->
 		'clean:working'
 		'coffeelint'
 		'copy:app'
-		'ngShim'
+		'shimmer'
 		'coffee:app'
 		'less'
 		'template:indexDev'
@@ -573,7 +574,7 @@ module.exports = (grunt) ->
 		'clean:working'
 		'coffeelint'
 		'copy:app'
-		'ngShim'
+		'shimmer'
 		'coffee:app'
 		'imagemin'
 		'hash:images'
