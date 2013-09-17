@@ -23,7 +23,6 @@
 		"url": "https://github.com/CaryLandholt/AngularFun.git"
 	},
 	"dependencies": {
-		"bower": "~1.2.6",
 		"coffee-script": "~1.6.3",
 		"express": "~3.4.0",
 		"grunt": "~0.4.1",

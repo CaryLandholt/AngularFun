@@ -4,11 +4,10 @@ module.exports = (grunt) ->
 		bower:
 			install:
 				options:
-					cleanup: true
 					copy: false
-			cleanup:
+			uninstall:
 				options:
-					cleanup: true
+					cleanBowerDir: true
 					copy: false
 					install: false
 
