@@ -12,6 +12,7 @@ Simply follow the patterns and you'll get a complete development workflow, inclu
 * transpilation of [CoffeeScript](http://coffeescript.org/) files (*if you prefer plain JavaScript, see [JS Love](#js-love)*)
 * transpilation of [LESS](http://lesscss.org/) files
 * transpilation of [Jade](http://jade-lang.com/) files
+* packages retrieved by [Bower](http://bower.io/)
 * three build configurations
 	* **build** - compilation with no optimizations
 	* **default** or **dev** - compilation with no optimizations but includes file watching to monitor changes and build changed files on-the-fly
@@ -24,7 +25,6 @@ Simply follow the patterns and you'll get a complete development workflow, inclu
 * Must have [Git](http://git-scm.com/) installed
 * Must have [node.js (at least v0.8.1)](http://nodejs.org/) installed with npm (Node Package Manager)
 * Must have [Grunt](http://gruntjs.com/) node package installed globally.  `npm install -g grunt-cli`
-* Must have [Bower](http://bower.io/) node package installed globally.  `npm install -g bower`
 
 ## Install Angular Fun
 Enter the following commands in the terminal.
@@ -32,7 +32,6 @@ Enter the following commands in the terminal.
 1. `git clone git://github.com/CaryLandholt/AngularFun.git`
 2. `cd AngularFun`
 3. `npm install`
-4. `bower install`
 
 ## Compile Angular Fun
 You have options.
