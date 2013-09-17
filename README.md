@@ -197,7 +197,7 @@ Here are the final index.html script references.  Note that the condition will n
 
 ```html
 <% if (config.environment === 'prod') { %>
-	<script src="/scripts/scripts.min.js %>"></script>
+	<script src="/scripts/scripts.min.js"></script>
 <% } else { %>
 	<script data-main="/scripts/main.js" src="/scripts/libs/require.js"></script>
 <% } %>
