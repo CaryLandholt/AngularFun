@@ -1,6 +1,17 @@
 # Build configurations
 module.exports = (grunt) ->
 	grunt.initConfig
+		bower:
+			install:
+				options:
+					cleanup: true
+					copy: false
+			cleanup:
+				options:
+					cleanup: true
+					copy: false
+					install: false
+
 		# Deletes dist and .temp directories
 		# The .temp directory is used during the build process
 		# The dist directory contains the artifacts of the build
@@ -497,6 +508,11 @@ module.exports = (grunt) ->
 			]
 
 		grunt.config ['copy', 'dev'], copyDevConfig
+
+	# Register grunt tasks supplied by grunt-bower-task.
+	# Referenced in package.json.
+	# https://github.com/yatskevich/grunt-bower-task
+	grunt.loadNpmTasks 'grunt-bower-task'
 
 	# Register grunt tasks supplied by grunt-coffeelint.
 	# Referenced in package.json.

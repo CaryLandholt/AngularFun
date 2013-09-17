@@ -23,10 +23,11 @@
 		"url": "https://github.com/CaryLandholt/AngularFun.git"
 	},
 	"dependencies": {
-		"bower": "~1.2.4",
+		"bower": "~1.2.6",
 		"coffee-script": "~1.6.3",
 		"express": "~3.4.0",
 		"grunt": "~0.4.1",
+		"grunt-bower-task": "~0.3.2",
 		"grunt-coffeelint": "~0.0.7",
 		"grunt-contrib-clean": "~0.5.0",
 		"grunt-contrib-coffee": "~0.7.0",
@@ -36,7 +37,7 @@
 		"grunt-contrib-jade": "~0.8.0",
 		"grunt-contrib-less": "~0.7.0",
 		"grunt-contrib-requirejs": "~0.4.1",
-		"grunt-contrib-uglify": "~0.2.2",
+		"grunt-contrib-uglify": "~0.2.4",
 		"grunt-contrib-watch": "~0.5.3",
 		"grunt-hustler": "~3.2.1",
 		"grunt-karma": "~0.7.1",
@@ -47,6 +48,6 @@
 		"npm": "1.1.x"
 	},
 	"scripts": {
-		"install": "./node_modules/bower/bin/bower install"
+		"install": "grunt bower"
 	}
 }
