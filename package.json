@@ -48,6 +48,6 @@
 		"npm": "1.1.x"
 	},
 	"scripts": {
-		"install": "grunt bower"
+		"install": "grunt bower:install"
 	}
 }
