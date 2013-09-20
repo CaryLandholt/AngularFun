@@ -339,11 +339,10 @@ module.exports = (grunt) ->
 				]
 				order: [
 					'libs/angular.min.js'
-					'NGMODULES':
+					'NGAPP':
 						'ngAnimate': 'libs/angular-animate.min.js'
 						'ngResource': 'libs/angular-resource.min.js'
 						'ngRoute': 'libs/angular-route.min.js'
-					'NGAPP'
 				]
 				require: 'NGBOOTSTRAP'
 
