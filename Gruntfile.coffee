@@ -1,5 +1,7 @@
 # Build configurations
 module.exports = (grunt) ->
+	require('time-grunt')(grunt)
+
 	grunt.initConfig
 		bower:
 			install:
@@ -89,11 +91,6 @@ module.exports = (grunt) ->
 				,
 					cwd: './bower_components/angular-animate/'
 					src: 'angular-animate.*'
-					dest: './.temp/scripts/libs/'
-					expand: true
-				,
-					cwd: './bower_components/angular-resource/'
-					src: 'angular-resource.*'
 					dest: './.temp/scripts/libs/'
 					expand: true
 				,
@@ -221,7 +218,6 @@ module.exports = (grunt) ->
 						'./dist/scripts/libs/angular.js'
 						'./dist/scripts/libs/angular-animate.js'
 						'./dist/scripts/libs/angular-route.js'
-						'./dist/scripts/libs/angular-resource.js'
 						'./bower_components/angular-mocks/angular-mocks.js'
 						'./dist/scripts/**/*.js'
 						'./test/scripts/**/*.{coffee,js}'
@@ -331,7 +327,6 @@ module.exports = (grunt) ->
 					'**/*.{coffee,js}'
 					'!libs/angular.{coffee,js}'
 					'!libs/angular-animate.{coffee,js}'
-					'!libs/angular-resource.{coffee,js}'
 					'!libs/angular-route.{coffee,js}'
 					'!libs/html5shiv-printshiv.{coffee,js}'
 					'!libs/json3.min.{coffee,js}'
@@ -341,7 +336,6 @@ module.exports = (grunt) ->
 					'libs/angular.min.js'
 					'NGAPP':
 						'ngAnimate': 'libs/angular-animate.min.js'
-						'ngResource': 'libs/angular-resource.min.js'
 						'ngRoute': 'libs/angular-route.min.js'
 				]
 				require: 'NGBOOTSTRAP'

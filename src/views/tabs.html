@@ -12,8 +12,8 @@
 				<button type="submit" class="btn"><i class="glyphicon glyphicon-search"></i> Search</button>
 			</form>
 
-			<ul ng-hide="!controller.repos.data.length">
-				<li ng-repeat="repo in controller.repos.data track by repo.id | orderBy:'pushed_at':true">
+			<ul ng-hide="!controller.repos.length">
+				<li ng-repeat="repo in controller.repos track by repo.id | orderBy:'pushed_at':true">
 					<a ng-href="{{repo.clone_url}}" ng-bind="repo.name" target="_blank"></a>
 					<div ng-bind="repo.description"></div>
 				</li>

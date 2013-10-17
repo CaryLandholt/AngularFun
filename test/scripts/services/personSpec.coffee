@@ -12,7 +12,7 @@ describe "personService", ->
 		notExpected = [{name: 'bar'}]
 
 		$httpBackend
-			.expectGET('./people')
+			.expectGET('/people')
 			.respond(expected)
 
 		positiveTestSuccess = (results) ->
@@ -38,7 +38,7 @@ describe "personService", ->
 		notExpected = {name: 'bar'}
 
 		$httpBackend
-			.expectGET('./people/1')
+			.expectGET('/people/1')
 			.respond(expected)
 
 		positiveTestSuccess = (results) ->

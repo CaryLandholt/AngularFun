@@ -1,15 +1,22 @@
 class PersonController
 	constructor: ($log, $location, personService) ->
-		@people = personService.get()
+		setPeople = =>
+			personService.get().then (results) =>
+				@people = results
 
 		@insertPerson = (person) =>
 			personService.save(person)
-			.then (results) =>
+			.success (results) =>
 				@error = ''
 				@person = {}
-				@people = personService.get()
-			, (results) =>
-				if results.status is 403
-					@error = results.data
+
+				setPeople()
+			.error (results, status) =>
+				if status is 403
+					@error = results
+			.then (results) ->
+				results
+
+		setPeople()
 
 angular.module('app').controller 'personController', ['$log', '$location', 'personService', PersonController]

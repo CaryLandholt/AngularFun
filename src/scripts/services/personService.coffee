@@ -1,16 +1,20 @@
 class PersonService
-	constructor: ($log, $resource) ->
-		Person = $resource './people/:id'
+	constructor: ($log, $http) ->
+		urlBase = '/people'
 
 		PersonService::get = ->
-			Person.query().$promise
+			$http.get(urlBase)
+			.then (results) ->
+				results.data
 
 		PersonService::getPerson = (id) ->
-			Person.get({id}).$promise
+			$http.get("#{urlBase}/#{id}")
+			.then (results) ->
+				results.data
 
 		PersonService::save = (person) ->
-			newPerson = new Person person
+			$http.post("#{urlBase}", person)
+			.error (results, status) ->
+				{results, status}
 
-			newPerson.$save()
-
-angular.module('app').service 'personService', ['$log', '$resource', PersonService]
+angular.module('app').service 'personService', ['$log', '$http', PersonService]
