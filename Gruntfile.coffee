@@ -20,8 +20,8 @@ module.exports = (grunt) ->
 		# These directories are not committed to source control
 		clean:
 			working: [
-				'./.temp/'
-				'./dist/'
+				'.temp/'
+				'dist/'
 			]
 			# Used for those that desire plain old JavaScript
 			jslove: [
@@ -33,9 +33,9 @@ module.exports = (grunt) ->
 		# Compiles CoffeeScript (.coffee) files to JavaScript (.js)
 		coffee:
 			app:
-				cwd: './.temp/'
+				cwd: '.temp/'
 				src: '**/*.coffee'
-				dest: './.temp/'
+				dest: '.temp/'
 				expand: true
 				ext: '.js'
 				options:
@@ -43,20 +43,20 @@ module.exports = (grunt) ->
 			# Used for those that desire plain old JavaScript
 			jslove:
 				files: [
-					cwd: './'
+					cwd: ''
 					src: [
 						'**/*.coffee'
 						'!**/bower_components/**'
 						'!**/node_modules/**'
 					]
-					dest: './'
+					dest: ''
 					expand: true
 					ext: '.js'
 				]
 
 		# Lints CoffeeScript files
 		coffeelint:
-			files: './src/scripts/**/*.coffee'
+			files: 'src/scripts/**/*.coffee'
 			options:
 				indentation:
 					value: 1
@@ -69,7 +69,7 @@ module.exports = (grunt) ->
 		connect:
 			app:
 				options:
-					base: './dist/'
+					base: 'dist/'
 					livereload: true
 					middleware: require './middleware'
 					open: true
@@ -79,82 +79,87 @@ module.exports = (grunt) ->
 		copy:
 			app:
 				files: [
-					cwd: './src/'
+					cwd: 'src/'
 					src: '**'
-					dest: './.temp/'
+					dest: '.temp/'
 					expand: true
 				,
-					cwd: './bower_components/angular/'
+					cwd: 'bower_components/angular/'
 					src: 'angular.*'
-					dest: './.temp/scripts/libs/'
+					dest: '.temp/scripts/libs/'
 					expand: true
 				,
-					cwd: './bower_components/angular-animate/'
+					cwd: 'bower_components/angular-animate/'
 					src: 'angular-animate.*'
-					dest: './.temp/scripts/libs/'
+					dest: '.temp/scripts/libs/'
 					expand: true
 				,
-					cwd: './bower_components/angular-route/'
+					cwd: 'bower_components/angular-mocks/'
+					src: 'angular-mocks.*'
+					dest: '.temp/scripts/libs/'
+					expand: true
+				,
+					cwd: 'bower_components/angular-route/'
 					src: 'angular-route.*'
-					dest: './.temp/scripts/libs/'
+					dest: '.temp/scripts/libs/'
 					expand: true
 				,
-					cwd: './bower_components/bootstrap/less/'
+					cwd: 'bower_components/bootstrap/less/'
 					src: '*'
-					dest: './.temp/styles/'
+					dest: '.temp/styles/'
 					expand: true
 				,
-					cwd: './bower_components/bootstrap/fonts/'
+					cwd: 'bower_components/bootstrap/fonts/'
 					src: '*'
-					dest: './.temp/fonts/'
+					dest: '.temp/fonts/'
 					expand: true
 				,
-					cwd: './bower_components/html5shiv/dist/'
+					cwd: 'bower_components/html5shiv/dist/'
 					src: 'html5shiv-printshiv.js'
-					dest: './.temp/scripts/libs/'
+					dest: '.temp/scripts/libs/'
 					expand: true
 				,
-					cwd: './bower_components/json3/lib/'
+					cwd: 'bower_components/json3/lib/'
 					src: 'json3.min.js'
-					dest: './.temp/scripts/libs/'
+					dest: '.temp/scripts/libs/'
 					expand: true
 				,
-					cwd: './bower_components/requirejs/'
+					cwd: 'bower_components/requirejs/'
 					src: 'require.js'
-					dest: './.temp/scripts/libs/'
+					dest: '.temp/scripts/libs/'
 					expand: true
 				]
 			dev:
-				cwd: './.temp/'
+				cwd: '.temp/'
 				src: '**'
-				dest: './dist/'
+				dest: 'dist/'
 				expand: true
 			prod:
 				files: [
-					cwd: './.temp/'
+					cwd: '.temp/'
 					src: 'fonts/**'
-					dest: './dist/'
+					dest: 'dist/'
 					expand: true
 				,
-					cwd: './.temp/'
+					cwd: '.temp/'
 					src: 'images/**'
-					dest: './dist/'
+					dest: 'dist/'
 					expand: true
 				,
-					cwd: './.temp/'
+					cwd: '.temp/'
 					src: [
 						'scripts/ie.min.*.js'
 						'scripts/scripts.min.*.js'
 					]
-					dest: './dist/'
+					dest: 'dist/'
 					expand: true
 				,
-					cwd: './.temp/'
+					cwd: '.temp/'
 					src: 'styles/styles.min.*.css'
-					dest: './dist/'
+					dest: 'dist/'
 					expand: true
 				,
-					'./dist/index.html': './.temp/index.min.html'
+					'dist/index.html': '.temp/index.min.html'
 				]
 
 		# Renames files based on their hashed content
@@ -164,23 +169,23 @@ module.exports = (grunt) ->
 		# glyphicons-halflings.png -> glyphicons-halflings.6c8829cc6f.png
 		# scripts.min.js -> scripts.min.6c355e03ee.js
 		hash:
-			images: './.temp/images/**/*'
+			images: '.temp/images/**/*'
 			scripts:
-				cwd: './.temp/scripts/'
+				cwd: '.temp/scripts/'
 				src: [
 					'ie.min.js'
 					'scripts.min.js'
 				]
 				expand: true
-			styles: './.temp/styles/styles.min.css'
+			styles: '.temp/styles/styles.min.css'
 
 		# Compresses png files
 		imagemin:
 			images:
 				files: [
-					cwd: './.temp/'
+					cwd: '.temp/'
 					src: 'images/**/*.png'
-					dest: './.temp/'
+					dest: '.temp/'
 					expand: true
 				]
 				options:
@@ -189,17 +194,17 @@ module.exports = (grunt) ->
 		# Compiles jade templates
 		jade:
 			views:
-				cwd: './.temp/'
+				cwd: '.temp/'
 				src: '**/views/*.jade'
-				dest: './.temp/'
+				dest: '.temp/'
 				expand: true
 				ext: '.html'
 				options:
 					pretty: true
 			spa:
-				cwd: './.temp/'
+				cwd: '.temp/'
 				src: 'index.jade'
-				dest: './.temp/'
+				dest: '.temp/'
 				expand: true
 				ext: '.html'
 				options:
@@ -215,18 +220,18 @@ module.exports = (grunt) ->
 					captureTimeout: 5000
 					colors: true
 					files: [
-						'./dist/scripts/libs/angular.js'
-						'./dist/scripts/libs/angular-animate.js'
-						'./dist/scripts/libs/angular-route.js'
-						'./bower_components/angular-mocks/angular-mocks.js'
-						'./dist/scripts/**/*.js'
-						'./test/scripts/**/*.{coffee,js}'
+						'dist/scripts/libs/angular.js'
+						'dist/scripts/libs/angular-animate.js'
+						'dist/scripts/libs/angular-route.js'
+						'bower_components/angular-mocks/angular-mocks.js'
+						'dist/scripts/**/*.js'
+						'test/scripts/**/*.{coffee,js}'
 					]
 					frameworks: [
 						'jasmine'
 					]
 					junitReporter:
-						outputFile: './test-results.xml'
+						outputFile: 'test-results.xml'
 					keepalive: false
 					logLevel: 'INFO'
 					port: 9876
@@ -244,7 +249,7 @@ module.exports = (grunt) ->
 		less:
 			app:
 				files:
-					'./.temp/styles/styles.css': './.temp/styles/styles.less'
+					'.temp/styles/styles.css': '.temp/styles/styles.less'
 
 		# Minifies index.html
 		# Extra white space and comments will be removed
@@ -253,7 +258,7 @@ module.exports = (grunt) ->
 		# Reduces file size by over 14%
 		minifyHtml:
 			prod:
-				src: './.temp/index.html'
+				src: '.temp/index.html'
 				ext: '.min.html'
 				expand: true
 
@@ -274,9 +279,9 @@ module.exports = (grunt) ->
 		ngTemplateCache:
 			views:
 				files:
-					'./.temp/scripts/views.js': './.temp/views/**/*.html'
+					'.temp/scripts/views.js': '.temp/views/**/*.html'
 				options:
-					trim: './.temp'
+					trim: '.temp'
 
 		# RequireJS optimizer configuration for both scripts and styles
 		# This configuration is only used in the 'prod' build
@@ -287,10 +292,10 @@ module.exports = (grunt) ->
 		requirejs:
 			scripts:
 				options:
-					baseUrl: './.temp/scripts/'
+					baseUrl: '.temp/scripts/'
 					findNestedDependencies: true
 					logLevel: 0
-					mainConfigFile: './.temp/scripts/main.js'
+					mainConfigFile: '.temp/scripts/main.js'
 					name: 'main'
 					# Exclude main from the final output to avoid the dependency on RequireJS at runtime
 					onBuildWrite: (moduleName, path, contents) ->
@@ -301,7 +306,7 @@ module.exports = (grunt) ->
 
 						contents
 					optimize: 'uglify2'
-					out: './.temp/scripts/scripts.min.js'
+					out: '.temp/scripts/scripts.min.js'
 					preserveLicenseComments: false
 					skipModuleInsertion: true
 					uglify:
@@ -313,16 +318,16 @@ module.exports = (grunt) ->
 						end: '}).call(this);'
 			styles:
 				options:
-					baseUrl: './.temp/styles/'
-					cssIn: './.temp/styles/styles.css'
+					baseUrl: '.temp/styles/'
+					cssIn: '.temp/styles/styles.css'
 					logLevel: 0
 					optimizeCss: 'standard'
-					out: './.temp/styles/styles.min.css'
+					out: '.temp/styles/styles.min.css'
 
 		# Creates main file for RequireJS
 		shimmer:
-			scripts:
-				cwd: './.temp/scripts/'
+			dev:
+				cwd: '.temp/scripts/'
 				src: [
 					'**/*.{coffee,js}'
 					'!libs/angular.{coffee,js}'
@@ -336,9 +341,30 @@ module.exports = (grunt) ->
 					'libs/angular.min.js'
 					'NGAPP':
 						'ngAnimate': 'libs/angular-animate.min.js'
+						'ngMockE2E': 'libs/angular-mocks.js'
 						'ngRoute': 'libs/angular-route.min.js'
 				]
 				require: 'NGBOOTSTRAP'
+			prod:
+				cwd: '<%= shimmer.dev.cwd %>'
+				src: [
+					'**/*.{coffee,js}'
+					'!libs/angular.{coffee,js}'
+					'!libs/angular-animate.{coffee,js}'
+					'!libs/angular-mocks.{coffee,js}'
+					'!libs/angular-route.{coffee,js}'
+					'!libs/html5shiv-printshiv.{coffee,js}'
+					'!libs/json3.min.{coffee,js}'
+					'!libs/require.{coffee,js}'
+					'!backend/**/*.*'
+				]
+				order: [
+					'libs/angular.min.js'
+					'NGAPP':
+						'ngAnimate': 'libs/angular-animate.min.js'
+						'ngRoute': 'libs/angular-route.min.js'
+				]
+				require: '<%= shimmer.dev.require %>'
 
 		# Compiles underscore expressions
 		#
@@ -347,15 +373,15 @@ module.exports = (grunt) ->
 		# In environments other than 'prod' the individual files are used and loaded with RequireJS
 		#
 		# <% if (config.environment === 'prod') { %>
-		# 	<script src="<%= config.getHashedFile('./.temp/scripts/scripts.min.js', {trim: './.temp'}) %>"></script>
+		# 	<script src="<%= config.getHashedFile('.temp/scripts/scripts.min.js', {trim: '.temp'}) %>"></script>
 		# <% } else { %>
 		# 	<script data-main="/scripts/main.js" src="/scripts/libs/require.js"></script>
 		# <% } %>
 		template:
 			indexDev:
 				files:
-					'./.temp/index.html': './.temp/index.html'
-					'./.temp/index.jade': './.temp/index.jade'
+					'.temp/index.html': '.temp/index.html'
+					'.temp/index.jade': '.temp/index.jade'
 			index:
 				files: '<%= template.indexDev.files %>'
 				environment: 'prod'
@@ -364,20 +390,20 @@ module.exports = (grunt) ->
 		uglify:
 			scripts:
 				files:
-					'./.temp/scripts/ie.min.js': [
-						'./.temp/scripts/libs/json3.js'
-						'./.temp/scripts/libs/html5shiv-printshiv.js'
+					'.temp/scripts/ie.min.js': [
+						'.temp/scripts/libs/json3.js'
+						'.temp/scripts/libs/html5shiv-printshiv.js'
 					]
 
 		# Run tasks when monitored files change
 		watch:
 			basic:
 				files: [
-					'./src/fonts/**'
-					'./src/images/**'
-					'./src/scripts/**/*.js'
-					'./src/styles/**/*.css'
-					'./src/views/**/*.html'
+					'src/fonts/**'
+					'src/images/**'
+					'src/scripts/**/*.js'
+					'src/styles/**/*.css'
+					'src/views/**/*.html'
 				]
 				tasks: [
 					'copy:app'
@@ -388,7 +414,7 @@ module.exports = (grunt) ->
 					livereload: true
 					nospawn: true
 			coffee:
-				files: './src/scripts/**/*.coffee'
+				files: 'src/scripts/**/*.coffee'
 				tasks: [
 					'coffeelint'
 					'copy:app'
@@ -400,7 +426,7 @@ module.exports = (grunt) ->
 					livereload: true
 					nospawn: true
 			jade:
-				files: './src/views/**/*.jade'
+				files: 'src/views/**/*.jade'
 				tasks: [
 					'copy:app'
 					'jade:views'
@@ -411,7 +437,7 @@ module.exports = (grunt) ->
 					livereload: true
 					nospawn: true
 			less:
-				files: './src/styles/**/*.less'
+				files: 'src/styles/**/*.less'
 				tasks: [
 					'copy:app'
 					'less'
@@ -421,7 +447,7 @@ module.exports = (grunt) ->
 					livereload: true
 					nospawn: true
 			spaHtml:
-				files: './src/index.html'
+				files: 'src/index.html'
 				tasks: [
 					'copy:app'
 					'template:indexDev'
@@ -432,7 +458,7 @@ module.exports = (grunt) ->
 					livereload: true
 					nospawn: true
 			spaJade:
-				files: './src/index.jade'
+				files: 'src/index.jade'
 				tasks: [
 					'copy:app'
 					'template:indexDev'
@@ -444,7 +470,7 @@ module.exports = (grunt) ->
 					livereload: true
 					nospawn: true
 			test:
-				files: './test/**/*.*'
+				files: 'test/**/*.*'
 				tasks: [
 					'karma'
 				]
@@ -465,9 +491,9 @@ module.exports = (grunt) ->
 		basename = path.basename file, ext
 
 		grunt.config ['copy', 'app'],
-			cwd: './src/'
+			cwd: 'src/'
 			src: file
-			dest: './.temp/'
+			dest: '.temp/'
 			expand: true
 
 		copyDevConfig = grunt.config ['copy', 'dev']
@@ -543,7 +569,7 @@ module.exports = (grunt) ->
 		'clean:working'
 		'coffeelint'
 		'copy:app'
-		'shimmer'
+		'shimmer:dev'
 		'coffee:app'
 		'less'
 		'template:indexDev'
@@ -582,7 +608,7 @@ module.exports = (grunt) ->
 		'clean:working'
 		'coffeelint'
 		'copy:app'
-		'shimmer'
+		'shimmer:prod'
 		'coffee:app'
 		'imagemin'
 		'hash:images'
