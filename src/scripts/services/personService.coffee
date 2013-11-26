@@ -1,20 +1,21 @@
 class PersonService
-	constructor: ($log, $http) ->
-		urlBase = '/people'
+	urlBase = '/people'
 
-		PersonService::get = ->
-			$http.get(urlBase)
-			.then (results) ->
-				results.data
+	constructor: (@$log, @$http) ->
 
-		PersonService::getPerson = (id) ->
-			$http.get("#{urlBase}/#{id}")
-			.then (results) ->
-				results.data
+	get: ->
+		@$http.get(urlBase)
+		.then (results) ->
+			results.data
 
-		PersonService::save = (person) ->
-			$http.post("#{urlBase}", person)
-			.error (results, status) ->
-				{results, status}
+	getPerson: (id) ->
+		@$http.get("#{urlBase}/#{id}")
+		.then (results) ->
+			results.data
+
+	save: (person) ->
+		@$http.post("#{urlBase}", person)
+		.error (results, status) ->
+			{results, status}
 
 angular.module('app').service 'personService', ['$log', '$http', PersonService]

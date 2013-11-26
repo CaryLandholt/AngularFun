@@ -1,11 +1,13 @@
 class MessageService
-	constructor: ($log, $rootScope) ->
-		MessageService::publish = (name, parameters) ->
-			parameters.timeStamp = Date.now()
+	constructor: (@$log, @$rootScope) ->
 
-			$rootScope.$broadcast name, parameters
+	publish: (name, parameters) ->
+		params = angular.extend {}, parameters,
+			timeStamp: Date.now()
 
-		MessageService::subscribe = (name, listener) ->
-			$rootScope.$on name, listener
+		@$rootScope.$broadcast name, params
+
+	subscribe: (name, listener) ->
+		@$rootScope.$on name, listener
 
 angular.module('app').service 'messageService', ['$log', '$rootScope', MessageService]
