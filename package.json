@@ -40,7 +40,7 @@
 		"grunt-contrib-watch": "~0.5.3",
 		"grunt-hustler": "~4.0.4",
 		"grunt-karma": "~0.7.1",
-		"karma-junit-reporter": "~0.1.0",
+		"karma-junit-reporter": "~0.2.1",
 		"time-grunt": "~0.2.3"
 	},
 	"engines": {
