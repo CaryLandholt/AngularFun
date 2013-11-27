@@ -5,7 +5,6 @@ class Run
 		people = [
 			{id: nextId++, name: 'Saasha', age: 6}
 			{id: nextId++, name: 'Planet', age: 8}
-			{id: nextId++, name: 'Cary', age: 44}
 		]
 
 		$httpBackend.whenGET('/people').respond people
