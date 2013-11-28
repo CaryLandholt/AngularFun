@@ -531,13 +531,13 @@ module.exports = (grunt) ->
 
 		if key is 'coffee'
 			copyDevConfig.src = path.join(dirname, "#{basename}.{coffee,js,js.map}")
-			coffeeConfig = grunt.config ['coffee', 'app']
+			coffeeConfig = grunt.config ['coffee', 'app', 'files']
 			coffeeConfig.src = file
-			coffeeLintConfig = grunt.config ['coffeelint', 'files']
+			coffeeLintConfig = grunt.config ['coffeelint', 'app', 'files']
 			coffeeLintConfig = filepath
 
-			grunt.config ['coffee', 'app'], coffeeConfig
-			grunt.config ['coffeelint', 'files'], coffeeLintConfig
+			grunt.config ['coffee', 'app', 'files'], coffeeConfig
+			grunt.config ['coffeelint', 'app', 'files'], coffeeLintConfig
 
 		if key is 'spaJade'
 			copyDevConfig.src = path.join(dirname, "#{basename}.{jade,html}")
