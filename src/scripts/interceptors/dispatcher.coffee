@@ -1,4 +1,4 @@
-class Dispatcher
+class Interceptor
 	constructor: ($log, $rootScope, $q) ->
 		return {
 			response: (response) ->
@@ -11,8 +11,8 @@ class Dispatcher
 				$q.reject response
 		}
 
-class Interceptor
+class Config
 	constructor: ($httpProvider) ->
-		$httpProvider.interceptors.push ['$log', '$rootScope', '$q', Dispatcher]
+		$httpProvider.interceptors.push ['$log', '$rootScope', '$q', Interceptor]
 
-angular.module('app').config ['$httpProvider', Interceptor]
+angular.module('app').config ['$httpProvider', Config]

@@ -1,4 +1,4 @@
-class PersonController
+class Controller
 	constructor: ($log, $location, personService) ->
 		setPeople = =>
 			personService.get().then (results) =>
@@ -19,4 +19,4 @@ class PersonController
 
 		setPeople()
 
-angular.module('app').controller 'personController', ['$log', '$location', 'personService', PersonController]
+angular.module('app').controller 'personController', ['$log', '$location', 'personService', Controller]

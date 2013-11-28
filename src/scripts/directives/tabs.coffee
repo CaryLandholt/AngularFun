@@ -20,7 +20,7 @@ class Controller
 				$rootScope.$on "changeTab##{tabId}", ->
 					$scope.select tab
 
-class Tabs
+class Directive
 	constructor: ($log) ->
 		return {
 			controller: ['$log', '$scope', '$element', '$rootScope', Controller]
@@ -31,4 +31,4 @@ class Tabs
 			transclude: true
 		}
 
-angular.module('app').directive 'appTabs', ['$log', Tabs]
+angular.module('app').directive 'appTabs', ['$log', Directive]

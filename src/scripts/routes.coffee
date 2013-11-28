@@ -1,4 +1,4 @@
-class Routes
+class Config
 	constructor: ($routeProvider) ->
 		$routeProvider
 		.when '/github/:id',
@@ -6,4 +6,4 @@ class Routes
 		.otherwise
 			redirectTo: '/github'
 
-angular.module('app').config ['$routeProvider', Routes]
+angular.module('app').config ['$routeProvider', Config]

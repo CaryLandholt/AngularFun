@@ -1,4 +1,4 @@
-class Tab
+class Directive
 	constructor: ($log) ->
 		link = (scope, element, attrs, controller) ->
 			controller.addTab scope, attrs.tabId
@@ -17,4 +17,4 @@ class Tab
 			transclude: true
 		}
 
-angular.module('app').directive 'appTab', ['$log', Tab]
+angular.module('app').directive 'appTab', ['$log', Directive]

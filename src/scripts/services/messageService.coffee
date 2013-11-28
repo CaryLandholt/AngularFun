@@ -1,4 +1,4 @@
-class MessageService
+class Service
 	constructor: (@$log, @$rootScope) ->
 
 	publish: (name, parameters) ->
@@ -10,4 +10,4 @@ class MessageService
 	subscribe: (name, listener) ->
 		@$rootScope.$on name, listener
 
-angular.module('app').service 'messageService', ['$log', '$rootScope', MessageService]
+angular.module('app').service 'messageService', ['$log', '$rootScope', Service]

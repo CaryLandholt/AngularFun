@@ -1,4 +1,4 @@
-class PersonService
+class Service
 	urlBase = '/people'
 
 	constructor: (@$log, @$http) ->
@@ -18,4 +18,4 @@ class PersonService
 		.error (results, status) ->
 			{results, status}
 
-angular.module('app').service 'personService', ['$log', '$http', PersonService]
+angular.module('app').service 'personService', ['$log', '$http', Service]
