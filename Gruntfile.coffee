@@ -3,6 +3,8 @@ module.exports = (grunt) ->
 	require('time-grunt')(grunt)
 
 	grunt.initConfig
+		# Gets dependent components from bower
+		# see bower.json file
 		bower:
 			install:
 				options:
@@ -33,13 +35,15 @@ module.exports = (grunt) ->
 		# Compiles CoffeeScript (.coffee) files to JavaScript (.js)
 		coffee:
 			app:
-				cwd: '.temp/'
-				src: '**/*.coffee'
-				dest: '.temp/'
-				expand: true
-				ext: '.js'
-				options:
-					sourceMap: true
+				files: [
+					cwd: '.temp/'
+					src: '**/*.coffee'
+					dest: '.temp/'
+					expand: true
+					ext: '.js'
+					options:
+						sourceMap: true
+				]
 			# Used for those that desire plain old JavaScript
 			jslove:
 				files: [
@@ -56,14 +60,21 @@ module.exports = (grunt) ->
 
 		# Lints CoffeeScript files
 		coffeelint:
-			files: 'src/scripts/**/*.coffee'
-			options:
-				indentation:
-					value: 1
-				max_line_length:
-					level: 'ignore'
-				no_tabs:
-					level: 'ignore'
+			app:
+				files: [
+					cwd: ''
+					src: [
+						'src/**/*.coffee'
+						'!src/scripts/libs/**'
+					]
+				]
+				options:
+					indentation:
+						value: 1
+					max_line_length:
+						level: 'ignore'
+					no_tabs:
+						level: 'ignore'
 
 		# Sets up a web server
 		connect:
@@ -282,6 +293,25 @@ module.exports = (grunt) ->
 					'.temp/scripts/views.js': '.temp/views/**/*.html'
 				options:
 					trim: '.temp'
+
+		prompt:
+			jslove:
+				options:
+					questions: [
+						{
+							config: 'coffee.jslove.compile'
+							type: 'input'
+							message: 'Are you sure you wish to convert all CoffeeScript (.coffee) files to JavaScript (.js)?' + '\n' + 'This cannot be undone.'.red + ': (y/N)'
+							default: false
+							filter: (input) ->
+								confirmed = /^y(es)?/i.test input
+
+								if not confirmed
+									grunt.fatal 'exiting jslove'
+
+								return confirmed
+						}
+					]
 
 		# RequireJS optimizer configuration for both scripts and styles
 		# This configuration is only used in the 'prod' build
@@ -561,6 +591,11 @@ module.exports = (grunt) ->
 	# https://github.com/karma-runner/grunt-karma
 	grunt.loadNpmTasks 'grunt-karma'
 
+	# Register grunt tasks supplied by grunt-prompt.
+	# Referenced in package.json.
+	# https://github.com/dylang/grunt-prompt
+	grunt.loadNpmTasks 'grunt-prompt'
+
 	# Compiles the app with non-optimized build settings
 	# Places the build artifacts in the dist directory
 	# Enter the following command at the command line to execute this build task:
@@ -649,6 +684,7 @@ module.exports = (grunt) ->
 	# Enter the following command at the command line to execute this build task:
 	# grunt jslove
 	grunt.registerTask 'jslove', [
+		'prompt:jslove'
 		'coffee:jslove'
 		'clean:jslove'
 	]
