@@ -335,7 +335,7 @@ module.exports = (grunt) ->
 						return '' if shouldExcludeModule
 
 						contents
-					optimize: 'none'
+					optimize: 'uglify2'
 					out: '.temp/scripts/scripts.min.js'
 					preserveLicenseComments: false
 					skipModuleInsertion: true
