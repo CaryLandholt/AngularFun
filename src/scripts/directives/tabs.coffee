@@ -1,5 +1,5 @@
 class Controller
-	constructor: (@$log, @$rootScope) ->
+	constructor: ($log) ->
 		@tabs = []
 
 		@select = (tab) =>
@@ -21,7 +21,7 @@ class Controller
 class Directive
 	constructor: ($log) ->
 		return {
-			controller: ['$log', '$rootScope', Controller]
+			controller: ['$log', Controller]
 			controllerAs: 'controller'
 			replace: true
 			restrict: 'E'
