@@ -2,7 +2,7 @@ class Controller
 	constructor: (@$log, @$scope, @$element, @$rootScope) ->
 		@$scope.tabs = []
 
-		@$scope.select = (tab) ->
+		@$scope.select = (tab) =>
 			tab.transcluded = true
 
 			return if tab.selected is true
@@ -17,7 +17,7 @@ class Controller
 			@$scope.tabs.push tab
 
 			if tabId
-				@$rootScope.$on "changeTab##{tabId}", ->
+				@$rootScope.$on "changeTab##{tabId}", =>
 					@$scope.select tab
 
 class Directive
