@@ -41,9 +41,9 @@ module.exports = (grunt) ->
 					dest: '.temp/'
 					expand: true
 					ext: '.js'
-					options:
-						sourceMap: true
 				]
+				options:
+					sourceMap: true
 			# Used for those that desire plain old JavaScript
 			jslove:
 				files: [
@@ -446,8 +446,10 @@ module.exports = (grunt) ->
 			coffee:
 				files: 'src/scripts/**/*.coffee'
 				tasks: [
+					'clean:working'
 					'coffeelint'
 					'copy:app'
+					'shimmer:dev'
 					'coffee:app'
 					'copy:dev'
 					'karma'
@@ -530,7 +532,17 @@ module.exports = (grunt) ->
 		copyDevConfig.src = file
 
 		if key is 'coffee'
-			copyDevConfig.src = path.join(dirname, "#{basename}.{coffee,js,js.map}")
+			# delete associated temp file prior to performing remaining tasks
+			# without doing so, shimmer may fail
+			grunt.config ['clean', 'working'], [
+				path.join('.temp', dirname, "#{basename}.{coffee,js,js.map}")
+			]
+
+			copyDevConfig.src = [
+				path.join(dirname, "#{basename}.{coffee,js,js.map}")
+				'scripts/main.{coffee,js,js.map}'
+			]
+
 			coffeeConfig = grunt.config ['coffee', 'app', 'files']
 			coffeeConfig.src = file
 			coffeeLintConfig = grunt.config ['coffeelint', 'app', 'files']
