@@ -1,24 +1,24 @@
 class Controller
-	constructor: ($log, $scope, $element, $rootScope) ->
-		$scope.tabs = []
+	constructor: (@$log, @$scope, @$element, @$rootScope) ->
+		@$scope.tabs = []
 
-		$scope.select = (tab) ->
+		@$scope.select = (tab) ->
 			tab.transcluded = true
 
 			return if tab.selected is true
 
-			angular.forEach $scope.tabs, (tab) ->
+			angular.forEach @$scope.tabs, (tab) ->
 				tab.selected = false
 
 			tab.selected = true
 
 		@addTab = (tab, tabId) =>
-			$scope.select tab if $scope.tabs.length is 0
-			$scope.tabs.push tab
+			@$scope.select tab if @$scope.tabs.length is 0
+			@$scope.tabs.push tab
 
 			if tabId
-				$rootScope.$on "changeTab##{tabId}", ->
-					$scope.select tab
+				@$rootScope.$on "changeTab##{tabId}", ->
+					@$scope.select tab
 
 class Directive
 	constructor: ($log) ->

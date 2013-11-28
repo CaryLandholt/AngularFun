@@ -1,5 +1,5 @@
 class Filter
-	constructor: ($log) ->
+	constructor: (@$log) ->
 		return (username) ->
 			"@#{username}"
 

@@ -1,6 +1,6 @@
 class Config
-	constructor: ($routeProvider) ->
-		$routeProvider
+	constructor: (@$routeProvider) ->
+		@$routeProvider
 		.when '/github/:id',
 			controller: 'gitHubController'
 		.otherwise

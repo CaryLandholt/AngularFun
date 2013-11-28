@@ -1,14 +1,14 @@
 class Interceptor
-	constructor: ($log, $rootScope, $q) ->
+	constructor: (@$log, @$rootScope, @$q) ->
 		return {
 			response: (response) ->
-				$rootScope.$broadcast "success:#{response.status}", response
+				@$rootScope.$broadcast "success:#{response.status}", response
 
 				response
 			responseError: (response) ->
-				$rootScope.$broadcast "error:#{response.status}", response
+				@$rootScope.$broadcast "error:#{response.status}", response
 
-				$q.reject response
+				@$q.reject response
 		}
 
 class Config

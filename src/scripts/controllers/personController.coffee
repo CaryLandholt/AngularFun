@@ -1,11 +1,11 @@
 class Controller
-	constructor: ($log, $location, personService) ->
+	constructor: (@$log, @personService) ->
 		setPeople = =>
-			personService.get().then (results) =>
+			@personService.get().then (results) =>
 				@people = results
 
 		@insertPerson = (person) =>
-			personService.save(person)
+			@personService.save(person)
 			.success (results) =>
 				@error = ''
 				@person = {}
@@ -19,4 +19,4 @@ class Controller
 
 		setPeople()
 
-angular.module('app').controller 'personController', ['$log', '$location', 'personService', Controller]
+angular.module('app').controller 'personController', ['$log', 'personService', Controller]

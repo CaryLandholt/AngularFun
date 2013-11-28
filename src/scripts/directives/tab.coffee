@@ -1,5 +1,5 @@
 class Directive
-	constructor: ($log) ->
+	constructor: (@$log) ->
 		link = (scope, element, attrs, controller) ->
 			controller.addTab scope, attrs.tabId
 

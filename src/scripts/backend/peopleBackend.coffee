@@ -1,5 +1,5 @@
 class Run
-	constructor: ($log, $httpBackend) ->
+	constructor: (@$log, @$httpBackend) ->
 		nextId = 0
 
 		people = [
@@ -7,9 +7,9 @@ class Run
 			{id: nextId++, name: 'Planet', age: 8}
 		]
 
-		$httpBackend.whenGET('/people').respond people
+		@$httpBackend.whenGET('/people').respond people
 
-		$httpBackend.whenPOST('/people').respond (method, url, data) ->
+		@$httpBackend.whenPOST('/people').respond (method, url, data) ->
 			person = angular.fromJson data
 			name = person.name
 			isUnique = (name for p in people when p.name is name).length is 0
