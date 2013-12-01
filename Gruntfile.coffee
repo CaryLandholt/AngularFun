@@ -1,5 +1,6 @@
 # Build configurations
 module.exports = (grunt) ->
+	require('load-grunt-tasks')(grunt)
 	require('time-grunt')(grunt)
 
 	grunt.initConfig
@@ -568,45 +569,6 @@ module.exports = (grunt) ->
 			]
 
 		grunt.config ['copy', 'dev'], copyDevConfig
-
-	# Register grunt tasks supplied by grunt-bower-task.
-	# Referenced in package.json.
-	# https://github.com/yatskevich/grunt-bower-task
-	grunt.loadNpmTasks 'grunt-bower-task'
-
-	# Register grunt tasks supplied by grunt-coffeelint.
-	# Referenced in package.json.
-	# https://github.com/vojtajina/grunt-coffeelint
-	grunt.loadNpmTasks 'grunt-coffeelint'
-
-	# Register grunt tasks supplied by grunt-contrib-*.
-	# Referenced in package.json.
-	# https://github.com/gruntjs/grunt-contrib
-	grunt.loadNpmTasks 'grunt-contrib-clean'
-	grunt.loadNpmTasks 'grunt-contrib-coffee'
-	grunt.loadNpmTasks 'grunt-contrib-connect'
-	grunt.loadNpmTasks 'grunt-contrib-copy'
-	grunt.loadNpmTasks 'grunt-contrib-imagemin'
-	grunt.loadNpmTasks 'grunt-contrib-jade'
-	grunt.loadNpmTasks 'grunt-contrib-less'
-	grunt.loadNpmTasks 'grunt-contrib-requirejs'
-	grunt.loadNpmTasks 'grunt-contrib-uglify'
-	grunt.loadNpmTasks 'grunt-contrib-watch'
-
-	# Register grunt tasks supplied by grunt-hustler.
-	# Referenced in package.json.
-	# https://github.com/CaryLandholt/grunt-hustler
-	grunt.loadNpmTasks 'grunt-hustler'
-
-	# Register grunt tasks supplied by grunt-karma.
-	# Referenced in package.json.
-	# https://github.com/karma-runner/grunt-karma
-	grunt.loadNpmTasks 'grunt-karma'
-
-	# Register grunt tasks supplied by grunt-prompt.
-	# Referenced in package.json.
-	# https://github.com/dylang/grunt-prompt
-	grunt.loadNpmTasks 'grunt-prompt'
 
 	# Compiles the app with non-optimized build settings
 	# Places the build artifacts in the dist directory
