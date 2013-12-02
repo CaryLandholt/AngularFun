@@ -148,13 +148,15 @@ module.exports = (grunt) ->
 				expand: true
 			prod:
 				files: [
+					# images
 					cwd: '.temp/'
-					src: 'fonts/**'
+					src: '**/*.{eot,svg,ttf,woff}'
 					dest: 'dist/'
 					expand: true
 				,
+					# fonts
 					cwd: '.temp/'
-					src: 'images/**'
+					src: '**/*.{gif,jpeg,jpg,png,svg,webp}'
 					dest: 'dist/'
 					expand: true
 				,
@@ -181,7 +183,7 @@ module.exports = (grunt) ->
 		# glyphicons-halflings.png -> glyphicons-halflings.6c8829cc6f.png
 		# scripts.min.js -> scripts.min.6c355e03ee.js
 		hash:
-			images: '.temp/images/**/*'
+			images: '.temp/**/*.{gif,jpeg,jpg,png,svg,webp}'
 			scripts:
 				cwd: '.temp/scripts/'
 				src: [
@@ -196,7 +198,7 @@ module.exports = (grunt) ->
 			images:
 				files: [
 					cwd: '.temp/'
-					src: 'images/**/*.png'
+					src: '**/*.{gif,jpeg,jpg,png}'
 					dest: '.temp/'
 					expand: true
 				]
@@ -207,7 +209,7 @@ module.exports = (grunt) ->
 		jade:
 			views:
 				cwd: '.temp/'
-				src: '**/views/*.jade'
+				src: '**/*.jade'
 				dest: '.temp/'
 				expand: true
 				ext: '.html'
@@ -236,8 +238,8 @@ module.exports = (grunt) ->
 						'dist/scripts/libs/angular-animate.js'
 						'dist/scripts/libs/angular-route.js'
 						'bower_components/angular-mocks/angular-mocks.js'
-						'dist/scripts/**/*.js'
-						'test/scripts/**/*.{coffee,js}'
+						'dist/**/*.js'
+						'test/**/*.{coffee,js}'
 					]
 					frameworks: [
 						'jasmine'
@@ -291,7 +293,7 @@ module.exports = (grunt) ->
 		ngTemplateCache:
 			views:
 				files:
-					'.temp/scripts/views.js': '.temp/views/**/*.html'
+					'.temp/scripts/views.js': '.temp/**/*.html'
 				options:
 					trim: '.temp'
 
@@ -434,7 +436,7 @@ module.exports = (grunt) ->
 					'src/images/**'
 					'src/scripts/**/*.js'
 					'src/styles/**/*.css'
-					'src/views/**/*.html'
+					'src/**/*.html'
 				]
 				tasks: [
 					'copy:app'
