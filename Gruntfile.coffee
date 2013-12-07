@@ -121,7 +121,7 @@ module.exports = (grunt) ->
 					dest: '.temp/styles/'
 					expand: true
 				,
-					cwd: 'bower_components/bootstrap/fonts/'
+					cwd: 'bower_components/bootstrap/dist/fonts/'
 					src: '*'
 					dest: '.temp/fonts/'
 					expand: true
