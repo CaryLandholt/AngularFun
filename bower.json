@@ -10,5 +10,35 @@
 		"html5shiv": "~3.7.0",
 		"json3": "~3.2.6",
 		"requirejs": "~2.1.9"
+	},
+	"exportsOverride": {
+		"angular": {
+			"scripts/libs": "angular.min.js{,.map}"
+		},
+		"angular-animate": {
+			"scripts/libs": "angular-animate.min.js{,.map}"
+		},
+		"angular-mocks": {
+			"scripts/libs": "angular-mocks.js"
+		},
+		"angular-route": {
+			"scripts/libs": "angular-route.min.js{,.map}"
+		},
+		"bootstrap": {
+			"fonts": "dist/fonts/*.{eot,svg,ttf,woff}",
+			"styles": "less/*.less"
+		},
+		"html5shiv": {
+			"scripts/libs": "dist/html5shiv-printshiv.js"
+		},
+		"jquery": {
+			"scripts/libs": "none"
+		},
+		"json3": {
+			"scripts/libs": "lib/json3.min.js"
+		},
+		"requirejs": {
+			"scripts/libs": "require.js"
+		}
 	}
 }

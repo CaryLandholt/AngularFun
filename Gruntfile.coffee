@@ -1,3 +1,5 @@
+path = require 'path'
+
 # Build configurations
 module.exports = (grunt) ->
 	require('load-grunt-tasks')(grunt)
@@ -9,7 +11,12 @@ module.exports = (grunt) ->
 		bower:
 			install:
 				options:
-					copy: false
+					cleanBowerDir: true
+					cleanTargetDir: true
+					copy: true
+					layout: (type, component) ->
+						path.join type
+					targetDir: 'bower_components'
 			uninstall:
 				options:
 					cleanBowerDir: true
@@ -23,8 +30,8 @@ module.exports = (grunt) ->
 		# These directories are not committed to source control
 		clean:
 			working: [
-				'.temp/'
-				'dist/'
+				'.temp'
+				'dist'
 			]
 			# Used for those that desire plain old JavaScript
 			jslove: [
@@ -96,49 +103,9 @@ module.exports = (grunt) ->
 					dest: '.temp/'
 					expand: true
 				,
-					cwd: 'bower_components/angular/'
-					src: 'angular.*'
-					dest: '.temp/scripts/libs/'
-					expand: true
-				,
-					cwd: 'bower_components/angular-animate/'
-					src: 'angular-animate.*'
-					dest: '.temp/scripts/libs/'
-					expand: true
-				,
-					cwd: 'bower_components/angular-mocks/'
-					src: 'angular-mocks.*'
-					dest: '.temp/scripts/libs/'
-					expand: true
-				,
-					cwd: 'bower_components/angular-route/'
-					src: 'angular-route.*'
-					dest: '.temp/scripts/libs/'
-					expand: true
-				,
-					cwd: 'bower_components/bootstrap/less/'
-					src: '*'
-					dest: '.temp/styles/'
-					expand: true
-				,
-					cwd: 'bower_components/bootstrap/dist/fonts/'
-					src: '*'
-					dest: '.temp/fonts/'
-					expand: true
-				,
-					cwd: 'bower_components/html5shiv/dist/'
-					src: 'html5shiv-printshiv.js'
-					dest: '.temp/scripts/libs/'
-					expand: true
-				,
-					cwd: 'bower_components/json3/lib/'
-					src: 'json3.min.js'
-					dest: '.temp/scripts/libs/'
-					expand: true
-				,
-					cwd: 'bower_components/requirejs/'
-					src: 'require.js'
-					dest: '.temp/scripts/libs/'
+					cwd: 'bower_components/'
+					src: '**/*.*'
+					dest: '.temp/'
 					expand: true
 				]
 			dev:
@@ -148,32 +115,17 @@ module.exports = (grunt) ->
 				expand: true
 			prod:
 				files: [
-					# images
-					cwd: '.temp/'
-					src: '**/*.{eot,svg,ttf,woff}'
-					dest: 'dist/'
-					expand: true
-				,
-					# fonts
-					cwd: '.temp/'
-					src: '**/*.{gif,jpeg,jpg,png,svg,webp}'
-					dest: 'dist/'
-					expand: true
-				,
 					cwd: '.temp/'
 					src: [
+						'**/*.{eot,svg,ttf,woff}'
+						'**/*.{gif,jpeg,jpg,png,svg,webp}'
+						'index.html'
 						'scripts/ie.min.*.js'
 						'scripts/scripts.min.*.js'
+						'styles/styles.min.*.css'
 					]
 					dest: 'dist/'
 					expand: true
-				,
-					cwd: '.temp/'
-					src: 'styles/styles.min.*.css'
-					dest: 'dist/'
-					expand: true
-				,
-					'dist/index.html': '.temp/index.min.html'
 				]
 
 		# Renames files based on their hashed content
@@ -273,7 +225,7 @@ module.exports = (grunt) ->
 		minifyHtml:
 			prod:
 				src: '.temp/index.html'
-				ext: '.min.html'
+				ext: '.html'
 				expand: true
 
 		# Creates a file to push views directly into the $templateCache
