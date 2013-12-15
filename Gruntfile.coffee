@@ -11,7 +11,6 @@ module.exports = (grunt) ->
 		bower:
 			install:
 				options:
-					cleanBowerDir: true
 					cleanTargetDir: true
 					copy: true
 					layout: (type, component) ->
