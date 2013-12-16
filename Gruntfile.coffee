@@ -35,6 +35,7 @@ module.exports = (grunt) ->
 			# Used for those that desire plain old JavaScript
 			jslove: [
 				'**/*.coffee'
+				'!**/.temp/**'
 				'!**/bower_components/**'
 				'!**/node_modules/**'
 			]
@@ -43,9 +44,9 @@ module.exports = (grunt) ->
 		coffee:
 			app:
 				files: [
-					cwd: '.temp/'
+					cwd: '.temp'
 					src: '**/*.coffee'
-					dest: '.temp/'
+					dest: '.temp'
 					expand: true
 					ext: '.js'
 				]
@@ -55,11 +56,7 @@ module.exports = (grunt) ->
 			jslove:
 				files: [
 					cwd: ''
-					src: [
-						'**/*.coffee'
-						'!**/bower_components/**'
-						'!**/node_modules/**'
-					]
+					src: '<%= clean.jslove %>'
 					dest: ''
 					expand: true
 					ext: '.js'
@@ -87,7 +84,7 @@ module.exports = (grunt) ->
 		connect:
 			app:
 				options:
-					base: 'dist/'
+					base: 'dist'
 					livereload: true
 					middleware: require './middleware'
 					open: true
@@ -97,24 +94,24 @@ module.exports = (grunt) ->
 		copy:
 			app:
 				files: [
-					cwd: 'src/'
+					cwd: 'src'
 					src: '**'
-					dest: '.temp/'
+					dest: '.temp'
 					expand: true
 				,
-					cwd: 'bower_components/'
-					src: '**/*.*'
+					cwd: 'bower_components'
+					src: '**'
 					dest: '.temp/'
 					expand: true
 				]
 			dev:
-				cwd: '.temp/'
+				cwd: '.temp'
 				src: '**'
-				dest: 'dist/'
+				dest: 'dist'
 				expand: true
 			prod:
 				files: [
-					cwd: '.temp/'
+					cwd: '.temp'
 					src: [
 						'**/*.{eot,svg,ttf,woff}'
 						'**/*.{gif,jpeg,jpg,png,svg,webp}'
@@ -123,7 +120,7 @@ module.exports = (grunt) ->
 						'scripts/scripts.min.*.js'
 						'styles/styles.min.*.css'
 					]
-					dest: 'dist/'
+					dest: 'dist'
 					expand: true
 				]
 
@@ -136,7 +133,7 @@ module.exports = (grunt) ->
 		hash:
 			images: '.temp/**/*.{gif,jpeg,jpg,png,svg,webp}'
 			scripts:
-				cwd: '.temp/scripts/'
+				cwd: '.temp/scripts'
 				src: [
 					'ie.min.js'
 					'scripts.min.js'
@@ -148,9 +145,9 @@ module.exports = (grunt) ->
 		imagemin:
 			images:
 				files: [
-					cwd: '.temp/'
+					cwd: '.temp'
 					src: '**/*.{gif,jpeg,jpg,png}'
-					dest: '.temp/'
+					dest: '.temp'
 					expand: true
 				]
 				options:
@@ -159,17 +156,17 @@ module.exports = (grunt) ->
 		# Compiles jade templates
 		jade:
 			views:
-				cwd: '.temp/'
+				cwd: '.temp'
 				src: '**/*.jade'
-				dest: '.temp/'
+				dest: '.temp'
 				expand: true
 				ext: '.html'
 				options:
 					pretty: true
 			spa:
-				cwd: '.temp/'
+				cwd: '.temp'
 				src: 'index.jade'
-				dest: '.temp/'
+				dest: '.temp'
 				expand: true
 				ext: '.html'
 				options:
@@ -188,7 +185,7 @@ module.exports = (grunt) ->
 						'dist/scripts/libs/angular.js'
 						'dist/scripts/libs/angular-animate.js'
 						'dist/scripts/libs/angular-route.js'
-						'bower_components/angular-mocks/angular-mocks.js'
+						'bower_components/scripts/libs/angular-mocks.js'
 						'dist/**/*.js'
 						'test/**/*.{coffee,js}'
 					]
@@ -276,7 +273,7 @@ module.exports = (grunt) ->
 		requirejs:
 			scripts:
 				options:
-					baseUrl: '.temp/scripts/'
+					baseUrl: '.temp/scripts'
 					findNestedDependencies: true
 					logLevel: 0
 					mainConfigFile: '.temp/scripts/main.js'
@@ -311,7 +308,7 @@ module.exports = (grunt) ->
 		# Creates main file for RequireJS
 		shimmer:
 			dev:
-				cwd: '.temp/scripts/'
+				cwd: '.temp/scripts'
 				src: [
 					'**/*.{coffee,js}'
 					'!libs/angular.{coffee,js}'
