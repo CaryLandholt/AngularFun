@@ -6,6 +6,11 @@ module.exports = (grunt) ->
 	require('time-grunt')(grunt)
 
 	grunt.initConfig
+		settings:
+			distDirectory: 'dist'
+			srcDirectory: 'src'
+			tempDirectory: '.temp'
+
 		# Gets dependent components from bower
 		# see bower.json file
 		bower:
@@ -29,8 +34,8 @@ module.exports = (grunt) ->
 		# These directories are not committed to source control
 		clean:
 			working: [
-				'.temp'
-				'dist'
+				'<%= settings.tempDirectory %>'
+				'<%= settings.distDirectory %>'
 			]
 			# Used for those that desire plain old JavaScript
 			jslove: [
@@ -44,9 +49,9 @@ module.exports = (grunt) ->
 		coffee:
 			app:
 				files: [
-					cwd: '.temp'
+					cwd: '<%= settings.tempDirectory %>'
 					src: '**/*.coffee'
-					dest: '.temp'
+					dest: '<%= settings.tempDirectory %>'
 					expand: true
 					ext: '.js'
 				]
@@ -84,7 +89,7 @@ module.exports = (grunt) ->
 		connect:
 			app:
 				options:
-					base: 'dist'
+					base: '<%= settings.distDirectory %>'
 					livereload: true
 					middleware: require './middleware'
 					open: true
@@ -94,24 +99,24 @@ module.exports = (grunt) ->
 		copy:
 			app:
 				files: [
-					cwd: 'src'
+					cwd: '<%= settings.srcDirectory %>'
 					src: '**'
-					dest: '.temp'
+					dest: '<%= settings.tempDirectory %>'
 					expand: true
 				,
 					cwd: 'bower_components'
 					src: '**'
-					dest: '.temp/'
+					dest: '<%= settings.tempDirectory %>'
 					expand: true
 				]
 			dev:
-				cwd: '.temp'
+				cwd: '<%= settings.tempDirectory %>'
 				src: '**'
-				dest: 'dist'
+				dest: '<%= settings.distDirectory %>'
 				expand: true
 			prod:
 				files: [
-					cwd: '.temp'
+					cwd: '<%= settings.tempDirectory %>'
 					src: [
 						'**/*.{eot,svg,ttf,woff}'
 						'**/*.{gif,jpeg,jpg,png,svg,webp}'
@@ -120,7 +125,7 @@ module.exports = (grunt) ->
 						'scripts/scripts.min.*.js'
 						'styles/styles.min.*.css'
 					]
-					dest: 'dist'
+					dest: '<%= settings.distDirectory %>'
 					expand: true
 				]
 
@@ -145,9 +150,9 @@ module.exports = (grunt) ->
 		imagemin:
 			images:
 				files: [
-					cwd: '.temp'
+					cwd: '<%= settings.tempDirectory %>'
 					src: '**/*.{gif,jpeg,jpg,png}'
-					dest: '.temp'
+					dest: '<%= settings.tempDirectory %>'
 					expand: true
 				]
 				options:
@@ -156,17 +161,17 @@ module.exports = (grunt) ->
 		# Compiles jade templates
 		jade:
 			views:
-				cwd: '.temp'
+				cwd: '<%= settings.tempDirectory %>'
 				src: '**/*.jade'
-				dest: '.temp'
+				dest: '<%= settings.tempDirectory %>'
 				expand: true
 				ext: '.html'
 				options:
 					pretty: true
 			spa:
-				cwd: '.temp'
+				cwd: '<%= settings.tempDirectory %>'
 				src: 'index.jade'
-				dest: '.temp'
+				dest: '<%= settings.tempDirectory %>'
 				expand: true
 				ext: '.html'
 				options:
@@ -243,7 +248,7 @@ module.exports = (grunt) ->
 				files:
 					'.temp/scripts/views.js': '.temp/**/*.html'
 				options:
-					trim: '.temp'
+					trim: '<%= settings.tempDirectory %>'
 
 		prompt:
 			jslove:
