@@ -47,7 +47,7 @@ html.no-js(xmlns:ng="http://angularjs.org", xmlns:app="ignored")
 		// ClickJacking Defense end
 
 		// When you load angular at the bottom, you need to create the "ng-cloak" rules yourself
-		style(type='text/css')
+		style.
 			[ng\:cloak],
 			[ng-cloak],
 			[data-ng-cloak],
