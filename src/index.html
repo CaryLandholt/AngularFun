@@ -39,6 +39,22 @@
 			}(window));
 		</script>
 		<!-- ClickJacking Defense end -->
+
+		<!-- When you load angular at the bottom, you need to create the "ng-cloak" rules yourself -->
+		<style type="text/css">
+			[ng\:cloak],
+			[ng-cloak],
+			[data-ng-cloak],
+			[x-ng-cloak],
+			.ng-cloak,
+			.x-ng-cloak {
+				display: none;
+			}
+
+			ng\:form {
+				display: block;
+			}
+		</style>
 	</head>
 	<body ng-cloak class="ng-cloak">
 		<ng:view></ng:view>

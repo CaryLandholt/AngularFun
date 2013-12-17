@@ -466,8 +466,6 @@ module.exports = (grunt) ->
 	# ensure only tasks are executed for the changed file
 	# without this, the tasks for all files matching the original pattern are executed
 	grunt.event.on 'watch', (action, filepath, key) ->
-		path = require 'path'
-
 		file = filepath.substr(4) # trim "src/" from the beginning.  I don't like what I'm doing here, need a better way of handling paths.
 		dirname = path.dirname file
 		ext = path.extname file

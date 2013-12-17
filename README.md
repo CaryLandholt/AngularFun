@@ -1,5 +1,6 @@
-[![build status](https://secure.travis-ci.org/CaryLandholt/AngularFun.png)](http://travis-ci.org/CaryLandholt/AngularFun)
-[![dependency status](https://david-dm.org/CaryLandholt/AngularFun.png)](https://david-dm.org/CaryLandholt/AngularFun)
+[![Build Status](https://secure.travis-ci.org/CaryLandholt/AngularFun.png)](http://travis-ci.org/CaryLandholt/AngularFun)
+[![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
+[![Dependency Status](https://david-dm.org/CaryLandholt/AngularFun.png)](https://david-dm.org/CaryLandholt/AngularFun)
 # AngularFun
 *By [@CaryLandholt](https://twitter.com/carylandholt)*
 
