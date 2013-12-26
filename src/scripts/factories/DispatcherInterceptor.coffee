@@ -1,4 +1,4 @@
-class DispatcherInterceptorService
+class DispatcherInterceptorFactory
 	constructor: ($log, $rootScope, $q) ->
 		return {
 			response: (response) ->
@@ -11,4 +11,4 @@ class DispatcherInterceptorService
 				$q.reject response
 		}
 
-angular.module('app').service 'dispatcherInterceptorService' ['$log', '$rootScope', '$q', DispatcherInterceptorService]
+angular.module('app').factory 'DispatcherInterceptor', ['$log', '$rootScope', '$q', DispatcherInterceptorFactory]

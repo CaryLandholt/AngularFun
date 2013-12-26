@@ -1,5 +1,6 @@
 class DispatcherInterceptorConfig
-	constructor: ($httpProvider, dispatcherInterceptorService) ->
-		$httpProvider.interceptors.push dispatcherInterceptorService
+	constructor: ($httpProvider) ->
 
-angular.module('app').config ['$httpProvider', 'dispatcherInterceptorService', DispatcherInterceptorConfig]
+		$httpProvider.interceptors.push 'DispatcherInterceptor'
+
+angular.module('app').config ['$httpProvider', DispatcherInterceptorConfig]

@@ -632,7 +632,7 @@ module.exports = (grunt) ->
 			pattern = ///
 				(?:\s*class\s+)
 				(\w*)
-				(?=Config|Constant|Controller|Directive|Filter|Provider|Run|Service|Value)
+				(?=Config|Constant|Controller|Directive|Factory|Filter|Provider|Run|Service|Value)
 				(\w*)
 				(?:\s*constructor\s*:\s*\()
 				([^\r\n]+)
@@ -657,6 +657,7 @@ module.exports = (grunt) ->
 				when 'Config' then output += "#{details.loweredRecipe} [#{details.normalizedParameters}, #{details.className}]"
 				when 'Controller' then output += "#{details.loweredRecipe} '#{details.normalizedClassName}', [#{details.normalizedParameters}, #{details.className}]"
 				when 'Directive' then output += "#{details.loweredRecipe} 'app#{details.classSegment}', [#{details.normalizedParameters}, #{details.className}]"
+				when 'Factory' then output += "#{details.loweredRecipe} '#{details.classSegment}', [#{details.normalizedParameters}, #{details.className}]"
 				when 'Filter' then output += "#{details.loweredRecipe} '#{details.normalizedClassSegment}', [#{details.normalizedParameters}, #{details.className}]"
 				when 'Run' then output += "#{details.loweredRecipe} [#{details.normalizedParameters}, #{details.className}]"
 				when 'Service' then output += "#{details.loweredRecipe} '#{details.normalizedClassName}', [#{details.normalizedParameters}, #{details.className}]"
