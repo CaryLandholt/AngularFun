@@ -5,5 +5,3 @@ class RoutesConfig
 			controller: 'gitHubController'
 		.otherwise
 			redirectTo: '/github'
-
-angular.module('app').config ['$routeProvider', RoutesConfig]

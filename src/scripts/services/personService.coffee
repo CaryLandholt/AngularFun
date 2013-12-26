@@ -15,5 +15,3 @@ class PersonService
 		@$http.post('/people', person)
 		.error (results, status) ->
 			{results, status}
-
-angular.module('app').service 'personService', ['$log', '$http', PersonService]

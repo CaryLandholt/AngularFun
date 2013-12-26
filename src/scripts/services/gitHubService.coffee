@@ -9,5 +9,3 @@ class GitHubService
 			@$log.error 'gitHubService error', results
 		.then (results) ->
 			results.data.data
-
-angular.module('app').service 'gitHubService', ['$log', '$http', 'messageService', GitHubService]

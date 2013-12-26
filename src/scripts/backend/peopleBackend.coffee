@@ -26,5 +26,3 @@ class PeopleBackendRun
 			people.push person
 
 			[200, person]
-
-angular.module('app').run ['$log', '$httpBackend', PeopleBackendRun]

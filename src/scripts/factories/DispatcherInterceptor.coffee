@@ -10,5 +10,3 @@ class DispatcherInterceptorFactory
 
 				$q.reject response
 		}
-
-angular.module('app').factory 'DispatcherInterceptor', ['$log', '$rootScope', '$q', DispatcherInterceptorFactory]

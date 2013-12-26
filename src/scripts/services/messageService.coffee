@@ -9,5 +9,3 @@ class MessageService
 
 	subscribe: (name, listener) ->
 		@$rootScope.$on name, listener
-
-angular.module('app').service 'messageService', ['$log', '$rootScope', MessageService]

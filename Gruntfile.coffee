@@ -6,19 +6,19 @@ module.exports = (grunt) ->
 	require('time-grunt')(grunt)
 
 	grunt.initConfig
-		ngClassify:
-			single:
-				files: [
-					cwd: 'src/scripts'
-					src: '**/*.coffee'
-					dest: '.temp/scripts'
-					expand: true
-				]
-
 		settings:
 			distDirectory: 'dist'
 			srcDirectory: 'src'
 			tempDirectory: '.temp'
+
+		ngClassify:
+			scripts:
+				files: [
+					cwd: '<%= settings.tempDirectory %>'
+					src: '**/*.coffee'
+					dest: '<%= settings.tempDirectory %>'
+					expand: true
+				]
 
 		# Gets dependent components from bower
 		# see bower.json file
@@ -540,6 +540,7 @@ module.exports = (grunt) ->
 		'clean:working'
 		'coffeelint'
 		'copy:app'
+		'ngClassify'
 		'jade'
 		'shimmer:dev'
 		'coffee:app'
@@ -579,6 +580,7 @@ module.exports = (grunt) ->
 		'clean:working'
 		'coffeelint'
 		'copy:app'
+		'ngClassify'
 		'jade:views'
 		'ngTemplateCache'
 		'shimmer:prod'
@@ -626,9 +628,10 @@ module.exports = (grunt) ->
 	]
 
 	grunt.registerMultiTask 'ngClassify', 'Compile CoffeeScript classes to AngularJS modules', ->
-		getDetails = (contents) ->
-			# pattern = /(?:\s*class\s+)(\w*)(?=Config|Constant|Controller|Directive|Filter|Provider|Run|Service|Value)(\w*)(?:\s*constructor\s*:\s*) \(([^\r\n]+)(?=\)\s*->)/
+		options = @options
+			appName: 'app'
 
+		getDetails = (contents) ->
 			pattern = ///
 				(?:\s*class\s+)
 				(\w*)
@@ -650,8 +653,8 @@ module.exports = (grunt) ->
 			normalizedParameters = "'#{parameters.join('\', \'')}'"
 			details = {className, normalizedClassName, classSegment, normalizedClassSegment, recipe, loweredRecipe, parameters, normalizedParameters}
 
-		getFormat = (details) ->
-			output = 'angular.module(\'app\').'
+		getModule = (details) ->
+			output = "angular.module('#{options.appName}')."
 
 			switch details.recipe
 				when 'Config' then output += "#{details.loweredRecipe} [#{details.normalizedParameters}, #{details.className}]"
@@ -664,15 +667,16 @@ module.exports = (grunt) ->
 
 			output
 
-		@files.forEach (f) ->
+		filtered = @files.filter (file) ->
+			fileName = path.basename file.dest
+			firstCharacter = fileName.charAt 0
+			isClass = firstCharacter is firstCharacter.toUpperCase()
+
+		filtered.forEach (f) ->
 			file = f.src
 			contents = grunt.file.read file
 			details = getDetails contents
-			output = getFormat details
+			module = getModule details
+			output = "#{contents}\n\n#{module}"
 
-			console.log '=================================================='
-			console.log details
-			console.log contents
-			console.log output
-			console.log '=================================================='
-
+			grunt.file.write f.dest, output

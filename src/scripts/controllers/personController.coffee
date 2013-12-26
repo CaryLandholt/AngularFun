@@ -18,5 +18,3 @@ class PersonController
 				results
 
 		setPeople()
-
-angular.module('app').controller 'personController', ['$log', 'personService', PersonController]

@@ -16,5 +16,3 @@ class TabDirective
 			templateUrl: '/views/directives/tab.html'
 			transclude: true
 		}
-
-angular.module('app').directive 'appTab', ['$log', TabDirective]

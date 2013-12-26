@@ -17,5 +17,3 @@ class TabsDirectiveController
 
 			@select tab if @tabs.length is 0
 			@tabs.push tab
-
-angular.module('app').controller 'tabsDirectiveController', ['$log', TabsDirectiveController]
