@@ -1,4 +1,4 @@
-class Run
+class PeopleBackendRun
 	constructor: (@$log, @$httpBackend) ->
 		nextId = 0
 
@@ -27,4 +27,4 @@ class Run
 
 			[200, person]
 
-angular.module('app').run ['$log', '$httpBackend', Run]
+angular.module('app').run ['$log', '$httpBackend', PeopleBackendRun]

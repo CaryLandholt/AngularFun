@@ -1,27 +1,7 @@
-class Controller
-	constructor: ($log) ->
-		@tabs = []
-
-		@select = (tab) =>
-			tab.transcluded = true
-
-			return if tab.selected is true
-
-			angular.forEach @tabs, (tab) ->
-				tab.selected = false
-
-			tab.selected = true
-
-		@addTab = (tab) =>
-			tab.transcluded = true
-
-			@select tab if @tabs.length is 0
-			@tabs.push tab
-
-class Directive
+class TabsDirective
 	constructor: ($log) ->
 		return {
-			controller: ['$log', Controller]
+			controller: 'tabsDirectiveController'
 			controllerAs: 'controller'
 			replace: true
 			restrict: 'E'
@@ -30,4 +10,4 @@ class Directive
 			transclude: true
 		}
 
-angular.module('app').directive 'appTabs', ['$log', Directive]
+angular.module('app').directive 'appTabs', ['$log', TabsDirective]

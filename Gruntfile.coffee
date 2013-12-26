@@ -6,6 +6,15 @@ module.exports = (grunt) ->
 	require('time-grunt')(grunt)
 
 	grunt.initConfig
+		ngClassify:
+			single:
+				files: [
+					cwd: 'src/scripts'
+					src: '**/*.coffee'
+					dest: '.temp/scripts'
+					expand: true
+				]
+
 		settings:
 			distDirectory: 'dist'
 			srcDirectory: 'src'
@@ -615,3 +624,54 @@ module.exports = (grunt) ->
 		'coffee:jslove'
 		'clean:jslove'
 	]
+
+	grunt.registerMultiTask 'ngClassify', 'Compile CoffeeScript classes to AngularJS modules', ->
+		getDetails = (contents) ->
+			# pattern = /(?:\s*class\s+)(\w*)(?=Config|Constant|Controller|Directive|Filter|Provider|Run|Service|Value)(\w*)(?:\s*constructor\s*:\s*) \(([^\r\n]+)(?=\)\s*->)/
+
+			pattern = ///
+				(?:\s*class\s+)
+				(\w*)
+				(?=Config|Constant|Controller|Directive|Filter|Provider|Run|Service|Value)
+				(\w*)
+				(?:\s*constructor\s*:\s*\()
+				([^\r\n]+)
+				(?=\)\s*->)
+			///
+
+			results = contents.split pattern
+			classSegment = results[1]
+			normalizedClassSegment = classSegment.charAt(0).toLowerCase() + classSegment.slice(1)
+			recipe = results[2]
+			loweredRecipe = recipe.toLowerCase()
+			className = classSegment + recipe
+			normalizedClassName = className.charAt(0).toLowerCase() + className.slice(1)
+			parameters = results[3].replace(/\s*/g, '').replace(/@/g, '').split ','
+			normalizedParameters = "'#{parameters.join('\', \'')}'"
+			details = {className, normalizedClassName, classSegment, normalizedClassSegment, recipe, loweredRecipe, parameters, normalizedParameters}
+
+		getFormat = (details) ->
+			output = 'angular.module(\'app\').'
+
+			switch details.recipe
+				when 'Config' then output += "#{details.loweredRecipe} [#{details.normalizedParameters}, #{details.className}]"
+				when 'Controller' then output += "#{details.loweredRecipe} '#{details.normalizedClassName}', [#{details.normalizedParameters}, #{details.className}]"
+				when 'Directive' then output += "#{details.loweredRecipe} 'app#{details.classSegment}', [#{details.normalizedParameters}, #{details.className}]"
+				when 'Filter' then output += "#{details.loweredRecipe} '#{details.normalizedClassSegment}', [#{details.normalizedParameters}, #{details.className}]"
+				when 'Run' then output += "#{details.loweredRecipe} [#{details.normalizedParameters}, #{details.className}]"
+				when 'Service' then output += "#{details.loweredRecipe} '#{details.normalizedClassName}', [#{details.normalizedParameters}, #{details.className}]"
+
+			output
+
+		@files.forEach (f) ->
+			file = f.src
+			contents = grunt.file.read file
+			details = getDetails contents
+			output = getFormat details
+
+			console.log '=================================================='
+			console.log details
+			console.log contents
+			console.log output
+			console.log '=================================================='
+

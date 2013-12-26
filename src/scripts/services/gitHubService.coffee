@@ -1,4 +1,4 @@
-class Service
+class GitHubService
 	constructor: (@$log, @$http, @messageService) ->
 
 	get: (criteria) ->
@@ -10,4 +10,4 @@ class Service
 		.then (results) ->
 			results.data.data
 
-angular.module('app').service 'gitHubService', ['$log', '$http', 'messageService', Service]
+angular.module('app').service 'gitHubService', ['$log', '$http', 'messageService', GitHubService]
