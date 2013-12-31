@@ -29,7 +29,7 @@
 		"grunt-bower-task": "~0.3.4",
 		"grunt-coffeelint": "~0.0.8",
 		"grunt-contrib-clean": "~0.5.0",
-		"grunt-contrib-coffee": "~0.8.0",
+		"grunt-contrib-coffee": "~0.7.0",
 		"grunt-contrib-connect": "~0.6.0",
 		"grunt-contrib-copy": "~0.5.0",
 		"grunt-contrib-imagemin": "~0.4.0",
