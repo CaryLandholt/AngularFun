@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Angularfun by CaryLandholt</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Angularfun</h1>
+        <h2>AngularJS Reference Architecture</h2>
+        <a href="https://github.com/CaryLandholt/AngularFun" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <p><a href="http://travis-ci.org/CaryLandholt/AngularFun"><img src="https://secure.travis-ci.org/CaryLandholt/AngularFun.png" alt="Build Status"></a>
+<a href="http://gruntjs.com/"><img src="https://cdn.gruntjs.com/builtwith.png" alt="Built with Grunt"></a>
+<a href="https://david-dm.org/CaryLandholt/AngularFun"><img src="https://david-dm.org/CaryLandholt/AngularFun.png" alt="Dependency Status"></a></p>
+
+<h1>
+<a name="angularfun" class="anchor" href="#angularfun"><span class="octicon octicon-link"></span></a>AngularFun</h1>
+
+<p><em>By <a href="https://twitter.com/carylandholt">@CaryLandholt</a></em></p>
+
+<h2>
+<a name="about" class="anchor" href="#about"><span class="octicon octicon-link"></span></a>About</h2>
+
+<p>AngularFun is an <a href="http://angularjs.org/">AngularJS</a> large application Reference Architecture.  The intent is to provide a base for creating your own AngularJS applications with minimal boilerplate setup and ceremony.</p>
+
+<p>Simply follow the patterns and you'll get a complete development workflow, including:</p>
+
+<ul>
+<li>file organization</li>
+<li>transpilation of <a href="http://coffeescript.org/">CoffeeScript</a> files (<em>if you prefer plain JavaScript, see <a href="#js-love">JS Love</a></em>)</li>
+<li>transpilation of <a href="http://lesscss.org/">LESS</a> files</li>
+<li>transpilation of <a href="http://jade-lang.com/">Jade</a> files</li>
+<li>packages retrieved by <a href="http://bower.io/">Bower</a>
+</li>
+<li>three build configurations
+
+<ul>
+<li>
+<strong>build</strong> - compilation with no optimizations</li>
+<li>
+<strong>default</strong> or <strong>dev</strong> - compilation with no optimizations but includes file watching to monitor changes and build changed files on-the-fly</li>
+<li>
+<strong>prod</strong> - compilation with all optimizations, including concatenation and minification of png, JavaScript, CSS, and HTML files.</li>
+</ul>
+</li>
+<li>full dependency management (file loading and dependency resolution)</li>
+<li>a unit testing strategy</li>
+<li>a server to run the application</li>
+</ul><h2>
+<a name="prerequisites" class="anchor" href="#prerequisites"><span class="octicon octicon-link"></span></a>Prerequisites</h2>
+
+<ul>
+<li>Must have <a href="http://git-scm.com/">Git</a> installed</li>
+<li>Must have <a href="http://nodejs.org/">node.js (at least v0.8.1)</a> installed with npm (Node Package Manager)</li>
+<li>Must have <a href="http://gruntjs.com/">Grunt</a> node package installed globally.  <code>npm install -g grunt-cli</code>
+</li>
+</ul><h2>
+<a name="install-angular-fun" class="anchor" href="#install-angular-fun"><span class="octicon octicon-link"></span></a>Install Angular Fun</h2>
+
+<p>Enter the following commands in the terminal.</p>
+
+<ol>
+<li><code>git clone git://github.com/CaryLandholt/AngularFun.git</code></li>
+<li><code>cd AngularFun</code></li>
+<li><code>npm install</code></li>
+</ol><h2>
+<a name="compile-angular-fun" class="anchor" href="#compile-angular-fun"><span class="octicon octicon-link"></span></a>Compile Angular Fun</h2>
+
+<p>You have options.</p>
+
+<ol>
+<li>
+<code>grunt build</code> - will compile the app preserving individual files (when run, files will be loaded on-demand)</li>
+<li>
+<code>grunt</code> or <code>grunt dev</code> - same as <code>grunt</code> but will watch for file changes and recompile on-the-fly</li>
+<li>
+<code>grunt prod</code> - will compile using optimizations.  This will create one JavaScript file and one CSS file to demonstrate the power of <a href="http://requirejs.org/docs/optimization.html">r.js</a>, the build optimization tool for RequireJS.  And take a look at the index.html file.  Yep - it's minified too.</li>
+<li>
+<code>grunt test</code> - will compile the app and run all unit tests</li>
+</ol><h2>
+<a name="js-love" class="anchor" href="#js-love"><span class="octicon octicon-link"></span></a>JS Love</h2>
+
+<p>Some of you prefer working with plain old JavaScript.  We've got ya covered.  Simply run the following grunt task.
+<code>grunt jslove</code> - will transpile all of the CoffeeScript files to JavaScript and throw out the Coffee.</p>
+
+<h2>
+<a name="run-it" class="anchor" href="#run-it"><span class="octicon octicon-link"></span></a>Run It</h2>
+
+<ol>
+<li>Compile the app using one of the above three options.  <code>grunt</code> and <code>grunt dev</code> will run the web server and open the app in your default browser automatically.</li>
+<li>
+<code>grunt server</code> - will run the web server and open the app in your default browser.</li>
+</ol><h2>
+<a name="making-changes" class="anchor" href="#making-changes"><span class="octicon octicon-link"></span></a>Making Changes</h2>
+
+<ul>
+<li>
+<code>grunt</code> and <code>grunt dev</code> will watch for any .coffee, .less, .jade, or .html file changes.  When changes are detected, the files will be linted, compiled, and ready for you to refresh the browser.</li>
+</ul><h2>
+<a name="running-tests" class="anchor" href="#running-tests"><span class="octicon octicon-link"></span></a>Running Tests</h2>
+
+<p><code>grunt test</code> - Runs unit tests using the <a href="http://karma-runner.github.io/">Karma</a> Test Runner</p>
+
+<h2>
+<a name="commentary" class="anchor" href="#commentary"><span class="octicon octicon-link"></span></a>Commentary</h2>
+
+<p>AngularFun is a by-product of my learning AngularJS and became the reference architecture to my day job project, a very large internally and externally-facing application with extensive user interactions.</p>
+
+<p>I needed something that could support our Architecture Principles, including scale, stability, and maintenance.</p>
+
+<p>My background with using <a href="http://requirejs.org/">RequireJS</a>, see the <a href="http://www.youtube.com/watch?v=VGlDR1QiV3A&amp;list=PLCBD579A7ADB6313A">RequireJS screencasts</a> on my <a href="http://www.youtube.com/user/carylandholt">YouTube channel</a>, enabled me to get up and running with managing many individual files right away.  RequireJS is a terrific dependency management technology.</p>
+
+<h3>
+<a name="take-1" class="anchor" href="#take-1"><span class="octicon octicon-link"></span></a>Take 1</h3>
+
+<p>Here's an early example controller in CoffeeScript.</p>
+
+<div class="highlight highlight-CoffeeScript"><pre><span class="nx">define</span> <span class="p">[</span><span class="s">'controllers/controllers'</span><span class="p">,</span> <span class="s">'services/gitHubService'</span><span class="p">],</span> <span class="nf">(controllers) -&gt;</span>
+    <span class="nx">controllers</span><span class="p">.</span><span class="nx">controller</span> <span class="s">'gitHubController'</span><span class="p">,</span> <span class="p">[</span><span class="s">'$scope'</span><span class="p">,</span> <span class="s">'$location'</span><span class="p">,</span> <span class="s">'gitHubService'</span><span class="p">,</span> <span class="nf">($scope, $location, gitHubService) -&gt;</span>
+        <span class="nv">$scope.search = </span><span class="nf">(searchTerm) -&gt;</span>
+            <span class="nx">$location</span><span class="p">.</span><span class="nx">path</span> <span class="s">"/github/</span><span class="si">#{</span><span class="nx">searchTerm</span><span class="si">}</span><span class="s">"</span>
+
+        <span class="nv">$scope.onRouteChange = </span><span class="nf">(routeParams) -&gt;</span>
+            <span class="nv">$scope.searchTerm = </span><span class="nx">routeParams</span><span class="p">.</span><span class="nx">searchTerm</span>
+
+            <span class="nx">gitHubService</span><span class="p">.</span><span class="nx">get</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">searchTerm</span>
+            <span class="p">,</span> <span class="nf">(repos) -&gt;</span>
+                <span class="nv">$scope.repos = </span><span class="nx">repos</span>
+    <span class="p">]</span>
+</pre></div>
+
+<p>There are a couple things going on here.  RequireJS is loading controllers/controllers and services/gitHubService and providing a handle to both.
+The controllers module was an early attempt at organizing AngularJS functionality into separate AngularJS modules (i.e. controllers, services, directives, filters, and responseInterceptors).
+This ultimately provided no benefit, so I got rid of them.  They were just noise.</p>
+
+<h3>
+<a name="take-2" class="anchor" href="#take-2"><span class="octicon octicon-link"></span></a>Take 2</h3>
+
+<p>Using only one AngularJS module and rewriting the above script without the functionality-specific AngularJS container modules we have:</p>
+
+<div class="highlight highlight-CoffeeScript"><pre><span class="nx">define</span> <span class="p">[</span><span class="s">'libs/angular'</span><span class="p">,</span> <span class="s">'services/gitHubService'</span><span class="p">],</span> <span class="nf">(angular) -&gt;</span>
+    <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">'app'</span><span class="p">).</span><span class="nx">controller</span> <span class="s">'gitHubController'</span><span class="p">,</span> <span class="p">[</span><span class="s">'$scope'</span><span class="p">,</span> <span class="s">'$location'</span><span class="p">,</span> <span class="s">'gitHubService'</span><span class="p">,</span> <span class="nf">($scope, $location, gitHubService) -&gt;</span>
+        <span class="nv">$scope.search = </span><span class="nf">(searchTerm) -&gt;</span>
+            <span class="nx">$location</span><span class="p">.</span><span class="nx">path</span> <span class="s">"/github/</span><span class="si">#{</span><span class="nx">searchTerm</span><span class="si">}</span><span class="s">"</span>
+
+        <span class="nv">$scope.onRouteChange = </span><span class="nf">(routeParams) -&gt;</span>
+            <span class="nv">$scope.searchTerm = </span><span class="nx">routeParams</span><span class="p">.</span><span class="nx">searchTerm</span>
+
+            <span class="nx">gitHubService</span><span class="p">.</span><span class="nx">get</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">searchTerm</span>
+            <span class="p">,</span> <span class="nf">(repos) -&gt;</span>
+                <span class="nv">$scope.repos = </span><span class="nx">repos</span>
+    <span class="p">]</span>
+</pre></div>
+
+<p>As you can see, I now had to bring in a reference to libs/angular.  This <em>was</em> a dependency for controllers/controllers.</p>
+
+<p>Let's now focus on the gitHubService dependency.  The file needs to be loaded, of course, but RequireJS doesn't need to provide a handle to it since AngularJS will do that part.  Notice there's no gitHubService parameter in the define callback.</p>
+
+<p>But something just didn't sit well with me.  RequireJS will load dependent files and provide a handle to them beautifully; however, AngularJS has its own dependency management system.  But there is a difference.</p>
+
+<p>AngularJS does not load dependent files, but it will provide a handle to them once they <em>are</em> loaded.  RequireJS does both.</p>
+
+<p>So the define function is making sure AngularJS is loaded and provides a handle to it, even though it's a global variable.  It also makes sure gitHubService is loaded but doesn't need to provide a handle since the AngularJS dependency management system will do this.</p>
+
+<p>Even though there is a difference, there is some overlap in responsibility here.  This can be observed with the mere fact that there is a gitHubService dependency referenced in the define function as well as the controller function.  So the developer has to work in the RequireJS world and AngularJS world in the same file.</p>
+
+<h3>
+<a name="take-3" class="anchor" href="#take-3"><span class="octicon octicon-link"></span></a>Take 3</h3>
+
+<p>So I decided to refactor the files and remove RequireJS completely, at least from the individual files.</p>
+
+<p>Now we have:</p>
+
+<div class="highlight highlight-CoffeeScript"><pre><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">'app'</span><span class="p">).</span><span class="nx">controller</span> <span class="s">'gitHubController'</span><span class="p">,</span> <span class="p">[</span><span class="s">'$scope'</span><span class="p">,</span> <span class="s">'$location'</span><span class="p">,</span> <span class="s">'gitHubService'</span><span class="p">,</span> <span class="nf">($scope, $location, gitHubService) -&gt;</span>
+    <span class="nv">$scope.search = </span><span class="nf">(searchTerm) -&gt;</span>
+        <span class="nx">$location</span><span class="p">.</span><span class="nx">path</span> <span class="s">"/github/</span><span class="si">#{</span><span class="nx">searchTerm</span><span class="si">}</span><span class="s">"</span>
+
+    <span class="nv">$scope.onRouteChange = </span><span class="nf">(routeParams) -&gt;</span>
+        <span class="nv">$scope.searchTerm = </span><span class="nx">routeParams</span><span class="p">.</span><span class="nx">searchTerm</span>
+
+        <span class="nx">gitHubService</span><span class="p">.</span><span class="nx">get</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">searchTerm</span>
+        <span class="p">,</span> <span class="nf">(repos) -&gt;</span>
+            <span class="nv">$scope.repos = </span><span class="nx">repos</span>
+<span class="p">]</span>
+</pre></div>
+
+<p>To me, this just feels better.  The file contains only AngularJS business.  Albeit, I did choose to use a single AngularJS application module called <strong>app</strong> and accept the use of the angular global variable.</p>
+
+<p>So if we've removed RequireJS from the files, how do we load the files to let AngularJS do its thing?</p>
+
+<p>I really don't care for including multiple script references in the index.html file, such as:</p>
+
+<div class="highlight highlight-html"><pre><span class="c">&lt;!-- angular must load first --&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/scripts/libs/angular.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+
+<span class="c">&lt;!-- angular dependencies must load next --&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/scripts/libs/angular-resource.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/scripts/app.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/scripts/services/messageService.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/scripts/services/gitHubService.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/scripts/controllers/gitHubController.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="c">&lt;!-- ... more scripts --&gt;</span>
+
+<span class="c">&lt;!-- bootstrap must load last --&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/scripts/bootstrap.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</pre></div>
+
+<p>Although this may be suitable for some, I'm not comfortable with ensuring load order by where the script references are placed (the angular script reference must precede angular-resource, for example).  I prefer to be more prescriptive than that.
+And we also need to concatenate and minify the scripts for our prod build.  We could grep the script references, concatenate, and then minify.  We could try out <a href="http://yeoman.io/">Yeoman</a>.  This all seemed a bit heavy-handed.</p>
+
+<p>This is where the RequireJS <a href="http://requirejs.org/docs/api.html#config-shim">shim</a> configuration comes in.</p>
+
+<p>Since we no longer have dependencies referenced in individual files by way of RequireJS, and the multiple script reference idea is unappealing, we can define our dependencies inside our main file using shim.  Notice the dependencies can be referenced in any order.  RequireJS will ensure dependencies are loaded prior to their being required.</p>
+
+<div class="highlight highlight-CoffeeScript"><pre><span class="nx">require</span>
+    <span class="nv">shim:</span>
+        <span class="s">'controllers/gitHubController'</span><span class="o">:</span> <span class="nv">deps: </span><span class="p">[</span><span class="s">'libs/angular'</span><span class="p">,</span> <span class="s">'app'</span><span class="p">,</span> <span class="s">'services/gitHubService'</span><span class="p">]</span>
+        <span class="s">'libs/angular-resource'</span><span class="o">:</span> <span class="nv">deps: </span><span class="p">[</span><span class="s">'libs/angular'</span><span class="p">]</span>
+        <span class="s">'services/gitHubService'</span><span class="o">:</span> <span class="nv">deps: </span><span class="p">[</span><span class="s">'libs/angular'</span><span class="p">,</span> <span class="s">'app'</span><span class="p">,</span> <span class="s">'libs/angular-resource'</span><span class="p">,</span> <span class="s">'services/messageService'</span><span class="p">]</span>
+        <span class="s">'services/messageService'</span><span class="o">:</span> <span class="nv">deps: </span><span class="p">[</span><span class="s">'libs/angular'</span><span class="p">,</span> <span class="s">'app'</span><span class="p">]</span>
+        <span class="s">'app'</span><span class="o">:</span> <span class="nv">deps: </span><span class="p">[</span><span class="s">'libs/angular'</span><span class="p">,</span> <span class="s">'libs/angular-resource'</span><span class="p">]</span>
+        <span class="s">'bootstrap'</span><span class="o">:</span> <span class="nv">deps: </span><span class="p">[</span><span class="s">'libs/angular'</span><span class="p">,</span> <span class="s">'app'</span><span class="p">]</span>
+    <span class="p">[</span>
+        <span class="s">'require'</span>
+        <span class="s">'controllers/gitHubController'</span>
+    <span class="p">],</span> <span class="nf">(require) -&gt;</span>
+        <span class="nx">require</span> <span class="p">[</span><span class="s">'bootstrap'</span><span class="p">]</span>
+</pre></div>
+
+<p>The bootstrap file is requested within the callback since it must load last.</p>
+
+<p>Now we only need a single script reference inside index.html.</p>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;script </span><span class="na">data-main=</span><span class="s">"/scripts/main.js"</span> <span class="na">src=</span><span class="s">"/scripts/libs/require.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</pre></div>
+
+<p>So what about concatenation and minification?</p>
+
+<p>Since we're only using RequireJS to manage load order, we can leverage the RequireJS optimizer to concatenate and minify too.  And once the files are concatenated and minified to a single file, we no longer need RequireJS.  This is perfect for our prod build.</p>
+
+<p>We do, however, need to introduce a condition in index.html to use the non-optimized files or the optimized files based on the build environment.  The build will do it for us.</p>
+
+<p>Here are the final index.html script references.  Note that the condition will not be part of the final output.</p>
+
+<div class="highlight highlight-html"><pre><span class="err">&lt;</span>% if (config.environment === 'prod') { %&gt;
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/scripts/scripts.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="err">&lt;</span>% } else { %&gt;
+    <span class="nt">&lt;script </span><span class="na">data-main=</span><span class="s">"/scripts/main.js"</span> <span class="na">src=</span><span class="s">"/scripts/libs/require.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="err">&lt;</span>% } %&gt;
+</pre></div>
+
+<h3>
+<a name="take-4" class="anchor" href="#take-4"><span class="octicon octicon-link"></span></a>Take 4</h3>
+
+<p>Inspired by <a href="https://github.com/tardyp">tardyp</a> and his <a href="https://github.com/tardyp/grunt-requiregen">grunt-requiregen</a> plugin - what if we didn't have to do anything?</p>
+
+<p>So that's actually where we are.  The shim file from <a href="#take-3">Take 3</a> is built for you.</p>
+
+<p>Whew!</p>
+
+<h3>
+<a name="give-and-take" class="anchor" href="#give-and-take"><span class="octicon octicon-link"></span></a>Give and Take</h3>
+
+<p>After many iterations it now feels right.  All <a href="https://github.com/CaryLandholt/AngularFun/issues">comments and questions</a> and <a href="https://github.com/CaryLandholt/AngularFun/pulls">Pull Requests</a> are always welcome.  I respond to all.</p>
+
+<h3>
+<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h3>
+
+<p>In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using grunt.</p>
+
+<h4>
+<a name="list-of-contributors" class="anchor" href="#list-of-contributors"><span class="octicon octicon-link"></span></a>List of contributors</h4>
+
+<ul>
+<li><a href="https://github.com/CaryLandholt">Cary Landholt</a></li>
+<li><a href="https://github.com/Bochenski">David Bochenski</a></li>
+<li><a href="https://github.com/knalli">Jan Philipp</a></li>
+</ul><h2>
+<a name="to-do" class="anchor" href="#to-do"><span class="octicon octicon-link"></span></a>To-Do</h2>
+
+<ul>
+<li>Add many more unit tests :(</li>
+<li>Add more documentation :(</li>
+<li>Screencasts :)</li>
+</ul>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/CaryLandholt/AngularFun/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/CaryLandholt/AngularFun/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/CaryLandholt/AngularFun"></a> is maintained by <a href="https://github.com/CaryLandholt">CaryLandholt</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
