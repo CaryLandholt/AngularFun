@@ -1,13 +1,13 @@
 class PersonService
 	constructor: (@$log, @$http) ->
 
-	get: ->
-		@$http.get('/people')
-		.then (results) ->
-			results.data
+	get: (id) ->
+		return if id
+			@$http.get("/people/#{id}")
+			.then (results) ->
+				results.data
 
-	getPerson: (id) ->
-		@$http.get("/people/#{id}")
+		@$http.get('/people')
 		.then (results) ->
 			results.data
 

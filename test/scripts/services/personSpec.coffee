@@ -51,7 +51,7 @@ describe "personService", ->
 
 			results
 
-		personService.getPerson(1)
+		personService.get(1)
 			.then(positiveTestSuccess)
 			.then(negativeTestSuccess)
 
