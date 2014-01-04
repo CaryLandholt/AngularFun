@@ -1,4 +1,0 @@
-.col-lg-8
-	ng:include(src="'/views/tabs.html'")
-.col-lg-4
-	ng:include(src="'/views/search-history.html'")
