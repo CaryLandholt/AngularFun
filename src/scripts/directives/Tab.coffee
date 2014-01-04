@@ -1,4 +1,4 @@
-class TabDirective
+class AppTabDirective
 	constructor: ->
 		link = (scope, element, attrs, controller) ->
 			controller.addTab scope, attrs.tabId

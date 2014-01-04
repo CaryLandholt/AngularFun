@@ -1,4 +1,4 @@
-class TabsDirective
+class AppTabsDirective
 	constructor: ->
 		return {
 			controller: 'tabsDirectiveController'
