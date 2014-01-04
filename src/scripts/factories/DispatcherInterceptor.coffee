@@ -1,5 +1,5 @@
 class DispatcherInterceptorFactory
-	constructor: ($log, $rootScope, $q) ->
+	constructor: ($rootScope, $q) ->
 		return {
 			response: (response) ->
 				$rootScope.$broadcast "success:#{response.status}", response

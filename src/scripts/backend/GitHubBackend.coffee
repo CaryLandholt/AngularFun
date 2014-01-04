@@ -1,3 +1,3 @@
 class GitHubBackendRun
-	constructor: (@$log, @$httpBackend) ->
-		@$httpBackend.whenJSONP(/api.github.com/).passThrough()
+	constructor: ($httpBackend) ->
+		$httpBackend.whenJSONP(/api.github.com/).passThrough()

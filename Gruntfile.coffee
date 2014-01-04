@@ -628,55 +628,75 @@ module.exports = (grunt) ->
 	]
 
 	grunt.registerMultiTask 'ngClassify', 'Compile CoffeeScript classes to AngularJS modules', ->
+		pattern = ///
+			(?:\s*class\s+)
+			(\w*)
+			(?=Config|Constant|Controller|Directive|Factory|Filter|Provider|Run|Service|Value)
+			(\w*)
+			(
+				(?:\s*constant\s*:)
+				|
+				(?:\s*value\s*:)
+				|
+				(?:\s*constructor\s*:\s*)
+				([^\r\n]+)
+				(?=\s*->)
+			)
+		///
+
 		options = @options
 			appName: 'app'
-
-		getDetails = (contents) ->
-			pattern = ///
-				(?:\s*class\s+)
-				(\w*)
-				(?=Config|Constant|Controller|Directive|Factory|Filter|Provider|Run|Service|Value)
-				(\w*)
-				(?:\s*constructor\s*:\s*\()
-				([^\r\n]+)
-				(?=\)\s*->)
-			///
-
-			results = contents.split pattern
-			classSegment = results[1]
-			normalizedClassSegment = classSegment.charAt(0).toLowerCase() + classSegment.slice(1)
-			recipe = results[2]
-			loweredRecipe = recipe.toLowerCase()
-			className = classSegment + recipe
-			normalizedClassName = className.charAt(0).toLowerCase() + className.slice(1)
-			parameters = results[3].replace(/\s*/g, '').replace(/@/g, '').split ','
-			normalizedParameters = "'#{parameters.join('\', \'')}'"
-			details = {className, normalizedClassName, classSegment, normalizedClassSegment, recipe, loweredRecipe, parameters, normalizedParameters}
+			formats:
+				config: "angular.module('{{a}}').{{t|l}} [{{p}}]"
+				constant: "angular.module('{{a}}').{{t|l}} '{{n|u}}', {{p}}::constant"
+				controller: "angular.module('{{a}}').{{t|l}} '{{c|c}}', [{{p}}]"
+				directive: "angular.module('{{a}}').{{t|l}} '{{n|c}}', [{{p}}]"
+				factory: "angular.module('{{a}}').{{t|l}} '{{n}}', [{{p}}]"
+				filter: "angular.module('{{a}}').{{t|l}} '{{n|c}}', [{{p}}]"
+				provider: "angular.module('{{a}}').{{t|l}} '{{c|c}}', [{{p}}]"
+				run: "angular.module('{{a}}').{{t|l}} [{{p}}]"
+				service: "angular.module('{{a}}').{{t|l}} '{{c|c}}', [{{p}}]"
+				value: "angular.module('{{a}}').{{t|l}} '{{n|c}}', {{p}}::value"
 
 		getModule = (details) ->
-			output = "angular.module('#{options.appName}')."
+			format = options.formats[details.t.toLowerCase()]
+			parts = format.split /{{(.*?)}}/
+			compiled = []
 
-			switch details.recipe
-				when 'Config' then output += "#{details.loweredRecipe} [#{details.normalizedParameters}, #{details.className}]"
-				when 'Controller' then output += "#{details.loweredRecipe} '#{details.normalizedClassName}', [#{details.normalizedParameters}, #{details.className}]"
-				when 'Directive' then output += "#{details.loweredRecipe} 'app#{details.classSegment}', [#{details.normalizedParameters}, #{details.className}]"
-				when 'Factory' then output += "#{details.loweredRecipe} '#{details.classSegment}', [#{details.normalizedParameters}, #{details.className}]"
-				when 'Filter' then output += "#{details.loweredRecipe} '#{details.normalizedClassSegment}', [#{details.normalizedParameters}, #{details.className}]"
-				when 'Run' then output += "#{details.loweredRecipe} [#{details.normalizedParameters}, #{details.className}]"
-				when 'Service' then output += "#{details.loweredRecipe} '#{details.normalizedClassName}', [#{details.normalizedParameters}, #{details.className}]"
+			parts.forEach (part) ->
+				filters = part.split '|'
+				component = filters[0]
+				detail = details[component]
 
-			output
+				if component is 'p'
+					joined = detail.join '\', \''
+					detail = if joined.length > 0 then '\'' + joined + '\'' + ', ' + details.c else details.c
+					filters = filters.filter (filter, i) -> i > 0
 
-		filtered = @files.filter (file) ->
-			fileName = path.basename file.dest
-			firstCharacter = fileName.charAt 0
-			isClass = firstCharacter is firstCharacter.toUpperCase()
+				for filter in filters
+					switch filter
+						when 'l' then detail = detail.toLowerCase()
+						when 'u' then detail = detail.toUpperCase()
+						when 'c' then detail = detail.charAt(0).toLowerCase() + detail.slice(1)
 
-		filtered.forEach (f) ->
-			file = f.src
+				compiled.push if detail then detail else component
+
+			module = compiled.join ''
+
+		getOutput = (file) ->
 			contents = grunt.file.read file
-			details = getDetails contents
+			matches = contents.split pattern
+			a = options.appName
+			file = file
+			n = matches[1]
+			t = matches[2]
+			c = n + t
+			p = if matches[4] then matches[4].replace('(', '').replace(')', '').replace(/\s*/g, '').replace(/@/g, '').split(',') else []
+			details = {file, a, n, t, c, p}
 			module = getModule details
 			output = "#{contents}\n\n#{module}"
+
+		@files.forEach (f) ->
+			output = getOutput f.src
 
 			grunt.file.write f.dest, output

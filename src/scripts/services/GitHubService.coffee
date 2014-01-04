@@ -1,5 +1,5 @@
 class GitHubService
-	constructor: (@$log, @$http, @messageService) ->
+	constructor: (@$http, @messageService) ->
 
 	get: (criteria) ->
 		@$http.jsonp("https://api.github.com/users/#{criteria}/repos", params: callback: 'JSON_CALLBACK')

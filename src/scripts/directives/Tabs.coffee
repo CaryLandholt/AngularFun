@@ -1,5 +1,5 @@
 class TabsDirective
-	constructor: ($log) ->
+	constructor: ->
 		return {
 			controller: 'tabsDirectiveController'
 			controllerAs: 'controller'

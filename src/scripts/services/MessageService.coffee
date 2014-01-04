@@ -1,5 +1,5 @@
 class MessageService
-	constructor: (@$log, @$rootScope) ->
+	constructor: (@$rootScope) ->
 
 	publish: (name, parameters) ->
 		params = angular.extend {}, parameters,

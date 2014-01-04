@@ -1,5 +1,5 @@
 class TabsDirectiveController
-	constructor: ($log) ->
+	constructor: ->
 		@tabs = []
 
 		@select = (tab) =>

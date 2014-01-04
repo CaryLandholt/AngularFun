@@ -1,11 +1,11 @@
 class PersonController
-	constructor: (@$log, @personService) ->
+	constructor: (personService) ->
 		setPeople = =>
-			@personService.get().then (results) =>
+			personService.get().then (results) =>
 				@people = results
 
 		@insertPerson = (person) =>
-			@personService.save(person)
+			personService.save(person)
 			.success (results) =>
 				@error = ''
 				@person = {}

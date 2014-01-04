@@ -1,6 +1,6 @@
 class SearchHistoryController
-	constructor: (@$log, @messageService) ->
+	constructor: (messageService) ->
 		@searchHistory = []
 
-		@messageService.subscribe 'search', (name, parameters) =>
+		messageService.subscribe 'search', (name, parameters) =>
 			@searchHistory.push parameters

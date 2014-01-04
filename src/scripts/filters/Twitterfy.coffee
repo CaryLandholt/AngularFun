@@ -1,4 +1,4 @@
 class TwitterfyFilter
-	constructor: (@$log) ->
+	constructor: ->
 		return (username) ->
 			"@#{username}"

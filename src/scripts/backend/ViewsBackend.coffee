@@ -1,3 +1,3 @@
 class ViewsBackendRun
-	constructor: (@$log, @$httpBackend) ->
-		@$httpBackend.whenGET(/^.*\.(html|htm)$/).passThrough()
+	constructor: ($httpBackend) ->
+		$httpBackend.whenGET(/^.*\.(html|htm)$/).passThrough()

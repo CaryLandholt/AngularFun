@@ -1,5 +1,5 @@
 class PersonService
-	constructor: (@$log, @$http) ->
+	constructor: (@$http) ->
 
 	get: (id) ->
 		return if id
