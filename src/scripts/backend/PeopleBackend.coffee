@@ -1,11 +1,9 @@
 class PeopleBackendRun
-	constructor: ($httpBackend) ->
+	constructor: ($httpBackend, people) ->
 		nextId = 0
 
-		people = [
-			{id: nextId++, name: 'Saasha', age: 6}
-			{id: nextId++, name: 'Planet', age: 8}
-		]
+		angular.forEach people, (person) ->
+			person.id = nextId++
 
 		$httpBackend.whenGET('/people').respond people
 
