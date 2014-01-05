@@ -1,5 +1,6 @@
 coffee = require 'gulp-coffee'
 coffeelint = require 'gulp-coffeelint'
+es = require 'event-stream'
 gulp = require 'gulp'
 gutil = require 'gulp-util'
 jade = require 'gulp-jade'
@@ -10,6 +11,15 @@ minifyHtml = require 'gulp-minify-html'
 rimraf = require 'gulp-rimraf'
 template = require 'gulp-template'
 # uglify = require 'gulp-uglify'
+
+bower = (opts) ->
+	es.through ->
+		require('bower').commands
+			.install([], opts)
+
+gulp.task 'bower', ->
+	gulp.src('')
+		.pipe(bower())
 
 gulp.task 'delete', ->
 	gulp.src('./.temp/')
