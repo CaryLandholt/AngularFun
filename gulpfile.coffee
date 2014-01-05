@@ -4,19 +4,21 @@ gulp = require 'gulp'
 gutil = require 'gulp-util'
 jade = require 'gulp-jade'
 less = require 'gulp-less'
-rimraf = require 'gulp-rimraf'
-
+markdown = require 'gulp-markdown'
 minifyHtml = require 'gulp-minify-html'
+path = require 'path'
+# rename = require 'gulp-rename'
+rimraf = require 'gulp-rimraf'
 
 gulp.task 'delete', ->
 	gulp.src('./.temp/')
-	.pipe(rimraf())
+		.pipe(rimraf())
 
 gulp.task 'copy:temp', ['delete'], ->
 	gulp.src('./src/**')
-	.pipe(gulp.dest('./.temp/'))
+		.pipe(gulp.dest('./.temp/'))
 
-gulp.task 'coffeelint', ['copy:temp'], ->
+gulp.task 'coffeelint', ->
 	options =
 		arrow_spacing:
 			level: 'error'
@@ -27,32 +29,37 @@ gulp.task 'coffeelint', ['copy:temp'], ->
 		no_tabs:
 			level: 'ignore'
 
-	gulp.src('./.temp/**/*.coffee')
-	.pipe(coffeelint(options))
-	.pipe(coffeelint.reporter())
+	gulp.src('./src/**/*.coffee')
+		.pipe(coffeelint(options))
+		.pipe(coffeelint.reporter())
 
-gulp.task 'coffee', ['copy:temp'], ->
+gulp.task 'coffee', ['coffeelint', 'copy:temp'], ->
 	gulp.src('./.temp/**/*.coffee')
-	.pipe(coffee())
-	.pipe(gulp.dest('./.temp/'))
+		.pipe(coffee())
+		.pipe(gulp.dest('./.temp/'))
 
 gulp.task 'jade', ['copy:temp'], ->
 	gulp.src('./.temp/**/*.jade')
-	.pipe(jade(pretty: true))
-	.pipe(gulp.dest('./.temp/'))
+		.pipe(jade(pretty: true))
+		.pipe(gulp.dest('./.temp/'))
 
-gulp.task 'minifyHtml', ['jade'], ->
+gulp.task 'markdown', ['copy:temp'], ->
+	gulp.src('./.temp/**/*.md')
+		.pipe(markdown())
+		.pipe(gulp.dest('./.temp/'))
+
+gulp.task 'minifyHtml', ['jade', 'markdown'], ->
 	options =
 		quotes: true
 
 	gulp.src('./.temp/**/*.html')
-	.pipe(minifyHtml(options))
-	.pipe(gulp.dest('./.temp/'))
+		.pipe(minifyHtml(options).on('error', gutil.log))
+		.pipe(gulp.dest('./.temp/'))
 
 gulp.task 'less', ['copy:temp'], ->
 	gulp.src('./.temp/styles/styles.less')
-	.pipe(less())
-	.pipe(gulp.dest('./.temp/styles/'))
+		.pipe(less())
+		.pipe(gulp.dest('./.temp/styles/'))
 
 gulp.task 'default', ->
-	gulp.run 'coffee', 'less'
+	gulp.run('coffee', 'less', 'minifyHtml')

@@ -29,7 +29,9 @@
 		"gulp-coffeelint": "~0.0.2",
 		"gulp-jade": "~0.3.0",
 		"gulp-less": "~1.1.1",
+		"gulp-markdown": "~0.1.1",
 		"gulp-minify-html": "~0.1.0",
+		"gulp-rename": "~0.2.1",
 		"gulp-rimraf": "~0.0.6",
 		"gulp-util": "~2.2.5"
 	},
