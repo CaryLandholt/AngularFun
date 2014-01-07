@@ -1,4 +1,4 @@
-class GitHubService
+class GitHub extends Service
 	constructor: (@$log, @$http, @messageService) ->
 
 	get: (criteria) ->

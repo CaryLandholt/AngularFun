@@ -1,4 +1,4 @@
-class PersonService
+class Person extends Service
 	constructor: (@$http) ->
 
 	get: (id) ->

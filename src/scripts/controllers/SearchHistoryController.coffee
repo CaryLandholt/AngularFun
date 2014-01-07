@@ -1,4 +1,4 @@
-class SearchHistoryController
+class SearchHistory extends Controller
 	constructor: (messageService) ->
 		@searchHistory = []
 

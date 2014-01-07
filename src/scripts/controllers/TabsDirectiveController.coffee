@@ -1,4 +1,4 @@
-class TabsDirectiveController
+class TabsDirective extends Controller
 	constructor: ->
 		@tabs = []
 

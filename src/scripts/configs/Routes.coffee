@@ -1,4 +1,4 @@
-class RoutesConfig
+class Routes extends Config
 	constructor: ($routeProvider) ->
 		$routeProvider
 		.when '/github/:id',

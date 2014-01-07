@@ -1,4 +1,4 @@
-class PeopleBackendRun
+class PeopleBackend extends Run
 	constructor: ($httpBackend, people) ->
 		nextId = 0
 

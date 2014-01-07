@@ -2,14 +2,14 @@
 	"name": "app",
 	"version": "0.0.0",
 	"dependencies": {
-		"angular": "=1.2.6",
-		"angular-animate": "=1.2.6",
-		"angular-mocks": "=1.2.6",
-		"angular-route": "=1.2.6",
-		"bootstrap": "=3.0.3",
-		"html5shiv": "=3.7.0",
-		"json3": "=3.2.6",
-		"requirejs": "=2.1.9"
+		"angular": "1.2.4",
+		"angular-animate": "1.2.4",
+		"angular-mocks": "1.2.4",
+		"angular-route": "1.2.4",
+		"bootstrap": "3.0.3",
+		"html5shiv": "3.7.0",
+		"json3": "3.2.6",
+		"requirejs": "2.1.9"
 	},
 	"exportsOverride": {
 		"angular": {

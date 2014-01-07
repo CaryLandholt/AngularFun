@@ -1,4 +1,4 @@
-class DispatcherInterceptorFactory
+class DispatcherInterceptor extends Factory
 	constructor: ($rootScope, $q) ->
 		return {
 			response: (response) ->

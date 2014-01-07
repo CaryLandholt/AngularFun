@@ -1,4 +1,4 @@
-class MessageService
+class Message extends Service
 	constructor: (@$rootScope) ->
 
 	publish: (name, parameters) ->

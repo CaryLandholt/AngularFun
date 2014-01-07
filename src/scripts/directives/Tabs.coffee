@@ -1,4 +1,4 @@
-class AppTabsDirective
+class AppTabs extends Directive
 	constructor: ->
 		return {
 			controller: 'tabsDirectiveController'

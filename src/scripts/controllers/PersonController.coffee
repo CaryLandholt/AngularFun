@@ -1,5 +1,5 @@
-class PersonController
-	constructor: (personService) ->
+class Person extends Controller
+	constructor: (personService, STATUSES) ->
 		setPeople = =>
 			personService.get().then (results) =>
 				@people = results
@@ -12,7 +12,7 @@ class PersonController
 
 				setPeople()
 			.error (results, status) =>
-				if status is 403
+				if STATUSES[status] is 'Forbidden'
 					@error = results
 			.then (results) ->
 				results

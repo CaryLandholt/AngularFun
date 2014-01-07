@@ -1,4 +1,4 @@
-class AppTabDirective
+class AppTab extends Directive
 	constructor: ->
 		link = (scope, element, attrs, controller) ->
 			controller.addTab scope, attrs.tabId

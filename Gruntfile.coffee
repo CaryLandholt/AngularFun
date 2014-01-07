@@ -16,6 +16,8 @@ module.exports = (grunt) ->
 				files: [
 					cwd: '<%= settings.tempDirectory %>'
 					src: '**/*.coffee'
+					# cwd: './src/'
+					# src: 'scripts/factories/*.coffee'
 					dest: '<%= settings.tempDirectory %>'
 					expand: true
 				]
@@ -628,35 +630,68 @@ module.exports = (grunt) ->
 	]
 
 	grunt.registerMultiTask 'ngClassify', 'Compile CoffeeScript classes to AngularJS modules', ->
+		# pattern = ///
+		# 	(?:\s*class\s+)
+		# 	(\w*)
+		# 	(?=Config|Constant|Controller|Directive|Factory|Filter|Provider|Run|Service|Value)
+		# 	(\w*)
+		# 	(
+		# 		(?:\s*constant\s*:)
+		# 		|
+		# 		(?:\s*value\s*:)
+		# 		|
+		# 		(?:\s*constructor\s*:\s*)
+		# 		([^\r\n]+)
+		# 		(?=\s*->)
+		# 	)
+		# ///
+
 		pattern = ///
-			(?:\s*class\s+)
-			(\w*)
+			(?:\s*)
+			(?:class)
+			(?:\s+)
+			(\w+)
+			(?:\s+)
+			(?:extends)
+			(?:\s+)
 			(?=Config|Constant|Controller|Directive|Factory|Filter|Provider|Run|Service|Value)
 			(\w*)
+			(?:\s+)
 			(
-				(?:\s*constant\s*:)
+				(?:constant)
+				(?:\s*)
+				(?:\:)
 				|
-				(?:\s*value\s*:)
+				(?:value)
+				(?:\s*)
+				(?:\:)
 				|
-				(?:\s*constructor\s*:\s*)
+				(?:constructor)
+				(?:\s*)
+				(?:\:)
+				(?:\s*)
 				([^\r\n]+)
 				(?=\s*->)
 			)
+		///
+
+		removePattern = ///
+			(\s+extends\s\w*)
 		///
 
 		options = @options
 			appName: 'app'
 			formats:
 				config: "angular.module('{{a}}').{{t|l}} [{{p}}]"
-				constant: "angular.module('{{a}}').{{t|l}} '{{n|u}}', {{p}}::constant"
-				controller: "angular.module('{{a}}').{{t|l}} '{{c|c}}', [{{p}}]"
-				directive: "angular.module('{{a}}').{{t|l}} '{{n|c}}', [{{p}}]"
-				factory: "angular.module('{{a}}').{{t|l}} '{{n}}', [{{p}}]"
-				filter: "angular.module('{{a}}').{{t|l}} '{{n|c}}', [{{p}}]"
-				provider: "angular.module('{{a}}').{{t|l}} '{{c|c}}', [{{p}}]"
+				constant: "angular.module('{{a}}').{{t|l}} '{{c|u}}', {{p}}::constant"
+				controller: "angular.module('{{a}}').{{t|l}} '{{c|c}}{{t}}', [{{p}}]"
+				directive: "angular.module('{{a}}').{{t|l}} '{{c|c}}', [{{p}}]"
+				factory: "angular.module('{{a}}').{{t|l}} '{{c}}', [{{p}}]"
+				filter: "angular.module('{{a}}').{{t|l}} '{{c|c}}', [{{p}}]"
+				provider: "angular.module('{{a}}').{{t|l}} '{{c|c}}{{t}}', [{{p}}]"
 				run: "angular.module('{{a}}').{{t|l}} [{{p}}]"
-				service: "angular.module('{{a}}').{{t|l}} '{{c|c}}', [{{p}}]"
-				value: "angular.module('{{a}}').{{t|l}} '{{n|c}}', {{p}}::value"
+				service: "angular.module('{{a}}').{{t|l}} '{{c|c}}{{t}}', [{{p}}]"
+				value: "angular.module('{{a}}').{{t|l}} '{{c|c}}', {{p}}::value"
 
 		getModule = (details) ->
 			format = options.formats[details.t.toLowerCase()]
@@ -673,7 +708,9 @@ module.exports = (grunt) ->
 					detail = if joined.length > 0 then '\'' + joined + '\'' + ', ' + details.c else details.c
 					filters = filters.filter (filter, i) -> i > 0
 
-				for filter in filters
+				# console.log format, filters
+
+				for filter in filters when filters.length isnt 1
 					switch filter
 						when 'l' then detail = detail.toLowerCase()
 						when 'u' then detail = detail.toUpperCase()
@@ -687,14 +724,13 @@ module.exports = (grunt) ->
 			contents = grunt.file.read file
 			matches = contents.split pattern
 			a = options.appName
-			file = file
-			n = matches[1]
+			c = matches[1]
 			t = matches[2]
-			c = n + t
 			p = if matches[4] then matches[4].replace('(', '').replace(')', '').replace(/\s*/g, '').replace(/@/g, '').split(',') else []
-			details = {file, a, n, t, c, p}
+			details = {file, a, t, c, p}
 			module = getModule details
-			output = "#{contents}\n\n#{module}"
+			trimmedContents = contents.replace removePattern, ''
+			output = "#{trimmedContents}\n\n#{module}"
 
 		@files.forEach (f) ->
 			output = getOutput f.src
