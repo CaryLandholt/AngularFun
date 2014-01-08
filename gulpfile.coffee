@@ -7,10 +7,8 @@ jade = require 'gulp-jade'
 less = require 'gulp-less'
 markdown = require 'gulp-markdown'
 minifyHtml = require 'gulp-minify-html'
-# rename = require 'gulp-rename'
 rimraf = require 'gulp-rimraf'
 template = require 'gulp-template'
-# uglify = require 'gulp-uglify'
 
 bower = (opts) ->
 	es.through ->
@@ -21,13 +19,29 @@ gulp.task 'bower', ->
 	gulp.src('')
 		.pipe(bower())
 
-gulp.task 'delete', ->
+gulp.task 'clean', ->
 	gulp.src('./.temp/')
 		.pipe(rimraf())
 
-gulp.task 'copy:temp', ['delete'], ->
+gulp.task 'copy:temp', ->
 	gulp.src('./src/**')
 		.pipe(gulp.dest('./.temp/'))
+
+	gulp.src([
+		'./bower_components/angular/angular.min.js'
+		'./bower_components/angular-animate/angular-animate.min.js'
+		'./bower_components/angular-mocks/angular-mocks.js'
+		'./bower_components/angular-route/angular-route.min.js'
+		'./bower_components/html5shiv/dist/html5shiv-printshiv.js'
+		'./bower_components/json3/lib/json3.min.js'
+	])
+	.pipe(gulp.dest('./.temp/scripts/libs/'))
+
+	gulp.src('./bower_components/bootstrap/less/**/*.less')
+	.pipe(gulp.dest('./.temp/styles/'))
+
+	gulp.src('./bower_components/bootstrap/dist/fonts/**/*.{eot,svg,ttf,woff}')
+	.pipe(gulp.dest('./.temp/fonts/'))
 
 gulp.task 'coffeelint', ->
 	options =
@@ -44,7 +58,7 @@ gulp.task 'coffeelint', ->
 		.pipe(coffeelint(options))
 		.pipe(coffeelint.reporter())
 
-gulp.task 'coffee', ['coffeelint', 'copy:temp'], ->
+gulp.task 'coffee', ['coffeelint'], ->
 	gulp.src('./.temp/**/*.coffee')
 		.pipe(coffee())
 		.pipe(gulp.dest('./.temp/'))
@@ -63,10 +77,6 @@ gulp.task 'markdown', ['template'], ->
 	gulp.src('./.temp/**/*.md')
 		.pipe(markdown())
 		.pipe(gulp.dest('./.temp/'))
-
-# .pipe(rename (dir, base, ext) ->
-# "#{base}.html"
-# )
 
 gulp.task 'views', ->
 	gulp.run('minifyHtml')
@@ -99,7 +109,7 @@ gulp.task 'less', ['copy:temp'], ->
 		.pipe(less())
 		.pipe(gulp.dest('./.temp/styles/'))
 
-gulp.task 'default', ->
+gulp.task 'default', ['clean'], ->
 	gulp.run('scripts', 'styles', 'views')
 
 
