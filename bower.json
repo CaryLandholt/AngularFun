@@ -9,7 +9,7 @@
 		"bootstrap": "3.0.3",
 		"html5shiv": "3.7.0",
 		"json3": "3.2.6",
-		"requirejs": "2.1.9"
+		"requirejs": "2.1.10"
 	},
 	"exportsOverride": {
 		"angular": {
