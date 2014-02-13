@@ -35,7 +35,7 @@ Enter the following commands in the terminal.
 1. `git clone git://github.com/CaryLandholt/AngularFun.git`
 2. `cd AngularFun`
 3. `npm install`
-4. `grunt bower:install` - this is only necessary on Windows machines
+4. `grunt bower:install`
 
 ## Compile Angular Fun
 You have options.
