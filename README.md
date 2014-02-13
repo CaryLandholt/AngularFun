@@ -1,11 +1,13 @@
-[![Build Status](https://secure.travis-ci.org/CaryLandholt/AngularFun.png)](http://travis-ci.org/CaryLandholt/AngularFun)
-[![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
-[![Dependency Status](https://david-dm.org/CaryLandholt/AngularFun.png)](https://david-dm.org/CaryLandholt/AngularFun)
-# AngularFun
+# AngularFun [![Build Status](https://secure.travis-ci.org/CaryLandholt/AngularFun.png)](http://travis-ci.org/CaryLandholt/AngularFun)
 *By [@CaryLandholt](https://twitter.com/carylandholt)*
 
+> An [AngularJS](http://angularjs.org/) large application Reference Architecture
+
+[![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
+[![Dependency Status](https://david-dm.org/CaryLandholt/AngularFun.png)](https://david-dm.org/CaryLandholt/AngularFun)
+
 ## About
-AngularFun is an [AngularJS](http://angularjs.org/) large application Reference Architecture.  The intent is to provide a base for creating your own AngularJS applications with minimal boilerplate setup and ceremony.
+The intent is to provide a base for creating your own AngularJS applications with minimal boilerplate setup and ceremony.
 
 Simply follow the patterns and you'll get a complete development workflow, including:
 
@@ -67,7 +69,7 @@ My background with using [RequireJS](http://requirejs.org/), see the [RequireJS 
 ### Take 1
 Here's an early example controller in CoffeeScript.
 
-```CoffeeScript
+```coffee
 define ['controllers/controllers', 'services/gitHubService'], (controllers) ->
 	controllers.controller 'gitHubController', ['$scope', '$location', 'gitHubService', ($scope, $location, gitHubService) ->
 		$scope.search = (searchTerm) ->
@@ -89,7 +91,7 @@ This ultimately provided no benefit, so I got rid of them.  They were just noise
 ### Take 2
 Using only one AngularJS module and rewriting the above script without the functionality-specific AngularJS container modules we have:
 
-```CoffeeScript
+```coffee
 define ['libs/angular', 'services/gitHubService'], (angular) ->
 	angular.module('app').controller 'gitHubController', ['$scope', '$location', 'gitHubService', ($scope, $location, gitHubService) ->
 		$scope.search = (searchTerm) ->
@@ -122,7 +124,7 @@ So I decided to refactor the files and remove RequireJS completely, at least fro
 
 Now we have:
 
-```CoffeeScript
+```coffee
 angular.module('app').controller 'gitHubController', ['$scope', '$location', 'gitHubService', ($scope, $location, gitHubService) ->
 	$scope.search = (searchTerm) ->
 		$location.path "/github/#{searchTerm}"
@@ -165,7 +167,7 @@ This is where the RequireJS [shim](http://requirejs.org/docs/api.html#config-shi
 
 Since we no longer have dependencies referenced in individual files by way of RequireJS, and the multiple script reference idea is unappealing, we can define our dependencies inside our main file using shim.  Notice the dependencies can be referenced in any order.  RequireJS will ensure dependencies are loaded prior to their being required.
 
-```CoffeeScript
+```coffee
 require
 	shim:
 		'controllers/gitHubController': deps: ['libs/angular', 'app', 'services/gitHubService']
