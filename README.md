@@ -229,3 +229,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 * Add many more unit tests :(
 * Add more documentation :(
 * Screencasts :)
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/CaryLandholt/angularfun/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
