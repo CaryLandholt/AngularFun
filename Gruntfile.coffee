@@ -90,6 +90,7 @@ module.exports = (grunt) ->
 			app:
 				options:
 					base: '<%= settings.distDirectory %>'
+					hostname: 'localhost'
 					livereload: true
 					middleware: require './middleware'
 					open: true
