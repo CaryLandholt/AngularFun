@@ -41,7 +41,10 @@
 		"grunt-hustler": "~4.0.6",
 		"grunt-karma": "~0.8.2",
 		"grunt-prompt": "~1.1.0",
+		"karma-coffee-preprocesor": "~0.2.1",
+		"karma-jasmine": "~0.1.5",
 		"karma-junit-reporter": "~0.2.1",
+		"karma-phantomjs-launcher": "~0.1.4",
 		"load-grunt-tasks": "~0.4.0",
 		"time-grunt": "~0.3.1"
 	},

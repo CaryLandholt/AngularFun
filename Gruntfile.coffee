@@ -188,9 +188,9 @@ module.exports = (grunt) ->
 					captureTimeout: 5000
 					colors: true
 					files: [
-						'dist/scripts/libs/angular.js'
-						'dist/scripts/libs/angular-animate.js'
-						'dist/scripts/libs/angular-route.js'
+						'dist/scripts/libs/angular.min.js'
+						'dist/scripts/libs/angular-animate.min.js'
+						'dist/scripts/libs/angular-route.min.js'
 						'bower_components/scripts/libs/angular-mocks.js'
 						'dist/**/*.js'
 						'test/**/*.{coffee,js}'
