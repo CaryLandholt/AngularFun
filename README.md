@@ -29,6 +29,7 @@ Simply follow the patterns and you'll get a complete development workflow, inclu
 * Must have [Git](http://git-scm.com/) installed
 * Must have [node.js (at least v0.8.1)](http://nodejs.org/) installed with npm (Node Package Manager)
 * Must have [Grunt](http://gruntjs.com/) node package installed globally.  `npm install -g grunt-cli`
+* For Windows machines, you may need to install [karma](https://github.com/karma-runner/karma) globally.  `npm install -g karma`
 
 ## Install Angular Fun
 Enter the following commands in the terminal.
