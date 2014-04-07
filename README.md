@@ -5,6 +5,7 @@
 
 [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 [![Dependency Status](https://david-dm.org/CaryLandholt/AngularFun.png)](https://david-dm.org/CaryLandholt/AngularFun)
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/CaryLandholt/angularfun/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 ## About
 The intent is to provide a base for creating your own AngularJS applications with minimal boilerplate setup and ceremony.
@@ -229,7 +230,3 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 * Add many more unit tests :(
 * Add more documentation :(
 * Screencasts :)
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/CaryLandholt/angularfun/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
