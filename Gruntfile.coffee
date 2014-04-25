@@ -4,6 +4,7 @@ path = require 'path'
 module.exports = (grunt) ->
 	require('load-grunt-tasks')(grunt)
 	require('time-grunt')(grunt)
+	pkg = require './package.json'
 
 	grunt.initConfig
 		settings:
@@ -26,6 +27,12 @@ module.exports = (grunt) ->
 					cleanBowerDir: true
 					copy: false
 					install: false
+
+		# Creates changelog
+		changelog:
+			options:
+				repository: pkg.repository.url
+				version: pkg.version
 
 		# Deletes dist and .temp directories
 		# The .temp directory is used during the build process
