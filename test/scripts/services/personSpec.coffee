@@ -1,19 +1,21 @@
-describe "personService", ->
+describe 'personService', ->
 	beforeEach module 'app'
 
 	beforeEach ->
-		@addMatchers {
-			toEqualData: (expected) ->
-				angular.equals @actual, expected
-		}
+		jasmine.Expectation.addMatchers
+			toEqualData: ->
+				compare: (actual, expected) ->
+					pass = angular.equals actual, expected
+
+					{pass}
 
 	it 'should get people', inject ['$httpBackend', 'personService', ($httpBackend, personService) ->
 		expected = [{name: 'foo'}]
 		notExpected = [{name: 'bar'}]
 
 		$httpBackend
-			.expectGET('/people')
-			.respond(expected)
+			.expectGET '/people'
+			.respond expected
 
 		positiveTestSuccess = (results) ->
 			expect(results).toEqualData expected
@@ -26,8 +28,8 @@ describe "personService", ->
 			results
 
 		personService.get()
-			.then(positiveTestSuccess)
-			.then(negativeTestSuccess)
+			.then positiveTestSuccess
+			.then negativeTestSuccess
 
 
 		$httpBackend.flush()
@@ -38,8 +40,8 @@ describe "personService", ->
 		notExpected = {name: 'bar'}
 
 		$httpBackend
-			.expectGET('/people/1')
-			.respond(expected)
+			.expectGET '/people/1'
+			.respond expected
 
 		positiveTestSuccess = (results) ->
 			expect(results).toEqualData expected
@@ -51,9 +53,9 @@ describe "personService", ->
 
 			results
 
-		personService.getPerson(1)
-			.then(positiveTestSuccess)
-			.then(negativeTestSuccess)
+		personService.getPerson 1
+			.then positiveTestSuccess
+			.then negativeTestSuccess
 
 
 		$httpBackend.flush()

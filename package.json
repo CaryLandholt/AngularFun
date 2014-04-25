@@ -1,7 +1,7 @@
 {
 	"name": "AngularFun",
-	"description": "AngularJS Reference Architecture",
 	"version": "2.1.9",
+	"description": "AngularJS Reference Architecture",
 	"author": {
 		"name": "Cary Landholt",
 		"email": "cary@landholt.com",
@@ -22,12 +22,16 @@
 		"type": "git",
 		"url": "https://github.com/CaryLandholt/AngularFun.git"
 	},
+	"engines": {
+		"node": ">=0.10.0"
+	},
 	"dependencies": {
+		"body-parser": "~1.0.2",
 		"coffee-script": "~1.7.1",
-		"express": "~3.5.1",
+		"express": "~4.0.0",
 		"grunt": "~0.4.4",
 		"grunt-bower-task": "~0.3.4",
-		"grunt-coffeelint": "~0.0.8",
+		"grunt-coffeelint": "~0.0.10",
 		"grunt-contrib-clean": "~0.5.0",
 		"grunt-contrib-coffee": "~0.10.1",
 		"grunt-contrib-connect": "~0.7.1",
@@ -42,14 +46,10 @@
 		"grunt-karma": "~0.8.2",
 		"grunt-prompt": "~1.1.0",
 		"karma-coffee-preprocessor": "~0.2.1",
-		"karma-jasmine": "~0.1.5",
-		"karma-junit-reporter": "~0.2.1",
+		"karma-jasmine": "~0.2.2",
+		"karma-junit-reporter": "~0.2.2",
 		"karma-phantomjs-launcher": "~0.1.4",
 		"load-grunt-tasks": "~0.4.0",
 		"time-grunt": "~0.3.1"
-	},
-	"engines": {
-		"node": "0.8.x",
-		"npm": "1.1.x"
 	}
 }

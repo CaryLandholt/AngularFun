@@ -1,13 +1,6 @@
-# AngularFun [![Build Status](https://secure.travis-ci.org/CaryLandholt/AngularFun.png)](http://travis-ci.org/CaryLandholt/AngularFun)
-*By [@CaryLandholt](https://twitter.com/carylandholt)*
-
+# AngularFun [![Version][version-image]][version-url] [![Build Status][build-image]][build-url] [![Dependency Status][dependencies-image]][dependencies-url] [![License][license-image]][license-url]
 > An [AngularJS](http://angularjs.org/) large application Reference Architecture
 
-[![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
-[![Dependency Status](https://david-dm.org/CaryLandholt/AngularFun.png)](https://david-dm.org/CaryLandholt/AngularFun)
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/CaryLandholt/angularfun/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
-## About
 The intent is to provide a base for creating your own AngularJS applications with minimal boilerplate setup and ceremony.
 
 Simply follow the patterns and you'll get a complete development workflow, including:
@@ -25,21 +18,44 @@ Simply follow the patterns and you'll get a complete development workflow, inclu
 * a unit testing strategy
 * a server to run the application
 
-## Prerequisites
-* Must have [Git](http://git-scm.com/) installed
-* Must have [node.js (at least v0.8.1)](http://nodejs.org/) installed with npm (Node Package Manager)
-* Must have [Grunt](http://gruntjs.com/) node package installed globally.  `npm install -g grunt-cli`
-* For Windows machines, you may need to install [karma](https://github.com/karma-runner/karma) globally.  `npm install -g karma`
 
-## Install Angular Fun
-Enter the following commands in the terminal.
+## Table of Contents
+* [Installing](#installing)
+* [Compiling](#compiling)
+* [JS Love](#js-love) - prefer JavaScript over CoffeeScript?
+* [Running](#running)
+* [Making Changes](#making-changes)
+* [Testing](#testing)
+* [Commentary](#commentary)
+* [Contributing](#contributing)
+* [Changelog](#changelog)
+* [License](#license)
 
-1. `git clone git://github.com/CaryLandholt/AngularFun.git`
-2. `cd AngularFun`
-3. `npm install`
-4. `grunt bower:install`
 
-## Compile Angular Fun
+## Installing
+Before running, you must install and configure the following one-time dependencies:
+
+* [Git](http://git-scm.com/)
+* [Node.js](http://nodejs.org/)
+* [Grunt](http://gruntjs.com/) - use the terminal command below
+```bash
+$ npm install -g grunt-cli
+```
+* [karma](https://github.com/karma-runner/karma) - For Windows machines, you may need to install [karma](https://github.com/karma-runner/karma) globally.  Use the terminal command below
+```bash
+$ npm install -g karma
+```
+
+Once the dependencies have been installed, enter the following commands in the terminal:
+```bash
+$ git clone git@github.com:CaryLandholt/AngularFun.git
+$ cd AngularFun
+$ npm install
+$ grunt bower:install
+```
+
+
+## Compiling
 You have options.
 
 1. `grunt build` - will compile the app preserving individual files (when run, files will be loaded on-demand)
@@ -47,19 +63,24 @@ You have options.
 3. `grunt prod` - will compile using optimizations.  This will create one JavaScript file and one CSS file to demonstrate the power of [r.js](http://requirejs.org/docs/optimization.html), the build optimization tool for RequireJS.  And take a look at the index.html file.  Yep - it's minified too.
 4. `grunt test` - will compile the app and run all unit tests
 
+
 ## JS Love
 Some of you prefer working with plain old JavaScript.  We've got ya covered.  Simply run the following grunt task.
 `grunt jslove` - will transpile all of the CoffeeScript files to JavaScript and throw out the Coffee.
 
-## Run It
+
+## Running
 1. Compile the app using one of the above three options.  `grunt` and `grunt dev` will run the web server and open the app in your default browser automatically.
 2. `grunt server` - will run the web server and open the app in your default browser.
+
 
 ## Making Changes
 * `grunt` and `grunt dev` will watch for any .coffee, .less, .jade, or .html file changes.  When changes are detected, the files will be linted, compiled, and ready for you to refresh the browser.
 
-## Running Tests
+
+## Testing
 `grunt test` - Runs unit tests using the [Karma](http://karma-runner.github.io/) Test Runner
+
 
 ## Commentary
 AngularFun is a by-product of my learning AngularJS and became the reference architecture to my day job project, a very large internally and externally-facing application with extensive user interactions.
@@ -67,6 +88,7 @@ AngularFun is a by-product of my learning AngularJS and became the reference arc
 I needed something that could support our Architecture Principles, including scale, stability, and maintenance.
 
 My background with using [RequireJS](http://requirejs.org/), see the [RequireJS screencasts](http://www.youtube.com/watch?v=VGlDR1QiV3A&list=PLCBD579A7ADB6313A) on my [YouTube channel](http://www.youtube.com/user/carylandholt), enabled me to get up and running with managing many individual files right away.  RequireJS is a terrific dependency management technology.
+
 
 ### Take 1
 Here's an early example controller in CoffeeScript.
@@ -89,6 +111,7 @@ define ['controllers/controllers', 'services/gitHubService'], (controllers) ->
 There are a couple things going on here.  RequireJS is loading controllers/controllers and services/gitHubService and providing a handle to both.
 The controllers module was an early attempt at organizing AngularJS functionality into separate AngularJS modules (i.e. controllers, services, directives, filters, and responseInterceptors).
 This ultimately provided no benefit, so I got rid of them.  They were just noise.
+
 
 ### Take 2
 Using only one AngularJS module and rewriting the above script without the functionality-specific AngularJS container modules we have:
@@ -119,6 +142,7 @@ AngularJS does not load dependent files, but it will provide a handle to them on
 So the define function is making sure AngularJS is loaded and provides a handle to it, even though it's a global variable.  It also makes sure gitHubService is loaded but doesn't need to provide a handle since the AngularJS dependency management system will do this.
 
 Even though there is a difference, there is some overlap in responsibility here.  This can be observed with the mere fact that there is a gitHubService dependency referenced in the define function as well as the controller function.  So the developer has to work in the RequireJS world and AngularJS world in the same file.
+
 
 ### Take 3
 
@@ -209,6 +233,7 @@ Here are the final index.html script references.  Note that the condition will n
 <% } %>
 ```
 
+
 ### Take 4
 Inspired by [tardyp](https://github.com/tardyp) and his [grunt-requiregen](https://github.com/tardyp/grunt-requiregen) plugin - what if we didn't have to do anything?
 
@@ -216,18 +241,27 @@ So that's actually where we are.  The shim file from [Take 3](#take-3) is built 
 
 Whew!
 
-### Give and Take
-After many iterations it now feels right.  All [comments and questions](https://github.com/CaryLandholt/AngularFun/issues) and [Pull Requests](https://github.com/CaryLandholt/AngularFun/pulls) are always welcome.  I respond to all.
 
-### Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using grunt.
+## Contributing
+See [CONTRIBUTING.md](CONTRIBUTING.md)
 
-#### List of contributors
-* [Cary Landholt](https://github.com/CaryLandholt)
-* [David Bochenski](https://github.com/Bochenski)
-* [Jan Philipp](https://github.com/knalli)
 
-## To-Do
-* Add many more unit tests :(
-* Add more documentation :(
-* Screencasts :)
+## Changelog
+See [CHANGELOG.md](CHANGELOG.md)
+
+
+## License
+See [LICENSE](LICENSE)
+
+
+[build-image]:            http://img.shields.io/travis/CaryLandholt/AngularFun.svg?style=flat
+[build-url]:              http://travis-ci.org/CaryLandholt/AngularFun
+
+[dependencies-image]:     http://img.shields.io/gemnasium/CaryLandholt/AngularFun.svg?style=flat
+[dependencies-url]:       https://gemnasium.com/CaryLandholt/AngularFun
+
+[license-image]:          http://img.shields.io/badge/license-MIT-blue.svg?style=flat
+[license-url]:            LICENSE
+
+[version-image]:          http://img.shields.io/github/tag/CaryLandholt/AngularFun.svg?style=flat
+[version-url]:            https://github.com/CaryLandholt/AngularFun/tags

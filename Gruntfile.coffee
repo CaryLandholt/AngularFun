@@ -92,7 +92,16 @@ module.exports = (grunt) ->
 					base: '<%= settings.distDirectory %>'
 					hostname: 'localhost'
 					livereload: true
-					middleware: require './middleware'
+					middleware: (connect, options) ->
+						express = require 'express'
+						bodyParser = require 'body-parser'
+						routes = require './routes'
+						app = express()
+
+						app.use bodyParser()
+						app.use express.static String(options.base)
+						routes app, options
+						[connect(app)]
 					open: true
 					port: 0
 
@@ -208,7 +217,6 @@ module.exports = (grunt) ->
 					reporters: [
 						'dots'
 						'junit'
-						'progress'
 					]
 					runnerPort: 9100
 					singleRun: true
@@ -530,6 +538,7 @@ module.exports = (grunt) ->
 	# grunt build
 	grunt.registerTask 'build', [
 		'clean:working'
+		'bower:install'
 		'coffeelint'
 		'copy:app'
 		'jade'
@@ -569,6 +578,7 @@ module.exports = (grunt) ->
 	# grunt prod
 	grunt.registerTask 'prod', [
 		'clean:working'
+		'bower:install'
 		'coffeelint'
 		'copy:app'
 		'jade:views'
