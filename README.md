@@ -51,7 +51,6 @@ Once the dependencies have been installed, enter the following commands in the t
 $ git clone git@github.com:CaryLandholt/AngularFun.git
 $ cd AngularFun
 $ npm install
-$ grunt bower:install
 ```
 
 
