@@ -128,15 +128,15 @@ The footer should contain any information about **[Breaking Changes](#breaking-c
 All breaking changes have to be mentioned in the footer with the description of the change, justification, and migration notes
 
 ```
-BREAKING CHANGE: gulp dev task has been deprecated
+BREAKING CHANGE: grunt dev task has been deprecated
 
-gulp dev was superfluous
+grunt dev was superfluous
 
 Before:
-gulp dev
+grunt dev
 
 After:
-gulp
+grunt
 ```
 
 ##### Referencing Issues
