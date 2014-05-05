@@ -245,6 +245,16 @@ module.exports = (grunt) ->
 				ext: '.html'
 				expand: true
 
+		# Convert CoffeeScript classes to AngularJS modules
+		ngClassify:
+			app:
+				files: [
+					cwd: '<%= settings.tempDirectory %>'
+					src: '**/*.coffee'
+					dest: '<%= settings.tempDirectory %>'
+					expand: true
+				]
+
 		# Creates a file to push views directly into the $templateCache
 		# This will produce a file with the following content
 		#
@@ -422,6 +432,7 @@ module.exports = (grunt) ->
 					'coffeelint'
 					'copy:app'
 					'shimmer:dev'
+					'ngClassify:app'
 					'coffee:app'
 					'copy:dev'
 					'karma'
@@ -550,6 +561,7 @@ module.exports = (grunt) ->
 		'copy:app'
 		'jade'
 		'shimmer:dev'
+		'ngClassify'
 		'coffee:app'
 		'less'
 		'template:indexDev'
@@ -591,6 +603,7 @@ module.exports = (grunt) ->
 		'jade:views'
 		'ngTemplateCache'
 		'shimmer:prod'
+		'ngClassify'
 		'coffee:app'
 		'imagemin'
 		'hash:images'
