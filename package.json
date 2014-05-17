@@ -44,7 +44,7 @@
 		"grunt-contrib-watch": "~0.6.1",
 		"grunt-conventional-changelog": "~1.1.0",
 		"grunt-hustler": "~4.0.6",
-		"grunt-karma": "~0.8.2",
+		"grunt-karma": "~0.8.3",
 		"grunt-ng-classify": "~0.5.0",
 		"grunt-prompt": "~1.1.0",
 		"karma-coffee-preprocessor": "~0.2.1",
