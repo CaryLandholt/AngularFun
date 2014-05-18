@@ -21,7 +21,7 @@ module.exports = (grunt) ->
 					copy: true
 					layout: (type, component) ->
 						path.join type
-					targetDir: 'bower_components'
+					targetDir: '.components/'
 			uninstall:
 				options:
 					cleanBowerDir: true
@@ -47,6 +47,7 @@ module.exports = (grunt) ->
 			# Used for those that desire plain old JavaScript
 			jslove: [
 				'**/*.coffee'
+				'!**/.components/**'
 				'!**/.temp/**'
 				'!**/bower_components/**'
 				'!**/node_modules/**'
@@ -121,7 +122,7 @@ module.exports = (grunt) ->
 					dest: '<%= settings.tempDirectory %>'
 					expand: true
 				,
-					cwd: 'bower_components'
+					cwd: '.components/'
 					src: '**'
 					dest: '<%= settings.tempDirectory %>'
 					expand: true
@@ -207,7 +208,7 @@ module.exports = (grunt) ->
 						'dist/scripts/libs/angular.min.js'
 						'dist/scripts/libs/angular-animate.min.js'
 						'dist/scripts/libs/angular-route.min.js'
-						'bower_components/scripts/libs/angular-mocks.js'
+						'.components/scripts/libs/angular-mocks.js'
 						'dist/**/*.js'
 						'test/**/*.{coffee,js}'
 					]
@@ -222,8 +223,7 @@ module.exports = (grunt) ->
 					preprocessors:
 						'**/*.coffee': 'coffee'
 					reporters: [
-						'dots'
-						'junit'
+						'spec'
 					]
 					runnerPort: 9100
 					singleRun: true
@@ -625,6 +625,13 @@ module.exports = (grunt) ->
 	grunt.registerTask 'server', [
 		'connect'
 		'watch:none'
+	]
+
+	# Looks like the prevailing winds are pointing to use 'serve' instead of 'server'
+	# Why not both?  :)
+	# grunt serve
+	grunt.registerTask 'serve', [
+		'server'
 	]
 
 	# Compiles the app with non-optimized build settings

@@ -58,7 +58,7 @@ $ npm install
 You have options.
 
 1. `grunt build` - will compile the app preserving individual files (when run, files will be loaded on-demand)
-2. `grunt` or `grunt dev` - same as `grunt` but will watch for file changes and recompile on-the-fly
+2. `grunt` or `grunt dev` - same as `grunt build` but will launch the app, watch for file changes, recompile on-the-fly, and livereload the browser
 3. `grunt prod` - will compile using optimizations.  This will create one JavaScript file and one CSS file to demonstrate the power of [r.js](http://requirejs.org/docs/optimization.html), the build optimization tool for RequireJS.  And take a look at the index.html file.  Yep - it's minified too.
 4. `grunt test` - will compile the app and run all unit tests
 
@@ -70,7 +70,7 @@ Some of you prefer working with plain old JavaScript.  We've got ya covered.  Si
 
 ## Running
 1. Compile the app using one of the above three options.  `grunt` and `grunt dev` will run the web server and open the app in your default browser automatically.
-2. `grunt server` - will run the web server and open the app in your default browser.
+2. `grunt serve` or `grunt server` - will run the web server and open the app in your default browser.
 
 
 ## Making Changes
