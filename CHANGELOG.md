@@ -1,3 +1,17 @@
+<a name="2.3.0"></a>
+## 2.3.0 (2014-05-17)
+
+
+#### Bug Fixes
+
+* **bower:** use .components directory to avoid collisions ([734181f3](https://github.com/CaryLandholt/AngularFun.git/commit/734181f342521a3593b32637173e9b44e37e0b0a))
+
+
+#### Features
+
+* **ngClassify:** add grunt-ng-classify ([fbb87f6e](https://github.com/CaryLandholt/AngularFun.git/commit/fbb87f6e93b335455f4d75f740184fbc143f011e))
+
+
 <a name="2.2.0"></a>
 ## 2.2.0 (2014-04-24)
 
