@@ -28,7 +28,7 @@
 	"dependencies": {
 		"body-parser": "~1.2.0",
 		"coffee-script": "~1.7.1",
-		"express": "~4.1.2",
+		"express": "~4.2.0",
 		"grunt": "~0.4.5",
 		"grunt-bower-task": "~0.3.4",
 		"grunt-coffeelint": "~0.0.10",
