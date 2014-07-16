@@ -10,13 +10,11 @@
 		<meta name="description" content="AngularJS Reference Architecture" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-		<% if (config.environment && config.environment === 'prod') { %>
-			<!--[if lte IE 8]> <script src="<%= config.getHashedFile('./.temp/scripts/ie.min.js', {trim: './.temp'}) %>"></script> <![endif]-->
+		<!--[if lte IE 8]> <script src="/scripts/libs/json3.min.js"></script> <script src="/scripts/libs/html5shiv-printshiv.min.js"></script> <![endif]-->
 
+		<% if (config.environment && config.environment === 'prod') { %>
 			<link rel="stylesheet" href="<%= config.getHashedFile('./.temp/styles/styles.min.css', {trim: './.temp'}) %>" />
 		<% } else { %>
-			<!--[if lte IE 8]> <script src="/scripts/libs/json3.js"></script> <script src="/scripts/libs/html5shiv-printshiv.js"></script> <![endif]-->
-
 			<link rel="stylesheet" href="/styles/styles.css" />
 		<% } %>
 

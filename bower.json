@@ -2,14 +2,14 @@
 	"name": "app",
 	"version": "2.3.0",
 	"dependencies": {
-		"angular": "1.2.16",
-		"angular-animate": "1.2.16",
-		"angular-mocks": "1.2.16",
-		"angular-route": "1.2.16",
-		"bootstrap": "3.1.1",
+		"angular": "1.2.20",
+		"angular-animate": "1.2.20",
+		"angular-mocks": "1.2.20",
+		"angular-route": "1.2.20",
+		"bootstrap": "3.2.0",
 		"html5shiv": "3.7.2",
-		"json3": "3.3.1",
-		"requirejs": "2.1.11"
+		"json3": "3.3.2",
+		"requirejs": "2.1.14"
 	},
 	"exportsOverride": {
 		"angular": {
@@ -26,10 +26,11 @@
 		},
 		"bootstrap": {
 			"fonts": "dist/fonts/*.{eot,svg,ttf,woff}",
-			"styles": "less/*.less"
+			"styles": "less/*.less",
+			"styles/mixins": "less/mixins/*.less"
 		},
 		"html5shiv": {
-			"scripts/libs": "dist/html5shiv-printshiv.js"
+			"scripts/libs": "dist/html5shiv-printshiv.min.js"
 		},
 		"jquery": {
 			"scripts/libs": "none"
