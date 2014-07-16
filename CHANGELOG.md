@@ -1,3 +1,12 @@
+<a name="2.3.2"></a>
+### 2.3.2 (2014-07-15)
+
+
+#### Bug Fixes
+
+* **CHANGELOG:** remove .git from repository path ([f9272962](https://github.com/CaryLandholt/AngularFun/commit/f9272962e5f7430cced075c61ebfeba1489e1bfa))
+
+
 <a name="2.3.1"></a>
 ### 2.3.1 (2014-07-15)
 
