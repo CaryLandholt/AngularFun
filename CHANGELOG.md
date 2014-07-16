@@ -1,3 +1,12 @@
+<a name="2.3.1"></a>
+### 2.3.1 (2014-07-15)
+
+
+#### Bug Fixes
+
+* **versions:** restrict non semver packages to specific version ([f4d18ef2](https://github.com/CaryLandholt/AngularFun.git/commit/f4d18ef2d48a822fb05456f9a1adce0580bed29a), closes [#71](https://github.com/CaryLandholt/AngularFun.git/issues/71))
+
+
 <a name="2.3.0"></a>
 ## 2.3.0 (2014-05-17)
 
