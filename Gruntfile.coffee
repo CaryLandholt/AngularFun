@@ -102,11 +102,9 @@ module.exports = (grunt) ->
 					livereload: true
 					middleware: (connect, options) ->
 						express = require 'express'
-						bodyParser = require 'body-parser'
 						routes = require './routes'
 						app = express()
 
-						app.use bodyParser()
 						app.use express.static String(options.base)
 						routes app, options
 						[connect(app)]

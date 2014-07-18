@@ -26,7 +26,6 @@
 		"node": ">=0.10.0"
 	},
 	"dependencies": {
-		"body-parser": "^1.4.3",
 		"coffee-script": "^1.7.1",
 		"express": "^4.6.1",
 		"grunt": "0.4.5",
@@ -53,6 +52,6 @@
 		"karma-phantomjs-launcher": "0.1.4",
 		"karma-spec-reporter": "0.0.13",
 		"load-grunt-tasks": "0.6.0",
-		"time-grunt": "0.3.2"
+		"time-grunt": "0.4.0"
 	}
 }
