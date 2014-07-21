@@ -1,4 +1,8 @@
-# AngularFun [![Version][version-image]][version-url] [![Build Status][build-image]][build-url] [![Dependency Status][dependencies-image]][dependencies-url] [![License][license-image]][license-url]
+# AngularFun
+[![License][license-image]][license-url]
+[![Version][version-image]][version-url]
+[![Build Status][build-image]][build-url]
+[![Dependency Status][dependencies-image]][dependencies-url]
 > An [AngularJS](http://angularjs.org/) large application Reference Architecture
 
 The intent is to provide a base for creating your own AngularJS applications with minimal boilerplate setup and ceremony.
