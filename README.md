@@ -1,4 +1,6 @@
 # AngularFun
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/CaryLandholt/AngularFun.svg)](https://greenkeeper.io/)
 [![License][license-image]][license-url]
 [![Version][version-image]][version-url]
 [![Build Status][build-image]][build-url]
